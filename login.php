@@ -1,4 +1,6 @@
 <?php
+	// Some DB info - users use the HMTest user
+	// and tests are done on the testdb database
 	$servername = "localhost";
 	$username = "HMTest";
 	$password = "comp490";
@@ -14,10 +16,12 @@
 	
 	echo "Connected successfully";
 	
-	$sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$_POST['username']."', '".$_POST['password']."', '".$_POST['firstN']."', '".$_POST['lastN']."', '".$_POST['company']."', '".$_POST['phone']."')";
+	// To do: Check values against database and send to the welcome page if successful
+	//$sql = "";
 	
+	// Probably keep after debug...?
 	if ($conn->query($sql) === TRUE) {
-		echo "Account created successfully.";
+		echo "Account authenticated successfully.";
 	} else {
 		echo "Error: " . $sql . "<br />" . $conn->error;
 	}
