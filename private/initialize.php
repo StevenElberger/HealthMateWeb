@@ -13,4 +13,5 @@
    require_once(PRIVATE_PATH . "/general_functions.php");
    require_once(PRIVATE_PATH . "/sanitize_functions.php");
    require_once(PRIVATE_PATH . "/validating_user_functions.php");
+   require_once(PRIVATE_PATH . "/throttle_functions.php");
 ?>
