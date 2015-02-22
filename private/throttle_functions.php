@@ -15,7 +15,7 @@
    function record_failed_login($username) {
 
       // Attempt to connect to the database
-      $db = mysqli_connect('localhost', 'root', '#mws1992', 'testDB');
+      $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
       if (mysqli_connect_errno()) {
          die("Database connection failed: " . mysqli_connect_error() .
             " (" . mysqli_connect_errno() . ")");
@@ -60,7 +60,7 @@
    function clear_failed_login($username) {
 
       // Attempt to connect to the database
-      $db = mysqli_connect('localhost', 'root', '#mws1992', 'testDB');
+      $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
       if (mysqli_connect_errno()) {
          die("Database connection failed: " . mysqli_connect_error() .
             " (" . mysqli_connect_errno() . ")");
@@ -108,7 +108,7 @@
       $delay = 60 * $delay_in_minutes;
 
       // Attempt to connect to the database
-      $db = mysqli_connect('localhost', 'root', '#mws1992', 'testDB');
+      $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
       if (mysqli_connect_errno()) {
          die("Database connection failed: " . mysqli_connect_error() .
             " (" . mysqli_connect_errno() . ")");
