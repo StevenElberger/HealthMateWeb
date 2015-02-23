@@ -63,6 +63,9 @@
 				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 					<input type="submit" value="View Patient List" />
 				</form>
+				<form action="index.php">
+					<input type="submit" value="Logout" />
+				</form>
 				</center>
 			</div>
 		</section>
