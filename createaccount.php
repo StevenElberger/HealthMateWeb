@@ -84,10 +84,7 @@
 				if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 				}
-				
-				// Remove after debug
-				echo "<p>Connected successfully</p>";
-			
+
 				// Adds a new user account with form data into the physician table of the database
 				// -- To do: form checking (e.g., username already exists, security, etc.)
 				$sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$password."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";

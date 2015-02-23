@@ -65,6 +65,10 @@
 				// We know the username matches so check the password
 				if ($row["password"] == $password) {
 					// Redirect to the welcome page
+					// and use a session variable to store
+					// their username
+					session_start();
+					$_SESSION["username"] = $username;
 					echo header("Location: /HealthMateTest/welcome.php");
 				} else {
 					// Don't let the user know which piece of data was incorrect
