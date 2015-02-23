@@ -1,9 +1,16 @@
 <?php
+
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
+
  
-   // Encryption and associated Decryption functions. These functions can be 
-   // used to encrypt and decrypt a string using a key/salt. There are also
-   // encode and decode functions in order to have friendly encrypted strings 
-   // consisting of alphabetic characters instead of string symbols.
+    // Encryption and associated Decryption functions. These functions can be 
+    // used to encrypt and decrypt a string using a key/salt. There are also
+    // encode and decode functions in order to have friendly encrypted strings 
+    // consisting of alphabetic characters instead of string symbols.
 
     // Function to encrypt a given string and salt/key
     // The encryption function uses Cipher Block Chaining

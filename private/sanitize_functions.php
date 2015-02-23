@@ -1,5 +1,12 @@
 <?php require_once("initialize.php");
 
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
+
+
    // Sanitization Functions
    // These functions are used to convert strings harmless from being used 
    // to generate html, or run javascript functions, or run php functions. 

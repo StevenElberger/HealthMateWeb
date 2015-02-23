@@ -1,11 +1,17 @@
 <?php
 
-// These definitions are used throughout the application
-// Add definitions that can be useful here
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
 
-define("DB_SERVER", "localhost");
-define("DB_USER", "user");
-define("DB_PASS", "password");
-define("DB_NAME", "database");
+   // These definitions are used throughout the application
+   // Add definitions that can be useful here
+
+   define("DB_SERVER", "localhost");
+   define("DB_USER", "user");
+   define("DB_PASS", "password");
+   define("DB_NAME", "database");
 
 ?>

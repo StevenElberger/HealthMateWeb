@@ -1,4 +1,12 @@
 <?php
+ 
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
+
+   
    // These functions can be used to validate that a use has access to a private page. 
    // The purpose of these functions are to ensure that a session is valid and to
    // determine that the user is logged into the site.

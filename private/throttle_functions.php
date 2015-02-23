@@ -1,5 +1,12 @@
 <?php
 
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
+
+
    // This file contains functions that can used to throttle a user when a number of
    // attemtped logins have been used an failed. These functions utilize a database
    // and table that have specified columns(id, username, ip_address, attempts, last_time).
