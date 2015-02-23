@@ -95,7 +95,7 @@
 				// Probably keep even after debug
 				if ($conn->query($sql) === TRUE) {
 					// redirect upon successful account creation
-					echo header("Location: /HealthMateTest2/index.php");
+					echo header("Location: /HealthMateTest/index.php");
 					//echo "<p>Account created successfully.</p>";
 				} else {
 					echo "Error: " . $sql . "<br />" . $conn->error;
@@ -123,20 +123,28 @@
 				<h1>HealthMate Physician Login</h1>
 				<p><span class="required"><?php echo $requiredFields; ?></span></p>
 				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+				
 				<p>First name: <span class="required"><?php echo $firstNameError; ?></span>
-				<input type="text" name="first_name" size="16" maxlength="16" /></p>
+				<input type="text" name="first_name" value="<?php echo $first_name; ?>" size="16" maxlength="16" /></p>
+				
 				<p>Last name: <span class="required"><?php echo $lastNameError; ?></span>
-				<input type="text" name="last_name" size="16" maxlength="16" /></p>
+				<input type="text" name="last_name" value="<?php echo $last_name; ?>" size="16" maxlength="16" /></p>
+				
 				<p>Username: <span class="required"><?php echo $usernameError; ?></span>
-				<input type="text" name="username" size="16" maxlength="16" /></p>
+				<input type="text" name="username" value="<?php echo $username; ?>" size="16" maxlength="16" /></p>
+				
 				<p>Password: <span class="required"><?php echo $passwordError; ?></span>
 				<input type="password" name="password" size="16" maxlength="16" /></p>
+				
 				<p>Confirm Password: <span class="required"><?php echo $confirmError; ?><?php echo $mismatchError; ?></span>
 				<input type="password" name="confirm" size="16" maxlength="16" /></p>
+				
 				<p>Company: <span class="required"><?php echo $companyError; ?></span>
-				<input type="text" name="company" size="16" maxlength="16" /></p>
+				<input type="text" name="company" value="<?php echo $company; ?>" size="16" maxlength="16" /></p>
+				
 				<p>Phone Number: <span class="required"><?php echo $phoneError; ?></span>
-				<input type="text" name="phone" size="16" maxlength="16" /></p>
+				<input type="text" name="phone" value="<?php echo $phone; ?>" size="16" maxlength="16" /></p>
+				
 				<input type="submit" value="Submit" />
 			</div>
 		</section>

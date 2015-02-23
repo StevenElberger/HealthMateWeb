@@ -22,6 +22,7 @@
 		$usernameError = $passwordError = "";
 		// Authentication placeholders
 		$username = $password = "";
+		$bad_authentication = "";
 		
 		// Only process POST requests, not GET
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -68,7 +69,7 @@
 					echo "<p>Account authenticated successfully</p>";
 				} else {
 					// Don't let the user know which piece of data was incorrect
-					echo "<p>Incorrect username or password</p>";
+					$bad_authentication = "Incorrect username or password";
 				}
 			} else {
 				echo "<p>No such username</p>";
@@ -90,9 +91,10 @@
   <section class="container">
     <div class="login">		
       <h1>Login to HealthMate</h1>
+	  <p><span class="required"><?php echo $bad_authentication; ?></span></p>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <p><span class="required"><?php echo $usernameError; ?></span>
-		<input type="text" name="username" placeholder="Username or Email"></p>
+		<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username or Email"></p>
         <p><span class="required"><?php echo $passwordError; ?></span>
 		<input type="password" name="password" placeholder="Password"></p>
         <p class="remember_me">
