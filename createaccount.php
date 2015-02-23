@@ -94,9 +94,8 @@
 				
 				// Probably keep even after debug
 				if ($conn->query($sql) === TRUE) {
-					// redirect upon successful account creation
+					// Redirect upon successful account creation
 					echo header("Location: /HealthMateTest/index.php");
-					//echo "<p>Account created successfully.</p>";
 				} else {
 					echo "Error: " . $sql . "<br />" . $conn->error;
 				}

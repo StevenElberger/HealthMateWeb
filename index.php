@@ -55,8 +55,6 @@
 				die("Connection failed: " . $conn->connect_error);
 			}
 			
-			echo "<p>Connected successfully</p>";
-			
 			// Grab the password for the given username
 			$sql = "SELECT password FROM physician WHERE username = '" . $username . "'";
 			$result = $conn->query($sql);
@@ -66,7 +64,8 @@
 				$row = $result->fetch_assoc();
 				// We know the username matches so check the password
 				if ($row["password"] == $password) {
-					echo "<p>Account authenticated successfully</p>";
+					// Redirect to the welcome page
+					echo header("Location: /HealthMateTest/welcome.php");
 				} else {
 					// Don't let the user know which piece of data was incorrect
 					$bad_authentication = "Incorrect username or password";
@@ -94,7 +93,7 @@
 	  <p><span class="required"><?php echo $bad_authentication; ?></span></p>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <p><span class="required"><?php echo $usernameError; ?></span>
-		<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username or Email"></p>
+		<input type="text" name="username" placeholder="Username or Email"></p>
         <p><span class="required"><?php echo $passwordError; ?></span>
 		<input type="password" name="password" placeholder="Password"></p>
         <p class="remember_me">
