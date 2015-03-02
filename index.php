@@ -18,12 +18,8 @@
 </head>
 <body>
 	<?php
-        //require_once("C:/xampp/htdocs/HealthMateTest/private/definitions.php");
-//        require_once("C:/xampp/htdocs/HealthMateTest/private/encryption_functions.php");
-//        require_once("C:/xampp/htdocs/HealthMateTest/private/general_functions.php");
-//        require_once("C:/xampp/htdocs/HealthMateTest/private/sanitize_functions.php");
-          require_once("C:/xampp/htdocs/HealthMateTest/private/validating_user_functions.php");
-        //require_once("C:/xampp/htdocs/HealthMateTest/private/throttle_functions.php");
+        // Grab security functions
+        require_once("/private/initialize.php");
 		// Error placeholders
 		$usernameError = $passwordError = "";
 		// Authentication placeholders
