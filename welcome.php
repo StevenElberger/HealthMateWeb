@@ -5,11 +5,21 @@
 		<title>HealthMate</title>
 		<link rel="stylesheet" href="css/style.css">
 		<?php
-			session_start();
+            // Grab security functions
+            require_once("/private/initialize.php");
+            session_start();
+            // Make sure the session is still active
+            validate_user_before_displaying();
 			$username = $_SESSION["username"];
-			
+
+            // Check if logout button was pressed
+            if (isset($_POST['logout'])) {
+                after_successful_logout();
+                echo header("Location: /HealthMateTest/index.php");
+            }
+
 			$patient_info = "";
-			
+
 			// Only process POST requests, not GET
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				// Some DB info - users use the HMTest user
@@ -63,8 +73,8 @@
 				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 					<input type="submit" value="View Patient List" />
 				</form>
-				<form action="index.php">
-					<input type="submit" value="Logout" />
+				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+					<input type="submit" name="logout" value="Logout" />
 				</form>
 				</center>
 			</div>

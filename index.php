@@ -18,6 +18,12 @@
 </head>
 <body>
 	<?php
+        //require_once("C:/xampp/htdocs/HealthMateTest/private/definitions.php");
+//        require_once("C:/xampp/htdocs/HealthMateTest/private/encryption_functions.php");
+//        require_once("C:/xampp/htdocs/HealthMateTest/private/general_functions.php");
+//        require_once("C:/xampp/htdocs/HealthMateTest/private/sanitize_functions.php");
+          require_once("C:/xampp/htdocs/HealthMateTest/private/validating_user_functions.php");
+        //require_once("C:/xampp/htdocs/HealthMateTest/private/throttle_functions.php");
 		// Error placeholders
 		$usernameError = $passwordError = "";
 		// Authentication placeholders
@@ -64,11 +70,11 @@
 				$row = $result->fetch_assoc();
 				// We know the username matches so check the password
 				if ($row["password"] == $password) {
-					// Redirect to the welcome page
-					// and use a session variable to store
-					// their username
+					// Initialize session data and
+                    // redirect user to the welcome page
 					session_start();
 					$_SESSION["username"] = $username;
+                    after_successful_login();
 					echo header("Location: /HealthMateTest/welcome.php");
 				} else {
 					// Don't let the user know which piece of data was incorrect

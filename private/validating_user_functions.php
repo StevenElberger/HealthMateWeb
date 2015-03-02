@@ -104,7 +104,7 @@
 
       if(!is_session_valid()) {
          end_session();
-         header("Location: login.php");
+         header("Location: index.php");
          exit;
       }
    }
@@ -112,12 +112,7 @@
    // Function to check if the user is logged in
    // Helper function
    function is_logged_in() {
-
-      if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-         return true;
-      } else {
-         return false;
-      }
+       return isset($_SESSION['logged_in']) && $_SESSION['logged_in'];
    }
 
    // Function to confirm that the user is logged in
@@ -126,7 +121,7 @@
    function confirm_user_is_logged_in() {
       if (!is_logged_in()) {
          end_session();
-         header("Location: login.php");
+         header("Location: index.php");
          exit;
       }
    }
@@ -136,11 +131,11 @@
    // on the site.
    function after_successful_login() {
       session_regenerate_id();
-      $_SESSION['logged_in'] = true;
-      $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
-      $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-      $_SESSION['last_login'] = time();
-   } 
+       $_SESSION['logged_in'] = true;
+       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
+       $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+       $_SESSION['last_login'] = time();
+   }
 
    // Function that sets the user login record to 
    // false indicating that the user is no longer 
