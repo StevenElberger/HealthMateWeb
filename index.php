@@ -77,7 +77,7 @@
 					$bad_authentication = "Incorrect username or password";
 				}
 			} else {
-				echo "<p>No such username</p>";
+				$bad_authentication = "Incorrect username or password";
 			}
 			
 			$conn->close();
