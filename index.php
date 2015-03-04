@@ -42,15 +42,8 @@
 		}
 		
 		if (($username !== "") && ($password !== "")) {
-			// Some DB info - users use the HMTest user
-			// and tests are done on the testdb database
-			$servername = "localhost";
-			$dbusername = "HMTest";
-			$dbpassword = "comp490";
-			$dbname = "testdb";
-
 			// Create connection
-			$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+            $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 			// Check connection
 			if ($conn->connect_error) {
