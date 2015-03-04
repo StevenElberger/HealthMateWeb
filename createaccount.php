@@ -76,6 +76,8 @@
 				$dbusername = "HMTest";
 				$dbpassword = "comp490";
 				$dbname = "testdb";
+                // Store the hash, not the pass
+                $hash_pass = password_hash($password, PASSWORD_BCRYPT);
 
 				// Create connection
 				$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
@@ -87,7 +89,7 @@
 
 				// Adds a new user account with form data into the physician table of the database
 				// -- To do: form checking (e.g., username already exists, security, etc.)
-				$sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$password."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";
+				$sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$hash_pass."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";
 				
 				// Probably keep even after debug
 				if ($conn->query($sql) === TRUE) {

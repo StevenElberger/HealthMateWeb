@@ -64,8 +64,8 @@
 			// If there's a match, check to make sure authentication was successful
 			if ($result->num_rows > 0) {
 				$row = $result->fetch_assoc();
-				// We know the username matches so check the password
-				if ($row["password"] == $password) {
+				// We know the username matches so check the password against the hash
+				if (password_verify($password, $row["password"])) {
 					// Initialize session data and
                     // redirect user to the welcome page
 					session_start();
