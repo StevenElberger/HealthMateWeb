@@ -1,4 +1,8 @@
 <?php
+
+	/*require_once("../private/PHPMailer/class.phpmailer.php");
+	require_once("../private/PHPMailer/class.smtp.php");
+	require_once("../private/PHPMailer/language/phpmailer.lang-en.php");*/
 // Reset token functions
 
 // Function that generates a string that can be used as a reset token. 
@@ -99,15 +103,46 @@ function find_user_with_token($token) {
 // This is a placeholder since we don't have email
 // abilities set up in the demo version.
 function email_reset_token($username) {
-	$user = "";//= find_one_in_fake_db('users', 'username', sql_prep($username));
 	
-	if($user) {
-		// This is where you would connect to your emailer
-		// and send an email with a URL that includes the token.
-		return true;
-	} else {
-		return false;
-	}
+	// Attempt to connect to the database
+   $db = mysqli_connect("localhost", "root", "#mws1992", "testDB");
+   if (mysqli_connect_errno()) {
+      die("Database connection failed: " . mysqli_connect_error() .
+         " (" . mysqli_connect_errno() . ")");
+   }
+   
+   // SQL statement to retrieve rows that have the username column equal to the given username      
+    $sql_statement = "SELECT * FROM users WHERE username='".$username."'";
+
+   // execute query
+   $users = $db->query($sql_statement);
+
+   // check if anything was returned by database
+   if ($users->num_rows > 0) {
+
+      // fetch the first row of the results of the query
+      $row = $users->fetch_assoc();
+      
+      /*//$to = $row["email"];
+      $to_name = "Michael Sandoval";
+      $to = "sandovalmichael48@yahoo.com";
+      $subject = "Mail Test at " .strftime("%T", time());
+      $message = "This is a test.";
+      $message = wordwrap($message, 70);
+      
+      $from_name = "Tester";
+      $from = "sandovalmichael62@gmail.com";
+      
+      
+      
+      // Email the user
+      $result = mail($to, $subject, $message, $headers);
+      
+      echo $result ? 'Sent' : 'Error';*/
+
+		// close database connection
+      $db->close();
+	} 
 }
 
 ?>

@@ -41,7 +41,6 @@ if(request_is_post() && request_is_same_domain()) {
 
 	         if($user) {
 				   // Username was found; okay to reset
-				   echo 'reset';
 				   create_reset_token($username);
 				   email_reset_token($username);
 	          } else {

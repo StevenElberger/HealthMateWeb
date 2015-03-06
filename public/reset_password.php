@@ -55,6 +55,7 @@ if(request_is_post() && request_is_same_domain()) {
 			   // fetch the first row of the results of the query
             $row = $users->fetch_assoc();
 			   delete_reset_token($row['username']);
+			   $db->close();
 			   
 		   }
 			redirect_to('index.php');
