@@ -7,6 +7,8 @@
 	</head>
 	<body>
 		<?php
+            // Grab security functions
+            require_once("/private/initialize.php");
 			// Flag for first load
 			$firstLoad = true;
 			// Error placeholders
@@ -84,9 +86,10 @@
 				// Adds a new user account with form data into the physician table of the database
 				// -- To do: form checking (e.g., username already exists, security, etc.)
 				$sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$hash_pass."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";
-				
-				// Probably keep even after debug
-				if ($conn->query($sql) === TRUE) {
+
+                if (username_exists($username, $conn)) {
+                    $usernameError = "Username already exists";
+                } else if ($conn->query($sql) === TRUE) {
 					// Redirect upon successful account creation
 					echo header("Location: /HealthMateTest/index.php");
 				} else {
@@ -109,6 +112,15 @@
 				$data = htmlspecialchars($data);
 				return $data;
 			}
+
+            // Checks to see if given username already exists
+            function username_exists($given_username, $existing_conn) {
+                $sql = "SELECT username FROM physician WHERE username = '".$given_username."'";
+
+                $result = $existing_conn->query($sql);
+
+                return $result->num_rows > 0;
+            }
 		?>
 		<section class="container">
 			<div class="login">
