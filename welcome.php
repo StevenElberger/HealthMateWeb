@@ -59,20 +59,38 @@
 			}
 		?>
 	</head>
+    <body>
+    <header>
+        <nav>
+            <ul class="nav">
+                <li class="active">
+                    <a href="welcome.php" class="icon home"><span>Home</span></a>
+                </li>
+                <li><a href="welcome.php">Patients</a></li>
+                <li><a href="welcome.php">Moods</a></li>
+                <li><a href="welcome.php">Settings</a></li>
+                <li><a href="index.php">Log Out</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <!--
 	<body>
 		<section class="container">
 			<div class="login">
 				<h1>Welcome</h1>
 				<center>
-				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+				<form action="<?php //echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 					<input type="submit" value="View Patient List" />
 				</form>
-				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+				<form action="<?php //echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 					<input type="submit" name="logout" value="Logout" />
 				</form>
 				</center>
 			</div>
 		</section>
-		<?php echo $patient_info ?>
+		<?php //echo $patient_info ?>
 	</body>
+    -->
 </html>
