@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<title>HealthMate</title>
-		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="csstest/style.css">
 		<?php
             // Grab security functions
             require_once("/private/initialize.php");
