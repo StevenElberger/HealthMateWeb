@@ -265,6 +265,7 @@
 
                 // show error alert
                 $('#error-alert').removeClass("hidden");
+                // hide username already exists error
                 $('#username-exists').addClass("hidden");
 
                 /*

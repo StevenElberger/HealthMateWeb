@@ -2,9 +2,15 @@
 	"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>HealthMate</title>
-		<link rel="stylesheet" href="csstest/style.css">
-		<?php
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>HealthMate</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="newcss/bootstrap.css" type="text/css" rel="stylesheet">
+
+        <?php
             // Grab security functions
             require_once("/private/initialize.php");
             session_start();
@@ -60,37 +66,38 @@
 		?>
 	</head>
     <body>
-    <header>
-        <nav>
-            <ul class="nav">
-                <li class="active">
-                    <a href="welcome.php" class="icon home"><span>Home</span></a>
-                </li>
-                <li><a href="welcome.php">Patients</a></li>
-                <li><a href="welcome.php">Moods</a></li>
-                <li><a href="welcome.php">Settings</a></li>
-                <li><a href="index.php">Log Out</a></li>
-            </ul>
-        </nav>
+    <!-- begin navigation bar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/HealthMateTest/welcome.php">HealthMate</a>
+            </div>
 
-    </header>
-
-    <!--
-	<body>
-		<section class="container">
-			<div class="login">
-				<h1>Welcome</h1>
-				<center>
-				<form action="<?php //echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-					<input type="submit" value="View Patient List" />
-				</form>
-				<form action="<?php //echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-					<input type="submit" name="logout" value="Logout" />
-				</form>
-				</center>
-			</div>
-		</section>
-		<?php //echo $patient_info ?>
-	</body>
-    -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Add Patient</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">View Patient List</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- end navigation bar -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    </body>
 </html>
