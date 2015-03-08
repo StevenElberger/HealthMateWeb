@@ -5,8 +5,10 @@ body {
 }
 
 .login-well {
-    padding-top: 10em;
+    padding: 15px;
+    margin: 0 auto;
     max-width: 330px;
+    position: relative;
 }
 
 .login-form {
