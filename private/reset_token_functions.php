@@ -1,8 +1,7 @@
 <?php
 
-	/*require_once("../private/PHPMailer/class.phpmailer.php");
+	require_once("../private/PHPMailer/class.phpmailer.php");
 	require_once("../private/PHPMailer/class.smtp.php");
-	require_once("../private/PHPMailer/language/phpmailer.lang-en.php");*/
 // Reset token functions
 
 // Function that generates a string that can be used as a reset token. 
@@ -123,22 +122,35 @@ function email_reset_token($username) {
       // fetch the first row of the results of the query
       $row = $users->fetch_assoc();
       
-      /*//$to = $row["email"];
-      $to_name = "Michael Sandoval";
-      $to = "sandovalmichael48@yahoo.com";
-      $subject = "Mail Test at " .strftime("%T", time());
-      $message = "This is a test.";
-      $message = wordwrap($message, 70);
+      $ip_address = $_SERVER['SERVER_ADDR'];
       
-      $from_name = "Tester";
-      $from = "sandovalmichael62@gmail.com";
+      $to_name = $row["username"];
+      $to = $row["email"];
+      $subject = "HealthMate Reset Password";
+      $body = file_get_contents('email_template.php');
+      $body = str_replace("[[token]]", $row["reset_token"], $body);
+      $body = str_replace("[[ip_address]]", $ip_address, $body);
       
+      $from_name = "HealthMate Dev";
+      $from = "healthmateemail@yahoo.com";
       
+      $mail = new PHPMailer();
+      $mail->IsSMTP();
+      $mail->Host = "smtp.mail.yahoo.com";
+      $mail->SMTPSecure = "tls";
+      $mail->SMTPAuth = true;
+      $mail->Username = $from;
+      $mail->Password = "#490testEmail";
+      $mail->From = $from;
+      $mail->FromName = $from_name;
+      $mail->AddAddress($to, $to_name);
+      $mail->Subject = $subject;
+      $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
+      $mail->MsgHTML($body);
+      $mail->WordWrap = 70;
       
       // Email the user
-      $result = mail($to, $subject, $message, $headers);
-      
-      echo $result ? 'Sent' : 'Error';*/
+      $result = $mail->Send();
 
 		// close database connection
       $db->close();
