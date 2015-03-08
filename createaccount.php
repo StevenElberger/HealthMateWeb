@@ -137,21 +137,21 @@
             <h2 class="text-center">Create an Account</h2>
             <div class="has-error login-error"><h4 class="text-center"><label class="control-label"><?php //echo $bad_authentication; ?></label></h4></div>
             <form role="form" id="account-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                <div class="form-group" id="username-input">
+                <div class="form-group" id="first-name-input">
                     <div class="col-md-12">
                         <label>First Name:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                            <input type="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                            <input type="text" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
-                <div class="form-group" id="username-input">
+                <div class="form-group" id="last-name-input">
                     <div class="col-md-12">
                         <label>Last Name:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                            <input type="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                            <input type="text" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                         <label>Username:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                            <input type="text" name="username" class="form-control" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block3" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -169,16 +169,16 @@
                         <label>Password:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="password" id="pwd" name="password" class="form-control" data-parsley-required="true" data-parsley-length="[8, 16]" data-parsley-group="block4" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
-                <div class="form-group" id="confirm-password-input">
+                <div class="form-group" id="confirm-input">
                     <div class="col-md-12">
                         <label>Confirm Password:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-equalto="#pwd" data-parsley-length="[8, 16]" data-parsley-group="block5" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                         <label>Email:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="text" name="password" class="form-control" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -196,16 +196,16 @@
                         <label>Company:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
-                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="text" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block7" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
-                <div class="form-group" id="company-input">
+                <div class="form-group" id="phone-input">
                     <div class="col-md-12">
                         <label>Phone:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                            <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="text" name="password" class="form-control" data-parsley-required="true" data-parsley-type="number" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -226,8 +226,17 @@
         $(document).ready(function () {
             $('#account-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
-                // make sure both username and password are provided
-                if (formInstance.isValid('block1', true) && formInstance.isValid('block2', true)) {
+                var firstName = formInstance.isValid('block1', true);
+                var lastName = formInstance.isValid('block2', true);
+                var username = formInstance.isValid('block3', true);
+                var password = formInstance.isValid('block4', true);
+                var confirm = formInstance.isValid('block5', true);
+                var email = formInstance.isValid('block6', true);
+                var company = formInstance.isValid('block7', true);
+                var phone = formInstance.isValid('block8', true);
+
+                if (firstName && lastName && username && password && confirm
+                    && email && company && phone) {
                     return;
                 }
 
@@ -237,16 +246,52 @@
 
                 // if one was supplied, but not the other
                 // remove the error class from the valid input
-                if (!formInstance.isValid('block1', true)) {
+                if (!firstName) {
+                    $('#first-name-input').addClass("has-error");
+                } else {
+                    $('#first-name-input').removeClass("has-error");
+                }
+
+                if (!lastName) {
+                    $('#last-name-input').addClass("has-error");
+                } else {
+                    $('#last-name-input').removeClass("has-error");
+                }
+
+                if (!username) {
                     $('#username-input').addClass("has-error");
                 } else {
                     $('#username-input').removeClass("has-error");
                 }
 
-                if (!formInstance.isValid('block2', true)) {
+                if (!password) {
                     $('#password-input').addClass("has-error");
                 } else {
                     $('#password-input').removeClass("has-error");
+                }
+
+                if (!confirm) {
+                    $('#confirm-input').addClass("has-error");
+                } else {
+                    $('#confirm-input').removeClass("has-error");
+                }
+
+                if (!email) {
+                    $('#email-input').addClass("has-error");
+                } else {
+                    $('#email-input').removeClass("has-error");
+                }
+
+                if (!company) {
+                    $('#company-input').addClass("has-error");
+                } else {
+                    $('#company-input').removeClass("has-error");
+                }
+
+                if (!phone) {
+                    $('#phone-input').addClass("has-error");
+                } else {
+                    $('#phone-input').removeClass("has-error");
                 }
             });
         });
