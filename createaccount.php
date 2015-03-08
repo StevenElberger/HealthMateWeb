@@ -22,9 +22,14 @@
         $firstLoad = true;
         // Error placeholders
         $firstNameError = $lastNameError = $usernameError = $mismatchError = "";
-        $passwordError = $confirmError = $companyError = $phoneError = $requiredFields = "";
+        $passwordError = $confirmError = $emailError =  $companyError = $phoneError = $requiredFields = "";
         // Placeholders for variables from form
-        $username = $password = $confirm = $first_name = $last_name = $company = $phone = "";
+        $username = $password = $confirm = $first_name = $last_name = $email = $company = $phone = "";
+
+        // in case form was submitted and the username already exists
+        if (isset($usernameError)) {
+            $usernameError = "";
+        }
 
         // Only process POST requests, not GET
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -58,6 +63,12 @@
                 $confirmError = "*";
             } else {
                 $confirm = test_input($_POST["confirm"]);
+            }
+
+            if (empty($_POST["email"])) {
+                $emailError = "*";
+            } else {
+                $email = test_input($_POST["email"]);
             }
 
             if (empty($_POST["company"])) {
@@ -97,7 +108,11 @@
             $sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$hash_pass."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";
 
             if (username_exists($username, $conn)) {
-                $usernameError = "Username already exists";
+                $usernameError = "<div class='alert alert-danger' id='username-exists' role='alert'>";
+                $usernameError .= "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+                $usernameError .= "<span class='sr-only'>Error:</span>";
+                $usernameError .= "<span> Username already exists</span>";
+                $usernameError .= "</div>";
             } else if ($conn->query($sql) === TRUE) {
                 // Redirect upon successful account creation
                 echo header("Location: /HealthMateTest/index.php");
@@ -140,13 +155,14 @@
                 <span class="sr-only">Error:</span>
                 <span id="list-errors">The following fields have errors:</span>
             </div>
+            <?php echo $usernameError; ?>
             <form role="form" id="account-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                 <div class="form-group" id="first-name-input">
                     <div class="col-md-12">
                         <label>First Name:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                            <input type="text" name="username" id="first-name" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                            <input type="text" name="first_name" id="first-name" class="form-control" value="<?php echo $first_name; ?>" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -155,7 +171,7 @@
                         <label>Last Name:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                            <input type="text" name="username" id="last-name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                            <input type="text" name="last_name" id="last-name" class="form-control" value="<?php echo $last_name; ?>" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -164,7 +180,7 @@
                         <label>Username:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="text" name="username" id="username" class="form-control" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                            <input type="text" name="username" id="username" class="form-control" value="<?php echo $username; ?>" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block3" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -182,7 +198,7 @@
                         <label>Confirm Password:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" id="confirm" class="form-control" data-parsley-required="true" data-parsley-equalto="#password" data-parsley-length="[8, 16]" data-parsley-group="block5" data-parsley-ui-enabled="false">
+                            <input type="password" id="confirm" name="confirm" class="form-control" data-parsley-required="true" data-parsley-equalto="#password" data-parsley-length="[8, 16]" data-parsley-group="block5" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -191,7 +207,7 @@
                         <label>Email:</label><label class="control-label" id="email-control"></label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" id="email" class="form-control" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
+                            <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -200,7 +216,7 @@
                         <label>Company:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
-                            <input type="text" id="company" class="form-control" data-parsley-required="true" data-parsley-group="block7" data-parsley-ui-enabled="false">
+                            <input type="text" id="company" name="company" class="form-control" value="<?php echo $company; ?>" data-parsley-required="true" data-parsley-group="block7" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -209,7 +225,7 @@
                         <label>Phone:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                            <input type="text" id="phone" class="form-control" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
+                            <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $phone; ?>" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -249,6 +265,7 @@
 
                 // show error alert
                 $('#error-alert').removeClass("hidden");
+                $('#username-exists').addClass("hidden");
 
                 /*
                     Input validation rules:
