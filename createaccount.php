@@ -135,7 +135,7 @@
     <div class="well login-well">
         <fieldset>
             <h2 class="text-center">Create an Account</h2>
-            <div class="alert alert-danger hidden" id="error-alert" role="alert">
+            <div class="alert alert-danger hidden login-error" id="error-alert" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span>
                 <span id="list-errors">The following fields have errors:</span>

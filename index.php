@@ -66,10 +66,18 @@
                 echo header("Location: /HealthMateTest/welcome.php");
             } else {
                 // Don't let the user know which piece of data was incorrect
-                $bad_authentication = "Incorrect username or password";
+                $bad_authentication = "<div class='alert alert-danger login-error' role='alert'>";
+                $bad_authentication .= "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+                $bad_authentication .= "<span class='sr-only'>Error:</span>";
+                $bad_authentication .= "<span> Incorrect username or password</span>";
+                $bad_authentication .= "</div>";
             }
         } else {
-            $bad_authentication = "Incorrect username or password";
+            $bad_authentication = "<div class='alert alert-danger' role='alert'>";
+            $bad_authentication .= "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+            $bad_authentication .= "<span class='sr-only'>Error:</span>";
+            $bad_authentication .= "<span> Incorrect username or password</span>";
+            $bad_authentication .= "</div>";
         }
 
         $conn->close();
@@ -88,7 +96,7 @@
     <div class="well login-well">
         <fieldset>
             <h1 class="text-center">HealthMate</h1>
-            <div class="has-error login-error"><h4 class="text-center"><label class="control-label"><?php echo $bad_authentication; ?></label></h4></div>
+            <?php echo $bad_authentication; ?>
             <form role="form" id="login-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                 <div class="form-group" id="username-input">
                     <div class="col-md-12">
