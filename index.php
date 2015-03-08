@@ -86,14 +86,15 @@
     ?>
 
     <div class="container">
-        <h1 class="text-center">HealthMate Login</h1>
-        <form role="form" id="login-form" class="form-horizontal login-form">
+        <h1 class="text-center">HealthMate</h1>
+        <div class="has-error login-error"><h4 class="text-center"><label class="control-label"><?php echo $bad_authentication; ?></label></h4></div>
+        <form role="form" id="login-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <div class="form-group" id="username-input">
                 <div class="col-md-12">
                     <label>Username:</label>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                        <input type="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                        <input type="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
                     </div>
                 </div>
             </div>
@@ -102,13 +103,17 @@
                     <label>Password:</label>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                        <input type="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                        <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <button type="submit" class="btn btn-lg btn-block btn-primary validate">Login</button>
-                <button type="button" class="btn btn-lg btn-block btn-default">Create Account</button>
+            </div>
+        </form>
+        <form action="createaccount.php" class="form-horizontal login-form">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
             </div>
         </form>
     </div><!-- /.container -->
@@ -132,12 +137,18 @@
                 // required fields with bootstrap
                 formInstance.submitEvent.preventDefault();
 
+                // if one was supplied, but not the other
+                // remove the error class from the valid input
                 if (!formInstance.isValid('block1', true)) {
                     $('#username-input').addClass("has-error");
+                } else {
+                    $('#username-input').removeClass("has-error");
                 }
 
                 if (!formInstance.isValid('block2', true)) {
                     $('#password-input').addClass("has-error");
+                } else {
+                    $('#password-input').removeClass("has-error");
                 }
             });
         });

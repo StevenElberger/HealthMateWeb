@@ -162,31 +162,3 @@ if($username != "" && $password != "") {
 //echo "No Errors";
 
 ?>
-<!--
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Log in</title>
-  </head>
-  <body>
-
-    <?php
-      if($message != "") {
-        echo '<p>' . $message . '</p>';
-      }
-    ?>
-
-    <p>Please log in.</p>
-
-    <form action="" method="POST" accept-charset="utf-8">
-      Username: <input type="text" name="username" value="<?php echo $username; ?>" /><br />
-                        <br />
-      Password: <input type="password" name="password" value="" /><br />
-                        <br />
-      <input type="submit" name="submit" value="Log in" />
-    </form>
-
-   </body>
-</html>
--->
