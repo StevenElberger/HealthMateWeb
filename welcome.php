@@ -10,6 +10,9 @@
         <!-- Bootstrap core CSS -->
         <link href="newcss/bootstrap.css" type="text/css" rel="stylesheet">
 
+        <!-- Custom CSS for welcome page -->
+        <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
+
         <?php
             // Grab security functions
             require_once("/private/initialize.php");
@@ -63,41 +66,64 @@
 				// Peace out
 				$conn->close();
 			}
+
+            function logout() {
+                after_successful_logout();
+                echo header("Location: /HealthMateTest/index.php");
+            }
 		?>
 	</head>
     <body>
-    <!-- begin navigation bar -->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/HealthMateTest/welcome.php">HealthMate</a>
+        <!-- begin navigation bar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/HealthMateTest/welcome.php">HealthMate</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/HealthMateTest/welcome.php">Home<span class="sr-only">(current)</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Add Patient</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">View Patient List</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
+                        <li><a href="/HealthMateTest/logout.php">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end navigation bar -->
+
+        <div class="jumbotron welcome-jumbo">
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> Warning!</strong>
+                Please note that HealthMate is currently being developed so some functionality may be missing!
             </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Add Patient</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">View Patient List</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Settings</a></li>
-                </ul>
+            <h1>Welcome, <?php echo $username; ?>!</h1>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    This is the HealthMate welcome page. From here you can view your patient list, modify patient information, change your settings, and more!
+                </div>
             </div>
         </div>
-    </nav>
-    <!-- end navigation bar -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
