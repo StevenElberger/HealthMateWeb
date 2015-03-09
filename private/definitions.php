@@ -13,5 +13,7 @@
    define("DB_USER", "user");
    define("DB_PASS", "password");
    define("DB_NAME", "database");
+   define("EMAIL_USERNAME", "healthmateemail@yahoo.com");
+   define("EMAIL_PASSWORD", "#490testEmail");
 
 ?>

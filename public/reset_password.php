@@ -58,7 +58,7 @@ if(request_is_post() && request_is_same_domain()) {
 			   $db->close();
 			   
 		   }
-			redirect_to('index.php');
+			redirect_to('../index.php');
 		}
 
 	}

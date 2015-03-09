@@ -2,6 +2,7 @@
 
 	require_once("../private/PHPMailer/class.phpmailer.php");
 	require_once("../private/PHPMailer/class.smtp.php");
+	require_once("../private/definitions.php");
 // Reset token functions
 
 // Function that generates a string that can be used as a reset token. 
@@ -132,7 +133,7 @@ function email_reset_token($username) {
       $body = str_replace("[[ip_address]]", $ip_address, $body);
       
       $from_name = "HealthMate Dev";
-      $from = "healthmateemail@yahoo.com";
+      $from = EMAIL_USERNAME;
       
       $mail = new PHPMailer();
       $mail->IsSMTP();
@@ -140,7 +141,7 @@ function email_reset_token($username) {
       $mail->SMTPSecure = "tls";
       $mail->SMTPAuth = true;
       $mail->Username = $from;
-      $mail->Password = "#490testEmail";
+      $mail->Password = EMAIL_PASSWORD;
       $mail->From = $from;
       $mail->FromName = $from_name;
       $mail->AddAddress($to, $to_name);
@@ -151,6 +152,13 @@ function email_reset_token($username) {
       
       // Email the user
       $result = $mail->Send();
+      
+      // Uncomment For Testing
+      /*if ($result) {
+			echo "Success";
+		} else {
+			echo $mail->ErrorInfo;
+		}*/
 
 		// close database connection
       $db->close();
