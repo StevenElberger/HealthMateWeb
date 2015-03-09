@@ -162,7 +162,7 @@
                         <label>First Name:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                            <input type="text" name="first_name" id="first-name" class="form-control" value="<?php echo $first_name; ?>" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                            <input type="text" name="first_name" id="first-name" class="form-control" data-toggle="tooltip" data-placement="right" title="Wenis" value="<?php echo $first_name; ?>" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -180,7 +180,7 @@
                         <label>Username:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="text" name="username" id="username" class="form-control" value="<?php echo $username; ?>" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                            <input type="text" name="username" id="username" class="form-control" value="<?php echo $username; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="8 - 16 alphanumeric characters" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block3" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                         <label>Password:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" id="password" name="password" class="form-control" data-parsley-required="true" data-parsley-length="[8, 16]" data-parsley-group="block4" data-parsley-ui-enabled="false">
+                            <input type="password" id="password" name="password" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="8 - 16 characters long" data-parsley-required="true" data-parsley-length="[8, 16]" data-parsley-group="block4" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
                         <label>Confirm Password:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" id="confirm" name="confirm" class="form-control" data-parsley-required="true" data-parsley-equalto="#password" data-parsley-length="[8, 16]" data-parsley-group="block5" data-parsley-ui-enabled="false">
+                            <input type="password" id="confirm" name="confirm" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must match password" data-parsley-required="true" data-parsley-equalto="#password" data-parsley-length="[8, 16]" data-parsley-group="block5" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@
                         <label>Email:</label><label class="control-label" id="email-control"></label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
+                            <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must be valid email address" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -225,7 +225,7 @@
                         <label>Phone:</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                            <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $phone; ?>" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
+                            <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $phone; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="7 - 10 digits" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>
@@ -243,6 +243,11 @@
     <script src="js/parsley.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            // activate all popovers
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            });
+
             $('#account-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                 var firstName = formInstance.isValid('block1', true);
