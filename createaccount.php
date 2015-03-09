@@ -245,7 +245,7 @@
         $(document).ready(function () {
             // activate all popovers
             $(function () {
-                $('[data-toggle="popover"]').popover()
+                $('[data-toggle="popover"]').popover();
             });
 
             $('#account-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
@@ -296,28 +296,28 @@
 
                 if (!username) {
                     $('#username-input').addClass("has-error");
-                    $('#username').attr('placeholder', '8 - 16 alphanumeric characters');
+                    $('#username').popover('show');
                 } else {
                     $('#username-input').removeClass("has-error");
                 }
 
                 if (!password) {
                     $('#password-input').addClass("has-error");
-                    $('#password').attr('placeholder', '8 - 16 characters');
+                    $('#password').popover('show');
                 } else {
                     $('#password-input').removeClass("has-error");
                 }
 
                 if (!confirm) {
                     $('#confirm-input').addClass("has-error");
-                    $('#confirm').attr('placeholder', 'Must match password');
+                    $('#confirm').popover('show');
                 } else {
                     $('#confirm-input').removeClass("has-error");
                 }
 
                 if (!email) {
                     $('#email-input').addClass("has-error");
-                    $('#email').attr('placeholder', 'Must be valid e-mail');
+                    $('#email').popover('show');
                 } else {
                     $('#email-input').removeClass("has-error");
                 }
@@ -330,7 +330,7 @@
 
                 if (!phone) {
                     $('#phone-input').addClass("has-error");
-                    $('#phone').attr('placeholder', '7 - 10 digits');
+                    $('#phone').popover('show');
                 } else {
                     $('#phone-input').removeClass("has-error");
                 }
