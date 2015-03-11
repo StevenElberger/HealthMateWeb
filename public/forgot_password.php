@@ -79,7 +79,7 @@ if(request_is_post() && request_is_same_domain()) {
     
     <?php
       if($message != "") {
-        echo '<p>' . sanitize_html($message) . '</p>';
+        echo '<p class="btn-primary" align = "center">' . sanitize_html($message) . '</p>';
       }
     ?>
     

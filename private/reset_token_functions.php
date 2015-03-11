@@ -147,6 +147,7 @@ function email_reset_token($username) {
       $mail->AddAddress($to, $to_name);
       $mail->Subject = $subject;
       $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
+      $mail->IsHTML(true);
       $mail->MsgHTML($body);
       $mail->WordWrap = 70;
       

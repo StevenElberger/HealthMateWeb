@@ -69,7 +69,15 @@ if(request_is_post() && request_is_same_domain()) {
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title>Reset Password</title>
+    
+     <!-- Bootstrap core CSS-->
+    <link href="../newcss/bootstrap.css" type="text/css" rel="stylesheet">
+    
+    <!-- Custom CSS for Login -->
+    <link href="../newcss/login.css" type="text/css" rel="stylesheet">
   </head>
   <body>
 
@@ -78,17 +86,30 @@ if(request_is_post() && request_is_same_domain()) {
         echo '<p>' . sanitize_html($message) . '</p>';
       }
     ?>
-
-    <p>Set your new password.</p>
-    
-		<?php $url = "reset_password.php?token=" . sanitize_url($token); ?>
-    <form action="<?php echo $url; ?>" method="POST" accept-charset="utf-8">
-      <?php echo csrf_token_tag(); ?>
-      Password: <input type="password" name="password" value="" /><br />
-			<br />
-      Confirm Password: <input type="password" name="password_confirm" value="" /><br />
-			<br />
-      <input type="submit" name="submit" value="Set password" />
-    </form>
+		<div class="well login-well">
+			<fieldset>
+				<p>Set your new password.</p>
+	    
+					<?php $url = "reset_password.php?token=" . sanitize_url($token); ?>
+				<form action="<?php echo $url; ?>" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
+					<?php echo csrf_token_tag(); ?>
+					<div class="col-md-12">
+						<label>Password:</label> 
+						<div class="input-group">
+							<input type="password" name="password" value="" /><br /><br />
+						</div>
+					</div>
+					<div class="col-md-12">
+						<label>Confirm Password:</label> 
+						<div class="input-group">
+							<input type="password" name="password_confirm" value="" /><br /><br />
+						</div>
+					</div>
+					<div class="col-md-12">
+						<input type="submit" name="submit" value="Set password" class="btn btn-lg btn-block btn-primary" />
+					</div>
+				</form>
+			</fieldset>
+		</div>
   </body>
 </html>
