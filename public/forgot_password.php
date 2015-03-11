@@ -61,11 +61,19 @@ if(request_is_post() && request_is_same_domain()) {
 
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title>Forgot Password</title>
+    <!-- Bootstrap core CSS -->
+    <link href="newcss/bootstrap.css" type="text/css" rel="stylesheet">
+    
+    <!-- Custom CSS for Login -->
+    <link href="newcss/login.css" type="text/css" rel="stylesheet">
+    
   </head>
   <body>
     
@@ -76,12 +84,19 @@ if(request_is_post() && request_is_same_domain()) {
     ?>
     
     <p>Enter your username to reset your password.</p>
-    
-    <form action="forgot_password.php" method="POST" accept-charset="utf-8">
+    <div class="well login-well">
+    <form action="forgot_password.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
       <?php echo csrf_token_tag(); ?>
-      Username: <input type="text" name="username" value="<?php echo sanitize_html($username); ?>" /><br />
-			<br />
-      <input type="submit" name="submit" value="Submit" />
+      <div class="col-md-12">
+			<label>Username:</label>
+			<div class="input-group"> 
+				<input type="text" name="username" value="<?php echo sanitize_html($username); ?>" /><br />
+			</div><br />
+		</div>
+      <div class="col-md-12">
+			<input type="submit" name="submit" value="Submit" />
+		</div>
     </form>
+    </div>
   </body>
 </html>
