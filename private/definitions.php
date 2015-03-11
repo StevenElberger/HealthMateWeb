@@ -10,9 +10,9 @@
    // Add definitions that can be useful here
 
    /*define("DB_SERVER", "localhost");
-   define("DB_USER", "user");
-   define("DB_PASS", "password");
-   define("DB_NAME", "database");*/
+   define("DB_USER", "root");
+   define("DB_PASS", "#mws1992");
+   define("DB_NAME", "testDB");*/
    define("EMAIL_USERNAME", "healthmateemail@yahoo.com");
    define("EMAIL_PASSWORD", "#490testEmail");
 

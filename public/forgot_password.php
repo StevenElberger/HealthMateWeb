@@ -68,11 +68,11 @@ if(request_is_post() && request_is_same_domain()) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title>Forgot Password</title>
-    <!-- Bootstrap core CSS -->
-    <link href="newcss/bootstrap.css" type="text/css" rel="stylesheet">
+    <!-- Bootstrap core CSS-->
+    <link href="../newcss/bootstrap.css" type="text/css" rel="stylesheet">
     
     <!-- Custom CSS for Login -->
-    <link href="newcss/login.css" type="text/css" rel="stylesheet">
+    <link href="../newcss/login.css" type="text/css" rel="stylesheet">
     
   </head>
   <body>
@@ -83,20 +83,23 @@ if(request_is_post() && request_is_same_domain()) {
       }
     ?>
     
-    <p>Enter your username to reset your password.</p>
+    
     <div class="well login-well">
-    <form action="forgot_password.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
-      <?php echo csrf_token_tag(); ?>
-      <div class="col-md-12">
-			<label>Username:</label>
-			<div class="input-group"> 
-				<input type="text" name="username" value="<?php echo sanitize_html($username); ?>" /><br />
-			</div><br />
-		</div>
-      <div class="col-md-12">
-			<input type="submit" name="submit" value="Submit" />
-		</div>
-    </form>
+		 <fieldset>
+		 <p>Enter your username to reset your password.</p>
+		 <form action="forgot_password.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
+			<?php echo csrf_token_tag(); ?>
+			<div class="col-md-12">
+				<label>Username:</label>
+				<div class="input-group"> 
+					<input type="text" name="username" class="form-control" value="<?php echo sanitize_html($username); ?>" /><br />
+				</div><br />
+			</div>
+			<div class="col-md-12">
+				<input type="submit" name="submit" value="Submit" class="btn btn-lg btn-block btn-primary"/>
+			</div>
+		 </form>
+		 </fieldset>
     </div>
   </body>
 </html>

@@ -1,8 +1,8 @@
 <?php
 
-	require_once("../private/PHPMailer/class.phpmailer.php");
-	require_once("../private/PHPMailer/class.smtp.php");
-	require_once("../private/definitions.php");
+	require_once("/var/www/html/HealthMateWeb/private/PHPMailer/class.phpmailer.php");
+	require_once("/var/www/html/HealthMateWeb/private/PHPMailer/class.smtp.php");
+	require_once("/var/www/html/HealthMateWeb/private/definitions.php");
 // Reset token functions
 
 // Function that generates a string that can be used as a reset token. 
