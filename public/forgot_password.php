@@ -75,14 +75,13 @@ if(request_is_post() && request_is_same_domain()) {
     <link href="../newcss/login.css" type="text/css" rel="stylesheet">
     
   </head>
-  <body>
-    
+  <body style="padding-top: 0px">
+    <h1 class="btn-primary" style="padding-top: 0px">HealthMate</h1>
     <?php
       if($message != "") {
         echo '<p class="btn-primary" align = "center">' . sanitize_html($message) . '</p>';
       }
     ?>
-    
     
     <div class="well login-well">
 		 <fieldset>
