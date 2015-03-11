@@ -1,0 +1,23 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+.login-well {
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 330px;
+    position: relative;
+}
+
+.login-form {
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 330px;
+    position: relative;
+}
+
+.login-error {
+    margin-bottom: 0;
+}

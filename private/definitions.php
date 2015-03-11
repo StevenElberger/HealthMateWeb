@@ -9,11 +9,17 @@
    // These definitions are used throughout the application
    // Add definitions that can be useful here
 
-   define("DB_SERVER", "localhost");
+   /*define("DB_SERVER", "localhost");
    define("DB_USER", "user");
    define("DB_PASS", "password");
-   define("DB_NAME", "database");
+   define("DB_NAME", "database");*/
    define("EMAIL_USERNAME", "healthmateemail@yahoo.com");
    define("EMAIL_PASSWORD", "#490testEmail");
+
+	define("DB_SERVER", "localhost");
+	define("DB_USER", "HMTest");
+	define("DB_PASS", "comp490");
+	define("DB_NAME", "testdb");
+
 
 ?>
