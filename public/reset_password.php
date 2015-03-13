@@ -10,6 +10,7 @@ $token = $_GET['token'];
 $username = find_user_with_token($token);
 if(!isset($username)) {
 	// Token wasn't sent or didn't match a user.
+	
 	redirect_to('forgot_password.php');
 }
 
@@ -43,7 +44,6 @@ if(request_is_post() && request_is_same_domain()) {
    
          // SQL statement to retrieve rows that have the username column equal to the given username      
          $sql_statement = "SELECT * FROM users WHERE username='" .$username. "'";
-         echo $sql_statement;
 
          // execute query
          $users = $db->query($sql_statement);
