@@ -1,4 +1,11 @@
 <?php
+ require_once("initialize.php");
+   // Note: This implementation is based on a Tutorial
+   // that one of the developers used to learn about web security.
+   // Tutorial Name: Creating Secure PHP Websites
+   // Author: Kevin Skoglund
+   // Website of Tutorial: Lynda.com
+
 
    // This file contains functions that can used to throttle a user when a number of
    // attemtped logins have been used an failed. These functions utilize a database
@@ -28,15 +35,15 @@
       $failed_login_results = $db->query($sql_statement);
 
       // check if anything was returned by database
-      if (mysqli_affected_rows($failed_login_results) > 0) {
+      if ($failed_login_results->num_rows > 0) {
 
          // fetch the first row of the results of the query
-         $row = mysqli_fetch_assoc($failed_login_results);
+         $row = $failed_login_results->fetch_assoc();
 
          // Update the information for the found user
          $row['attempts'] = $row['attempts'] + 1;
          $row['last_time'] = time();
-         $sql_statement = "UPDATE failed_logins SET attempts='".$row['attemtps']."', last_time='"
+         $sql_statement = "UPDATE failed_logins SET attempts='".$row['attempts']."', last_time='"
             .$row['last_time']."', ip_address='".$_SESSION['ip_address']."' WHERE id='".$row['id']."'";
 
          // execute query
@@ -74,10 +81,10 @@
 
       // If query returns something then attempt to reset the time and number of 
       // attemtps for the user
-      if (mysqli_affected_rows($failed_login_results) > 0) {
+      if ($failed_login_results->num_rows > 0) {
 
          // Get the first row of the return results
-         $row = mysqli_fetch_assoc($result);
+         $row = $failed_login_results->fetch_assoc();
 
          // reset the number of attempts and give a new time
          $row['attempts'] = 0;
@@ -122,10 +129,10 @@
 
       // check if anything has been returned
       // if this is true update the information, otherwise do nothing
-      if (mysqli_affected_rows($failed_login_results) > 0) {
+      if ($failed_login_results->num_rows > 0) {
 
          // get the first row in the result
-         $row = mysqli_fetch_assoc($result);
+         $row = $failed_login_results->fetch_assoc();
 
          // check if attempts exceeds the maximum number of attempts
          if ($row['attempts'] >= $throttle_at) {
@@ -141,24 +148,5 @@
          }
       }
    }
-
-/*
-$username = $_POST['username'];
-$password = $_POST['password'];
-
-if($username != "" && $password != "") {
-   
-   record_failed_login($username);
-
-   $throttle_delay = throttle_failed_logins($username);
-   if($throttle_delay > 0) {
-                                // Throttled at the moment, try again after delay period
-    $message  = "Too many failed logins. ";
-    $message .= "You must wait {$throttle_delay} minutes before you can attempt another login.";
-
- }
-}
-*/
-//echo "No Errors";
-
 ?>
+

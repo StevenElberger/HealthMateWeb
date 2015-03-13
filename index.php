@@ -18,7 +18,7 @@
 
     <?php
     // Grab security functions
-    require_once("/private/initialize.php");
+    require_once("/var/www/html/HealthMateWeb/private/initialize.php");
     // Error placeholders
     $usernameError = $passwordError = "";
     // Authentication placeholders
