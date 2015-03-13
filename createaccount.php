@@ -227,10 +227,8 @@
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
                             <input type="text" id="phone" name="phone" class="form-control" value="<?php echo $phone; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="7 - 10 digits" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block8" data-parsley-ui-enabled="false">
                         </div>
+                        <button type="submit" style="margin-top: 5%;" class="btn btn-lg btn-block btn-primary validate">Create Account</button>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-lg btn-block btn-primary validate">Create Account</button>
                 </div>
             </form>
         </fieldset>

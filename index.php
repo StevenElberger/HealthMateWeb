@@ -115,16 +115,14 @@
                             <input type="password" name="password" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                         </div>
                     </div>
+                    <div class="col-md-12" style="margin-top: 5%;">
+                        <button type="submit" class="btn btn-lg btn-block btn-primary validate">Login</button>
+                        </form>
+                        <form action="createaccount.php">
+                            <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-lg btn-block btn-primary validate">Login</button>
-                </div>
-            </form>
-            <form action="createaccount.php" class="form-horizontal login-form">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
-                </div>
-            </form>
         </fieldset>
     </div><!-- /.container -->
 
@@ -135,7 +133,9 @@
     <!-- Form validation from Parsley -->
     <script src="js/parsley.min.js"></script>
     <script type="text/javascript">
+
         $(document).ready(function () {
+
             $('#login-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                 // make sure both username and password are provided

@@ -90,12 +90,12 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/HealthMateTest/welcome.php">Home<span class="sr-only">(current)</span></a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
+                        <li id="view-patient" class="dropdown">
+                            <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#">Add Patient</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">View Patient List</a></li>
+                                <li id="test"><a href="#">View Patient List</a></li>
                             </ul>
                         </li>
                         <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
@@ -125,5 +125,40 @@
         <!-- Bootstrap core JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            function changeHighlight() {
+                $('[class="active"]').removeClass('active');
+                $('#view-patient').addClass("active");
+            }
+
+            $(document).ready(function () {
+                document.getElementById("test").onclick = function() {changeHighlight();};
+                $('#login-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    // make sure both username and password are provided
+                    if (formInstance.isValid('block1', true) && formInstance.isValid('block2', true)) {
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // if one was supplied, but not the other
+                    // remove the error class from the valid input
+                    if (!formInstance.isValid('block1', true)) {
+                        $('#username-input').addClass("has-error");
+                    } else {
+                        $('#username-input').removeClass("has-error");
+                    }
+
+                    if (!formInstance.isValid('block2', true)) {
+                        $('#password-input').addClass("has-error");
+                    } else {
+                        $('#password-input').removeClass("has-error");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
