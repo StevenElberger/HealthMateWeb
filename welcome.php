@@ -91,7 +91,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a id="add-patient" href="#">Add Patient</a></li>
                                 <li class="divider"></li>
-                                <li id="test"><a href="#">View Patient List</a></li>
+                                <li id="view-patient-list"><a href="#">View Patient List</a></li>
                             </ul>
                         </li>
                         <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
@@ -103,6 +103,7 @@
         <!-- end navigation bar -->
 
         <div class="jumbotron welcome-jumbo hidden" id="welcome-jumbo">
+            <!-- Contains the welcome information -->
             <div class="container" id="welcome-container">
                 <div class="alert alert-dismissible alert-info">
                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -110,7 +111,7 @@
                     Please note that HealthMate is currently being developed so some functionality may be missing!
                 </div>
 
-                <h1>Welcome, <?php echo $username; ?>!</h1>
+                <h1>Welcome, <span id="doctor_id"><?php echo $username; ?></span>!</h1>
 
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -118,16 +119,20 @@
                     </div>
                 </div>
             </div>
+            <!-- End of welcome -->
+
+            <!-- Add patient form -->
             <div class="panel panel-default hidden" id="add-patient-panel">
                 <div class="panel-body">
+                    <h3 class="text-center">Patient Form</h3>
                     <fieldset>
-                        <form role="form" id="login-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                        <form role="form" id="add-patient-form" class="form-horizontal login-form" method="post">
                             <div class="form-group" id="username-input">
                                 <div class="col-md-12">
                                     <label>Patient Username:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                        <input type="username" name="username" class="form-control">
+                                        <input type="username" id="username" name="username" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +141,7 @@
                                     <label>Patient First Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                                        <input type="password" name="first_name" class="form-control">
+                                        <input type="text" id="first_name" name="first_name" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +150,7 @@
                                     <label>Patient Last Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                                        <input type="password" name="last_name" class="form-control">
+                                        <input type="text" id="last_name" name="last_name" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +158,7 @@
                                 <div class="col-md-12">
                                     <div class="input-group" style="padding-top: 15px;">
                                         <label>Patient Gender:</label>
-                                        <select name="gender" class="form-control-static" style="margin-left: 15px;">
+                                        <select name="gender" id="gender" class="form-control-static" style="margin-left: 15px;">
                                             <option>Male</option>
                                             <option>Female</option>
                                             <option>Other</option>
@@ -161,25 +166,57 @@
                                     </div>
                                     <div class="input-group">
                                         <label>Patient Birthday:</label>
-                                        <input type="date" class="" style="margin-top: 15px; margin-left: 15px;">
+                                        <input type="date" id="birthday" style="margin-top: 15px; margin-left: 15px;">
                                     </div>
                                 </div>
                                 <div class="col-md-12" style="margin-top: 5%;">
-                                    <button type="submit" class="btn btn-lg btn-block btn-primary validate">Add Patient</button>
+                                    <button type="submit" id="add-patient-button" class="btn btn-lg btn-block btn-primary validate">Add Patient</button>
                                 </div>
                             </div>
                         </form>
                     </fieldset>
                 </div>
             </div>
+            <!-- End of add patient -->
+
+            <div id="myDiv" class="panel panel-default"></div>
         </div>
 
         <!-- Bootstrap core JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
+            function testAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#myDiv").text(xmlhttp.responseText);
+                    }
+                };
+//                var doc_id = $("#doctor_id").html();
+//                var username = $("#username").value;
+//                var first_name = $("#first_name").value;
+//                var last_name = $("#last_name").value;
+//                var gender = $("#gender").value;
+//                var birthday = $("#birthday").value;
+//                var password = "password321";
+                xmlhttp.open("POST","createaccount2.php",true);
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=therealsteven&username=stevensteven&first_name=steven&last_name=elberger&gender=male&birthday=1992&password=password321");
+//                xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
+//                            "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
+            }
+
             $(document).ready(function(){
                 $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
+
+                $("#add-patient-form").submit(function(event) {
+                    testAJAX();
+                    event.preventDefault();
+                });
 
                 $("#add-patient").click(function(){
                     $("#welcome-container").fadeOut(400);
