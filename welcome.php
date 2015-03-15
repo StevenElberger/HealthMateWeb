@@ -179,7 +179,10 @@
             </div>
             <!-- End of add patient -->
 
-            <div id="myDiv" class="panel panel-default"></div>
+            <div id="myDiv" class="panel panel-default hidden"></div>
+
+            <div id="results" class="panel panel-default hidden"></div>
+
         </div>
 
         <!-- Bootstrap core JavaScript -->
@@ -193,21 +196,24 @@
                 }
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        $("#myDiv").text(xmlhttp.responseText);
+                        // clear out the form and present the result
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-//                var doc_id = $("#doctor_id").html();
-//                var username = $("#username").value;
-//                var first_name = $("#first_name").value;
-//                var last_name = $("#last_name").value;
-//                var gender = $("#gender").value;
-//                var birthday = $("#birthday").value;
-//                var password = "password321";
+                var doc_id = $("#doctor_id").html();
+                var username = $("#username").val();
+                var first_name = $("#first_name").val();
+                var last_name = $("#last_name").val();
+                var gender = $("#gender").val();
+                var birthday = $("#birthday").val();
+                var password = "password321";
                 xmlhttp.open("POST","createaccount2.php",true);
+                // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                xmlhttp.send("doctor_id=therealsteven&username=stevensteven&first_name=steven&last_name=elberger&gender=male&birthday=1992&password=password321");
-//                xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
-//                            "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
+                xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
+                            "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
             }
 
             $(document).ready(function(){

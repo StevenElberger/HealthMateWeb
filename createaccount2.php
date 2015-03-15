@@ -70,7 +70,41 @@
             $result = "Username already exists.";
         } else if ($conn->query($sql) === TRUE) {
             // successful patient add
-            $result = "Patient added successfully.";
+//            $result = "Patient added successfully.";
+
+            $sql_get_patient_id = "SELECT patient_id FROM patient WHERE username = '" . $username . "'";
+            $get_patient_id = $conn->query($sql_get_patient_id);
+            $patient_id = "";
+
+            if ($get_patient_id->num_rows > 0) {
+                while ($row = $get_patient_id->fetch_assoc()) {
+                    $patient_id .= $row["patient_id"];
+                }
+            } else {
+                $result = "ERROR";
+                echo $result;
+                return;
+            }
+
+            $result = "<h3 class='text-center'>Patient Added Successfully</h3>";
+            $result .= "<table class='table table-striped table-hover'>";
+            $result .= "<thead>
+                    <tr>
+                        <th>PID #</th>
+                        <th>Patient Name</th>
+                        <th>Gender</th>
+                        <th>Birthday</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+            $result .= "<tr>
+                        <td>".$patient_id."</td>
+                        <td>".$first_name. " " . $last_name."</td>
+                        <td>".$gender."</td>
+                        <td>".$birthday."</td>
+                    </tr>";
+            $result .= "</tbody>";
+            $result .= "</table>";
         } else {
             echo "Error: " . $sql . "<br />" . $conn->error;
         }
