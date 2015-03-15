@@ -85,7 +85,7 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/HealthMateTest/welcome.php">Home<span class="sr-only">(current)</span></a></li>
+                        <li class="active"><a id="home-link" href="/HealthMateTest/welcome.php">Home<span class="sr-only">(current)</span></a></li>
                         <li id="view-patient" class="dropdown">
                             <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -101,6 +101,10 @@
             </div>
         </nav>
         <!-- end navigation bar -->
+
+        <div class="progress progress-striped active hidden" id="progdiv" style="margin-top: -20px;">
+            <div class="progress-bar" id="progbar" style="width: 0%"></div>
+        </div>
 
         <div class="jumbotron welcome-jumbo hidden" id="welcome-jumbo">
             <!-- Contains the welcome information -->
@@ -132,7 +136,7 @@
                                     <label>Patient Username:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                        <input type="username" id="username" name="username" class="form-control">
+                                        <input type="username" id="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +145,7 @@
                                     <label>Patient First Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                                        <input type="text" id="first_name" name="first_name" class="form-control">
+                                        <input type="text" id="first_name" name="first_name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +154,7 @@
                                     <label>Patient Last Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                                        <input type="text" id="last_name" name="last_name" class="form-control">
+                                        <input type="text" id="last_name" name="last_name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -188,6 +192,8 @@
         <!-- Bootstrap core JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <!-- Form validation from Parsley -->
+        <script src="js/parsley.min.js"></script>
         <script type="text/javascript">
             function testAJAX() {
                 var xmlhttp;
@@ -195,7 +201,19 @@
                     xmlhttp = new XMLHttpRequest();
                 }
                 xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
                         // clear out the form and present the result
                         $("#add-patient-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
@@ -217,17 +235,23 @@
             }
 
             $(document).ready(function(){
+                // show the welcome screen
                 $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
 
+                // submit the form with AJAX
                 $("#add-patient-form").submit(function(event) {
                     testAJAX();
                     event.preventDefault();
                 });
 
+                // animate the jumbo to close and re-open with appropriate contents
+                // when clicking on the add patient link
                 $("#add-patient").click(function(){
                     $("#welcome-container").fadeOut(400);
-                    $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                    $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                     // ugly, but it works
+                    $("#add-patient-form").trigger("reset");
                     $("#add-patient-panel").fadeIn(800).removeClass('hidden');
                 });
             });
