@@ -105,7 +105,7 @@
 
             // Adds a new user account with form data into the physician table of the database
             // -- To do: form checking (e.g., username already exists, security, etc.)
-            $sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone) VALUES (1, '".$username."', '".$hash_pass."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."')";
+            $sql = "INSERT INTO physician (group_id, username, password, first_name, last_name, company, phone, email) VALUES (1, '".$username."', '".$hash_pass."', '".$first_name."', '".$last_name."', '".$company."', '".$phone."', '".$email."')";
 
             if (username_exists($username, $conn)) {
                 $usernameError = "<div class='alert alert-danger' id='username-exists' role='alert'>";
@@ -207,7 +207,7 @@
                         <label>Email:</label><label class="control-label" id="email-control"></label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must be valid email address" data-parsley-required="true" data-parsley-type="email" data-parsley-group="block6" data-parsley-ui-enabled="false">
+                            <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must be valid email address" data-parsley-required="true" data-parsley-type="email" data-parsley-length="[8, 32]" data-parsley-group="block6" data-parsley-ui-enabled="false">
                         </div>
                     </div>
                 </div>

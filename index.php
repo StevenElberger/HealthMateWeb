@@ -18,7 +18,7 @@
 
     <?php
     // Grab security functions
-    require_once("/var/www/html/HealthMateWeb/private/initialize.php");
+    require_once("/private/initialize.php");
     // Error placeholders
     $usernameError = $passwordError = "";
     // Authentication placeholders
@@ -121,6 +121,7 @@
                         <form action="createaccount.php">
                             <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
                         </form>
+                        <a class="text-center" style="display: block;" href="public/forgot_password.php">Forgot your password?</a>
                     </div>
                 </div>
         </fieldset>

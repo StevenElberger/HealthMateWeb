@@ -1,8 +1,8 @@
 <?php
 
-	require_once("/var/www/html/HealthMateWeb/private/PHPMailer/class.phpmailer.php");
-	require_once("/var/www/html/HealthMateWeb/private/PHPMailer/class.smtp.php");
-	require_once("/var/www/html/HealthMateWeb/private/definitions.php");
+	require_once("/PHPMailer/class.phpmailer.php");
+	require_once("/PHPMailer/class.smtp.php");
+	require_once("/definitions.php");
 // Reset token functions
 
 // Function that generates a string that can be used as a reset token. 
@@ -18,14 +18,14 @@ function reset_token() {
 function set_user_reset_token($username, $token_value) {
 	
 	// Attempt to connect to the database
-   $db = mysqli_connect("localhost", "root", "#mws1992", "testDB");
+   $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
    if (mysqli_connect_errno()) {
       die("Database connection failed: " . mysqli_connect_error() .
          " (" . mysqli_connect_errno() . ")");
    }
    
    // SQL statement to retrieve rows that have the username column equal to the given username      
-    $sql_statement = "SELECT * FROM users WHERE username='".$username."'";
+    $sql_statement = "SELECT * FROM physician WHERE username='".$username."'";
 
    // execute query
    $users = $db->query($sql_statement);
@@ -37,7 +37,7 @@ function set_user_reset_token($username, $token_value) {
       $row = $users->fetch_assoc();
 
       // Set reset token for the found user
-      $sql_statement = "UPDATE users SET reset_token='".$token_value."' WHERE username='".$username."'";
+      $sql_statement = "UPDATE physician SET reset_token='".$token_value."' WHERE username='".$username."'";
 
       // execute query
       $db->query($sql_statement);
@@ -71,14 +71,14 @@ function find_user_with_token($token) {
 	} else {
 		
 	   // Attempt to connect to the database
-      $db = mysqli_connect("localhost", "root", "#mws1992", "testDB");
+      $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
       if (mysqli_connect_errno()) {
          die("Database connection failed: " . mysqli_connect_error() .
            " (" . mysqli_connect_errno() . ")");
       }
    
       // SQL statement to retrieve rows that have the username column equal to the given username      
-      $sql_statement = "SELECT * FROM users WHERE reset_token='".$token."'";
+      $sql_statement = "SELECT * FROM physician WHERE reset_token='".$token."'";
 
       // execute query
       $users = $db->query($sql_statement);
@@ -105,14 +105,14 @@ function find_user_with_token($token) {
 function email_reset_token($username) {
 	
 	// Attempt to connect to the database
-   $db = mysqli_connect("localhost", "root", "#mws1992", "testDB");
+   $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
    if (mysqli_connect_errno()) {
       die("Database connection failed: " . mysqli_connect_error() .
          " (" . mysqli_connect_errno() . ")");
    }
    
    // SQL statement to retrieve rows that have the username column equal to the given username      
-    $sql_statement = "SELECT * FROM users WHERE username='".$username."'";
+    $sql_statement = "SELECT * FROM physician WHERE username='".$username."'";
 
    // execute query
    $users = $db->query($sql_statement);
@@ -136,8 +136,9 @@ function email_reset_token($username) {
       $from = EMAIL_USERNAME;
       
       $mail = new PHPMailer();
+      $mail->Port = 465;
       $mail->IsSMTP();
-      $mail->Host = "smtp.mail.yahoo.com";
+      $mail->Host = "ssl://smtp.mail.yahoo.com";
       $mail->SMTPSecure = "tls";
       $mail->SMTPAuth = true;
       $mail->Username = $from;
@@ -152,14 +153,14 @@ function email_reset_token($username) {
       $mail->WordWrap = 70;
       
       // Email the user
-      $result = $mail->Send();
+      //$result = $mail->Send();
       
       // Uncomment For Testing
-      /*if ($result) {
+      if ($mail->Send()) {
 			echo "Success";
 		} else {
 			echo $mail->ErrorInfo;
-		}*/
+		}
 
 		// close database connection
       $db->close();

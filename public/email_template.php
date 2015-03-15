@@ -25,8 +25,8 @@
 		
 		<p>
 			
-			<a href="[[ip_address]]/HealthMateWeb/public/reset_password.php?token=[[token]]">
-				[[ip_address]]/HealthMateWeb/public/reset_password.php?token=[[token]]</a>
+			<a href="[[ip_address]]/HealthMateTest/public/reset_password.php?token=[[token]]">
+				[[ip_address]]/HealthMateTest/public/reset_password.php?token=[[token]]</a>
 		</p>
 
 		<p>

@@ -67,10 +67,6 @@
 				$conn->close();
 			}
 
-            function logout() {
-                after_successful_logout();
-                echo header("Location: /HealthMateTest/index.php");
-            }
 		?>
 	</head>
     <body>
@@ -93,7 +89,7 @@
                         <li id="view-patient" class="dropdown">
                             <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Patient <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Add Patient</a></li>
+                                <li><a id="add-patient" href="#">Add Patient</a></li>
                                 <li class="divider"></li>
                                 <li id="test"><a href="#">View Patient List</a></li>
                             </ul>
@@ -106,18 +102,74 @@
         </nav>
         <!-- end navigation bar -->
 
-        <div class="jumbotron welcome-jumbo">
-            <div class="alert alert-dismissible alert-info">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> Warning!</strong>
-                Please note that HealthMate is currently being developed so some functionality may be missing!
+        <div class="jumbotron welcome-jumbo hidden" id="welcome-jumbo">
+            <div class="container" id="welcome-container">
+                <div class="alert alert-dismissible alert-info">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> Warning!</strong>
+                    Please note that HealthMate is currently being developed so some functionality may be missing!
+                </div>
+
+                <h1>Welcome, <?php echo $username; ?>!</h1>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        This is the HealthMate welcome page. From here you can view your patient list, modify patient information, change your settings, and more!
+                    </div>
+                </div>
             </div>
-
-            <h1>Welcome, <?php echo $username; ?>!</h1>
-
-            <div class="panel panel-default">
+            <div class="panel panel-default hidden" id="add-patient-panel">
                 <div class="panel-body">
-                    This is the HealthMate welcome page. From here you can view your patient list, modify patient information, change your settings, and more!
+                    <fieldset>
+                        <form role="form" id="login-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                            <div class="form-group" id="username-input">
+                                <div class="col-md-12">
+                                    <label>Patient Username:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                        <input type="username" name="username" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="first-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient First Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">FN</span></span>
+                                        <input type="password" name="first_name" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="last-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient Last Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">LN</span></span>
+                                        <input type="password" name="last_name" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="age-input">
+                                <div class="col-md-12">
+                                    <div class="input-group" style="padding-top: 15px;">
+                                        <label>Patient Gender:</label>
+                                        <select name="gender" class="form-control-static" style="margin-left: 15px;">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Patient Birthday:</label>
+                                        <input type="date" class="" style="margin-top: 15px; margin-left: 15px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 5%;">
+                                    <button type="submit" class="btn btn-lg btn-block btn-primary validate">Add Patient</button>
+                                </div>
+                            </div>
+                        </form>
+                    </fieldset>
                 </div>
             </div>
         </div>
@@ -126,37 +178,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
-            function changeHighlight() {
-                $('[class="active"]').removeClass('active');
-                $('#view-patient').addClass("active");
-            }
+            $(document).ready(function(){
+                $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
 
-            $(document).ready(function () {
-                document.getElementById("test").onclick = function() {changeHighlight();};
-                $('#login-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
-
-                    // make sure both username and password are provided
-                    if (formInstance.isValid('block1', true) && formInstance.isValid('block2', true)) {
-                        return;
-                    }
-
-                    // otherwise, stop form submission and mark
-                    // required fields with bootstrap
-                    formInstance.submitEvent.preventDefault();
-
-                    // if one was supplied, but not the other
-                    // remove the error class from the valid input
-                    if (!formInstance.isValid('block1', true)) {
-                        $('#username-input').addClass("has-error");
-                    } else {
-                        $('#username-input').removeClass("has-error");
-                    }
-
-                    if (!formInstance.isValid('block2', true)) {
-                        $('#password-input').addClass("has-error");
-                    } else {
-                        $('#password-input').removeClass("has-error");
-                    }
+                $("#add-patient").click(function(){
+                    $("#welcome-container").fadeOut(400);
+                    $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                    // ugly, but it works
+                    $("#add-patient-panel").fadeIn(800).removeClass('hidden');
                 });
             });
         </script>
