@@ -136,7 +136,7 @@
                                     <label>Patient Username:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                        <input type="username" id="username" name="username" class="form-control" data-parsley-required="true" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                        <input type="username" id="username" name="username" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="8 - 16 alphanumeric characters" data-parsley-required="true" data-parsley-type="alphanum" data-parsley-length="[8, 16]" data-parsley-group="block1" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                                     <label>Patient Last Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                                        <input type="text" id="last_name" name="last_name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                                        <input type="text" id="last_name" name="last_name" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -235,14 +235,14 @@
             }
 
             $(document).ready(function(){
+
+                // activate all popovers
+                $(function () {
+                    $('[data-toggle="popover"]').popover();
+                });
+
                 // show the welcome screen
                 $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
-
-                // submit the form with AJAX
-                $("#add-patient-form").submit(function(event) {
-                    testAJAX();
-                    event.preventDefault();
-                });
 
                 // animate the jumbo to close and re-open with appropriate contents
                 // when clicking on the add patient link
@@ -250,9 +250,60 @@
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
-                    // ugly, but it works
+                    // reset the form and errors
                     $("#add-patient-form").trigger("reset");
+                    $("#username-input").removeClass("has-error");
+                    $("#first-name-input").removeClass("has-error");
+                    $("#last-name-input").removeClass("has-error");
+                    // ugly, but it works
                     $("#add-patient-panel").fadeIn(800).removeClass('hidden');
+                });
+
+                $('#add-patient-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var username = formInstance.isValid('block1', true);
+                    var firstName = formInstance.isValid('block2', true);
+                    var lastName = formInstance.isValid('block3', true);
+
+                    if (firstName && lastName && username) {
+                        // submit form with AJAX
+                        testAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+                    // hide username already exists error
+                    $('#username-exists').addClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     - Username must be alphanumeric characters, 8 to 16 characters long
+                     */
+                    if (!firstName) {
+                        $('#first-name-input').addClass("has-error");
+                    } else {
+                        $('#first-name-input').removeClass("has-error");
+                    }
+
+                    if (!lastName) {
+                        $('#last-name-input').addClass("has-error");
+                    } else {
+                        $('#last-name-input').removeClass("has-error");
+                    }
+
+                    if (!username) {
+                        $('#username-input').addClass("has-error");
+                        $('#username').popover('show');
+                    } else {
+                        $('#username-input').removeClass("has-error");
+                    }
                 });
             });
         </script>
