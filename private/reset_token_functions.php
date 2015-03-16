@@ -130,7 +130,7 @@ function email_reset_token($username) {
       $subject = "HealthMate Reset Password";
       $body = file_get_contents('email_template.php');
       $body = str_replace("[[token]]", $row["reset_token"], $body);
-      $body = str_replace("[[ip_address]]", $ip_address, $body);
+      $body = str_replace("[[ip_address]]", "108.77.79.66", $body);
       
       $from_name = "HealthMate Dev";
       $from = EMAIL_USERNAME;
@@ -157,9 +157,9 @@ function email_reset_token($username) {
       
       // Uncomment For Testing
       if ($mail->Send()) {
-			echo "Success";
+			//echo "Success";
 		} else {
-			echo $mail->ErrorInfo;
+			//echo $mail->ErrorInfo;
 		}
 
 		// close database connection
