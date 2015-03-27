@@ -94,6 +94,19 @@
                                 <li id="view-patient-list"><a href="#">View Patient List</a></li>
                             </ul>
                         </li>
+                        
+                        <!-- Appointments navigation and dropdown -->
+                        <li id="view-appointment" class="dropdown">
+                           <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Appointments <span class="caret"></span></a>
+                           <ul class="dropdown-menu" role="menu">
+                              <li><a id="create-appointment" href="#">New Appointment</a></li>
+                              <li class="divider"></li>
+                              <li id="view-appointment-list"><a href="#">View Appointments</a></li>
+                           </ul>
+                        </li>
+                        
+                        <!-- End of Appointments navigation and dropdown -->
+                        
                         <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
                         <li><a href="/HealthMateTest/logout.php">Logout</a></li>
                     </ul>
@@ -182,6 +195,100 @@
                 </div>
             </div>
             <!-- End of add patient -->
+            
+            <!-- Create Appointment Form -->
+            <div class="panel panel-default hidden" id="create-appointment-panel">
+                <div class="panel-body">
+                    <h3 class="text-center">Appointment Form</h3>
+                    <fieldset>
+                        <form role="form" id="create-appointment-form" class="form-horizontal login-form" method="post">
+                            <div class="form-group" id="appointment-first-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient First Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">FN</span></span>
+                                        <input type="text" id="appointment_first_name" name="appointment_first_name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-last-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient Last Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">LN</span></span>
+                                        <input type="text" id="appointment_last_name" name="appointment_last_name" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-title-input">
+                                <div class="col-md-12">
+                                    <label>Appointment Title:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">T</span></span>
+                                        <input type="text" id="appointment_title" name="appointment_title" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-address-input">
+                                <div class="col-md-12">
+                                    <label>Address:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <input type="text" id="appointment-address" name="appointment-address" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-city-input">
+                                <div class="col-md-12">
+                                    <label>City:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <input type="text" id="appointment-city" name="appointment-city" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-zipcode-input">
+                                <div class="col-md-12">
+                                    <label>Zip Code:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <input type="text" id="appointment-zipcode" name="appointment-zipcode" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="5 - 9 numerical characters (no spaces)" data-parsley-required="true" data-parsley-type="number" data-parsley-length="[5, 9]" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointment-state-input">
+                                <div class="col-md-12">
+                                    <label>State:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <input type="text" id="appointment-state" name="appointment-state" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="appointmente-datetime-input">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <label>Date:</label>
+                                        <input type="date" id="appointment-date" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="Date must be later than current Date" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Start Time:</label>
+                                        <input type="time" id="appointment-start-time" style="margin-top: 15px; margin-left: 15px;" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>End Time:</label>
+                                        <input type="time" id="appointment-end-time" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="End Time must be after Start Time" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 5%;">
+                                    <button type="submit" id="add-patient-button" class="btn btn-lg btn-block btn-primary validate">Add Patient</button>
+                                </div>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+            </div>
+            <!-- End of create appointment form -->
 
             <div id="myDiv" class="panel panel-default hidden"></div>
 
@@ -243,6 +350,7 @@
 
                 // show the welcome screen
                 $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
+                
 
                 // animate the jumbo to close and re-open with appropriate contents
                 // when clicking on the add patient link
@@ -304,6 +412,18 @@
                     } else {
                         $('#username-input').removeClass("has-error");
                     }
+                });
+                
+                $("#create-appointment").click(function(){
+                    $("#welcome-container").fadeOut(400);
+                    $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                    // reset the form and errors
+                    $("#create-appointment-form").trigger("reset");
+                    //$("#first-name-input").removeClass("has-error");
+                    //$("#last-name-input").removeClass("has-error");
+                    // ugly, but it works
+                    $("#create-appointment-panel").fadeIn(800).removeClass('hidden');
                 });
             });
         </script>
