@@ -272,10 +272,6 @@
                 xmlhttp.send("doctor_id=" + doc_id);
             }
 
-            function validate() {
-
-            }
-
             $(document).ready(function(){
 
                 // activate all popovers
@@ -305,9 +301,6 @@
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                    viewPatientAJAX();
                 });
-
-                // test code
-                $("#first_name").onkeydown = function() {validate();};
 
                 $('#add-patient-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 

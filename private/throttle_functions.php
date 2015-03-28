@@ -52,7 +52,7 @@
       } else {
          // statement to insert user into the table of failed logins
          $sql_statment = "INSERT INTO failed_logins (username, ip_address, attempts, last_time) VALUES ('".
-            $username."', '".$ip_address."', '1', '".time()."')";
+            $username."', '".$_SESSION['ip_address']."', '1', '".time()."')";
 
          // execute query
          $db->query($sql_statment);  
