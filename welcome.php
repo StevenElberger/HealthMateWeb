@@ -14,7 +14,7 @@
         <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
 
         <?php
-            // Grab security functions
+           /* // Grab security functions
             require_once("/private/initialize.php");
             session_start();
             // Make sure the session is still active
@@ -66,7 +66,7 @@
 				// Peace out
 				$conn->close();
 			}
-
+*/
 		?>
 	</head>
     <body>
@@ -207,7 +207,7 @@
                                     <label>Patient First Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-                                        <input type="text" id="appointment_first_name" name="appointment_first_name" class="form-control" data-parsley-required="true" data-parsley-group="block2" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment_first_name" name="appointment_first_name" class="form-control" data-parsley-required="true" data-parsley-group="block4" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@
                                     <label>Patient Last Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-                                        <input type="text" id="appointment_last_name" name="appointment_last_name" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment_last_name" name="appointment_last_name" class="form-control" data-parsley-required="true" data-parsley-group="block5" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                     <label>Appointment Title:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">T</span></span>
-                                        <input type="text" id="appointment_title" name="appointment_title" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment_title" name="appointment_title" class="form-control" data-parsley-required="true" data-parsley-group="block6" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -234,7 +234,7 @@
                                     <label>Address:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                        <input type="text" id="appointment-address" name="appointment-address" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment-address" name="appointment-address" class="form-control" data-parsley-required="true" data-parsley-group="block7" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +243,7 @@
                                     <label>City:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                        <input type="text" id="appointment-city" name="appointment-city" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment-city" name="appointment-city" class="form-control" data-parsley-required="true" data-parsley-group="block8" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +252,7 @@
                                     <label>Zip Code:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                        <input type="text" id="appointment-zipcode" name="appointment-zipcode" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="5 - 9 numerical characters (no spaces)" data-parsley-required="true" data-parsley-type="number" data-parsley-length="[5, 9]" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment-zipcode" name="appointment-zipcode" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="5 - 9 numerical characters (no spaces)" data-parsley-required="true" data-parsley-type="number" data-parsley-length="[5, 9]" data-parsley-group="block9" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
@@ -261,27 +261,36 @@
                                     <label>State:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                        <input type="text" id="appointment-state" name="appointment-state" class="form-control" data-parsley-required="true" data-parsley-group="block3" data-parsley-ui-enabled="false">
+                                        <input type="text" id="appointment-state" name="appointment-state" class="form-control" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="appointmente-datetime-input">
+                            <div class="form-group" id="appointment-date-input">
                                 <div class="col-md-12">
                                     <div class="input-group">
                                         <label>Date:</label>
-                                        <input type="date" id="appointment-date" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="Date must be later than current Date" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                        <input type="date" id="appointment-date" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="Date must be later than current Date" data-parsley-required="true" data-parsley-group="block11" data-parsley-ui-enabled="false">
                                     </div>
+                                 </div>
+                            </div>
+                            <div class="form-group" id="appointment-starttime-input">
+                                <div class="col-md-12">
                                     <div class="input-group">
                                         <label>Start Time:</label>
-                                        <input type="time" id="appointment-start-time" style="margin-top: 15px; margin-left: 15px;" class="form-control">
+                                        <input type="time" id="appointment-start-time" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="Start Time must be before End Time" data-parsley-required="true" data-parsley-group="block12" data-parsley-ui-enabled="false">
                                     </div>
+                                 </div>
+                            </div>
+                            <div class="form-group" id="appointment-endtime-input">
+                                <div class="col-md-12">
                                     <div class="input-group">
                                         <label>End Time:</label>
-                                        <input type="time" id="appointment-end-time" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="End Time must be after Start Time" data-parsley-group="block1" data-parsley-ui-enabled="false">
+                                        <input type="time" id="appointment-end-time" style="margin-top: 15px; margin-left: 15px;" class="form-control" data-container="body" data-toggle="popover" data-trigger="focus" data-content="End Time must be after Start Time" data-parsley-required="true" data-parsley-group="block13" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
+                             </div>
                                 <div class="col-md-12" style="margin-top: 5%;">
-                                    <button type="submit" id="add-patient-button" class="btn btn-lg btn-block btn-primary validate">Add Patient</button>
+                                    <button type="submit" id="create-appointment-button" class="btn btn-lg btn-block btn-primary validate">Create Appointment</button>
                                 </div>
                             </div>
                         </form>
@@ -340,6 +349,46 @@
                 xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
                             "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
             }
+            
+            function submiteAppointmentWithAJAX() {
+					var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                var doc_id = $("#doctor_id").html();
+                var username = $("#username").val();
+                var first_name = $("#first_name").val();
+                var last_name = $("#last_name").val();
+                var gender = $("#gender").val();
+                var birthday = $("#birthday").val();
+                var password = "password321";
+                xmlhttp.open("POST","createaccount2.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
+                            "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
+					
+				}
 
             $(document).ready(function(){
 
@@ -355,6 +404,9 @@
                 // animate the jumbo to close and re-open with appropriate contents
                 // when clicking on the add patient link
                 $("#add-patient").click(function(){
+						  $('#add-patient-form').show();
+						  $("#create-appointment-form").hide();
+						  $("#create-appointment-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -414,16 +466,165 @@
                     }
                 });
                 
+                // Appointment Creation Form
                 $("#create-appointment").click(function(){
+						  $("#create-appointment-form").show();
+						  $("#add-patient-form").hide();
+						  $("#add-patient-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                     // reset the form and errors
                     $("#create-appointment-form").trigger("reset");
-                    //$("#first-name-input").removeClass("has-error");
-                    //$("#last-name-input").removeClass("has-error");
+                    $("#appointment-first-name-input").removeClass("has-error");
+                    $("#appointment-last-name-input").removeClass("has-error");
+                    $("#appointment-title-input").removeClass("has-error");
+                    $("#appointment-address-input").removeClass("has-error");
+                    $("#appointment-city-input").removeClass("has-error");
+                    $("#appointment-zipcode-input").removeClass("has-error");
+                    $("#appointment-state-input").removeClass("has-error");
+                    $("#appointment-date-input").removeClass("has-error");
+                    $("#appointment-starttime-input").removeClass("has-error");
+                    $("#appointment-endtime-input").removeClass("has-error");
                     // ugly, but it works
                     $("#create-appointment-panel").fadeIn(800).removeClass('hidden');
+                });
+                
+                $('#create-appointment-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var firstName = formInstance.isValid('block4', true);
+                    var lastName = formInstance.isValid('block5', true);
+                    var appointmentTitle = formInstance.isValid('block6', true);
+                    var address = formInstance.isValid('block7', true);
+                    var city = formInstance.isValid('block8', true);
+                    var zipCode = formInstance.isValid('block9', true);
+                    var state = formInstance.isValid('block10', true);
+                    var date = formInstance.isValid('block11', true);
+                    var startTime = formInstance.isValid('block12', true);
+                    var endTime = formInstance.isValid('block13', true);
+
+
+                    if (firstName && lastName && appointmentTitle && address && city && zipCode &&
+									state && date && startTime && endTime) {
+                        // submit form with AJAX
+                        submiteAppointmentWithAJAX();
+                        //testAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     - Username must be alphanumeric characters, 8 to 16 characters long
+                     */
+                    if (!firstName) {
+                        $('#appointment-first-name-input').addClass("has-error");
+                    } else {
+                        $('#appointment-first-name-input').removeClass("has-error");
+                    }
+                    
+
+                    if (!lastName) {
+                        $('#appointment-last-name-input').addClass("has-error");
+                    } else {
+                        $('#appointment-last-name-input').removeClass("has-error");
+                    }
+
+                    if (!appointmentTitle) {
+                        $('#appointment-title-input').addClass("has-error");
+                    } else {
+                        $('#appointment-title-input').removeClass("has-error");
+                    }
+                    
+                    if (!address) {
+                        $('#appointment-address-input').addClass("has-error");
+                    } else {
+                        $('#appointment-address-input').removeClass("has-error");
+                    }
+
+                    if (!city) {
+                        $('#appointment-city-input').addClass("has-error");
+                    } else {
+                        $('#appointment-city-input').removeClass("has-error");
+                    }
+
+                    if (!zipCode) {
+                        $('#appointment-zipcode-input').addClass("has-error");
+                        $('#appointment-zipcode').popover('show');
+                    } else {
+                        $('#appointment-zipcode-input').removeClass("has-error");
+                    }
+                    
+                    if (!state) {
+                        $('#appointment-state-input').addClass("has-error");
+                    } else {
+                        $('#appointment-state-input').removeClass("has-error");
+                    }
+                    
+                    // check if the date the user entered is before current date
+                    
+                    var dateString = $("#appointment-date").val();
+                    var dateArray = dateString.split("-");
+                    var day = parseInt(dateArray[2]);
+                    var month = parseInt(dateArray[1]) - 1;
+                    var year = parseInt(dateArray[0]);
+                    var inputDate = new Date(year, month, day);
+                    var currentDate = new Date();
+                    var dateValid = false;
+                    
+                    if (date && (inputDate.setHours(0, 0, 0, 0) >= currentDate.setHours(0, 0, 0, 0))) {
+							  dateValid = true;
+						  }
+                    
+
+                    if (!date || !dateValid) {
+                        $('#appointment-date-input').addClass("has-error");
+                        $('#appointment-date').popover('show');
+                    } else {
+                        $('#appointment-date-input').removeClass("has-error");
+                    }
+
+                    if (!startTime) {
+                        $('#appointment-starttime-input').addClass("has-error");
+                        $('#appointment-start-time').popover('show');
+                    } else {
+                        $('#appointment-starttime-input').removeClass("has-error");
+                    }
+                    
+                    var validInputTime = false;
+                    
+                    // Check if the user entered a valid end time
+                    if (startTime && endTime) {
+								var time = $("#appointment-start-time").val();
+								var startTime = time.split(":");
+								time = $("#appointment-end-time").val();
+								var endTime = time.split(":");
+								var startDate = new Date(year, month, day);
+								var endDate = new Date(year, month, day);
+                    
+								startDate.setHours(startTime[0], startTime[1], 0, 0);
+								endDate.setHours(endTime[0], endTime[1], 0, 0);
+							
+								if (startDate <= endDate) {
+									validInputTime = true;
+								}
+							}
+                    
+                    
+                    if (!endTime || !validInputTime) {
+                        $('#appointment-endtime-input').addClass("has-error");
+                        $('#appointment-end-time').popover('show');
+                    } else {
+                        $('#appointment-endtime-input').removeClass("has-error");
+                    }
                 });
             });
         </script>
