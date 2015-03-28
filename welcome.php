@@ -91,7 +91,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a id="add-patient" href="#">Add Patient</a></li>
                                 <li class="divider"></li>
-                                <li id="view-patient-list"><a href="#">View Patient List</a></li>
+                                <li><a id="view-patient-list" href="#">View Patient List</a></li>
                             </ul>
                         </li>
                         <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
@@ -195,6 +195,8 @@
         <!-- Form validation from Parsley -->
         <script src="js/parsley.min.js"></script>
         <script type="text/javascript">
+            // handles the form submission and displays the results of
+            // adding a patient to the DB
             function testAJAX() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {
@@ -215,6 +217,7 @@
                             $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
                         }, 1000);
                         // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
                         $("#add-patient-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
@@ -232,6 +235,45 @@
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
                             "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
+            }
+
+            // grabs a list of all the patients this doctor manages
+            // from the database and displays them in the jumbotron
+            function viewPatientAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                var doc_id = $("#doctor_id").html();
+                xmlhttp.open("POST","viewpatientlist.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id);
+            }
+
+            function validate() {
+
             }
 
             $(document).ready(function(){
@@ -258,6 +300,14 @@
                     // ugly, but it works
                     $("#add-patient-panel").fadeIn(800).removeClass('hidden');
                 });
+
+                $("#view-patient-list").click(function() {
+                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   viewPatientAJAX();
+                });
+
+                // test code
+                $("#first_name").onkeydown = function() {validate();};
 
                 $('#add-patient-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
