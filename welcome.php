@@ -644,7 +644,19 @@
                     }
                 });
 
-                $("#appointment-username-input").change(function() {
+                $("#appointment_username").change(function() {
+                    var value = $(this).val();
+                    var get_first_name = value.split(',');
+                    var get_last_name = value.split(' ');
+                    var first_name = get_first_name[0];
+                    var last_name = get_last_name[1];
+                    if (first_name != "Other") {
+                        $("#appointment_first_name").val(first_name);
+                        $("#appointment_last_name").val(last_name);
+                    } else {
+                        $("#appointment_first_name").val("");
+                        $("#appointment_last_name").val("");
+                    }
                 });
 
                 // Appointment Creation Form
