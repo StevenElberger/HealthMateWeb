@@ -202,6 +202,38 @@
                     <h3 class="text-center">Appointment Form</h3>
                     <fieldset>
                         <form role="form" id="create-appointment-form" class="form-horizontal login-form" method="post">
+                            <div class="form-group" id="appointment-username-input">
+                                <div class="col-md-12">
+                                    <label>Patient Username:</label><br />
+                                    <select name="appointment_username" id="appointment_username" class="form-control" data-parsley-required="true" data-parsley-group="block14" data-parsley-ui-enabled="false">
+													<option selected disabled>Select a Patient</option>
+													<option>Other</option>
+													<?php
+														// Create connection
+														$conn = new mysqli("localhost", "root", "#mws1992", "testDB");
+
+														// Check connection
+														if ($conn->connect_error) {
+															die("Connection failed: " . $conn->connect_error);
+														}
+				
+														// Select all patients that are associated with this doctor
+														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
+														$sql = "SELECT * FROM patient WHERE doctor_id = 'test'";
+														
+														// Execute Query
+														$result = $conn->query($sql);
+														
+														// Create a selectable option for each patient associated
+														// with the current doctor
+														foreach($result as $row) {
+															$patient_username = $row["username"];
+															echo "<option>{$patient_username}</option>";
+														}
+													?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group" id="appointment-first-name-input">
                                 <div class="col-md-12">
                                     <label>Patient First Name:</label>
@@ -370,11 +402,13 @@
                             $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
                         }, 1000);
                         // clear out the form and present the result
-                        $("#add-appointment-panel").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
+                
+                var appointment_username = $("#appointment_username").val();
                 var doc_id = $("#doctor_id").html();
                 var first_name = $("#appointment-first_name").val();
                 var last_name = $("#appointment_last_name").val();
@@ -386,14 +420,48 @@
                 var appointment_date = $("appointment_date").val();
                 var appointment_start_time = $("#appointment_start_time").val();
                 var appointment_end_time = $("#appointment_end_time").val();
-                xmlhttp.open("POST","createaccount2.php",true);
+                xmlhttp.open("POST","create_appointment.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
-                            "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
+                xmlhttp.send("appointment_username=" + appointment_username + "&doctor_id=" + doc_id + "&first_name=" + first_name + "&last_name=" + last_name + 
+                "&appointment_title=" + appointment_title + "&appointment_address=" + appointment_address + "&appointment_city=" + appointment_city + 
+                "&appointment_zipcode=" + appointment_zipcode + "&appointment_state=" + appointment_state + "&appointment_date=" + appointment_date + 
+                "&appointment_start_time=" + appointment_start_time + "&appointment_end_time=" + appointment_end_time);
 					
 				}
 				/////////////////////////////////////////////////////////////////////////////
+				function viewAppointmentsAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                var doc_id = $("#doctor_id").html();
+                xmlhttp.open("POST","view_appointment_list.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id);
+            }
 
             $(document).ready(function(){
 
@@ -481,6 +549,7 @@
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                     // reset the form and errors
                     $("#create-appointment-form").trigger("reset");
+                    $("#appointment-username-input").removeClass("has-error");
                     $("#appointment-first-name-input").removeClass("has-error");
                     $("#appointment-last-name-input").removeClass("has-error");
                     $("#appointment-title-input").removeClass("has-error");
@@ -507,6 +576,7 @@
                     var date = formInstance.isValid('block11', true);
                     var startTime = formInstance.isValid('block12', true);
                     var endTime = formInstance.isValid('block13', true);
+                    var appointmentUsername = formInstance.isValid('block14', true);
                     
                     // check if the date the user entered is before current date
                     
@@ -544,7 +614,7 @@
 
 
                     if (firstName && lastName && appointmentTitle && address && city && zipCode &&
-									state && date && dateValid && startTime && endTime && validInputTime) {
+									state && date && dateValid && startTime && endTime && validInputTime && appointmentUsername) {
                         // submit form with AJAX
                         submiteAppointmentWithAJAX();
                         event.preventDefault();
@@ -563,13 +633,18 @@
                      - All forms required
                      - Username must be alphanumeric characters, 8 to 16 characters long
                      */
+                     if (!appointmentUsername) {
+								$('#appointment-username-input').addClass("has-error");
+                    } else {
+                        $('#appointment-username-input').removeClass("has-error");
+                    }
+                    
                     if (!firstName) {
                         $('#appointment-first-name-input').addClass("has-error");
                     } else {
                         $('#appointment-first-name-input').removeClass("has-error");
                     }
                     
-
                     if (!lastName) {
                         $('#appointment-last-name-input').addClass("has-error");
                     } else {
@@ -628,6 +703,11 @@
                         $('#appointment-endtime-input').removeClass("has-error");
                     }
                 });
+                
+                $("#view-appointment-list").click(function() {
+						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+						 viewAppointmentsAJAX();
+					 });
             });
         </script>
     </body>
