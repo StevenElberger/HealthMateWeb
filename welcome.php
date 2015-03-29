@@ -14,7 +14,7 @@
         <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
 
         <?php
-           /* // Grab security functions
+            // Grab security functions
             require_once("/private/initialize.php");
             session_start();
             // Make sure the session is still active
@@ -39,11 +39,11 @@
 				if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 				}
-				
+
 				// For now, all patients will be shown (table needs to be re-designed
 				$sql = "SELECT * FROM patient WHERE group_id = 2";
 				$result = $conn->query($sql);
-				
+
 				// Generate the proper HTML elements and display
 				// all the patient info
 				if ($result->num_rows > 0) {
@@ -62,11 +62,10 @@
 				} else {
 					echo "Error: " . $sql . "<br />" . $conn->error;
 				}
-			
+
 				// Peace out
 				$conn->close();
 			}
-*/
 		?>
 	</head>
     <body>
@@ -210,7 +209,7 @@
 													<option>Other</option>
 													<?php
 														// Create connection
-														$conn = new mysqli("localhost", "root", "#mws1992", "testDB");
+                                                        $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 														// Check connection
 														if ($conn->connect_error) {
@@ -219,7 +218,7 @@
 				
 														// Select all patients that are associated with this doctor
 														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
-														$sql = "SELECT * FROM patient WHERE doctor_id = 'test'";
+														$sql = "SELECT * FROM patient WHERE doctor_id = '".$username."'";
 														
 														// Execute Query
 														$result = $conn->query($sql);
@@ -228,8 +227,8 @@
 														// with the current doctor
 														foreach($result as $row) {
 															$patient_username = $row["username"];
-															$first_name = "test";
-															$last_name = "test";
+															$first_name = $row["first_name"];
+															$last_name = $row["last_name"];
 															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
 														}
 													?>
@@ -295,7 +294,62 @@
                                     <label>State:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                        <input type="text" id="appointment_state" name="appointment_state" class="form-control" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">
+<!--                                        <input type="text" id="appointment_state" name="appointment_state" class="form-control" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">-->
+                                        <select class="ui search dropdown form-control" id="appointment_state" name="appointment_state" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">
+                                            <option value="">State</option>
+                                            <option value="AL">Alabama</option>
+                                            <option value="AL">Alabama</option>
+                                            <option value="AK">Alaska</option>
+                                            <option value="AZ">Arizona</option>
+                                            <option value="AR">Arkansas</option>
+                                            <option value="CA">California</option>
+                                            <option value="CO">Colorado</option>
+                                            <option value="CT">Connecticut</option>
+                                            <option value="DE">Delaware</option>
+                                            <option value="DC">District Of Columbia</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="GA">Georgia</option>
+                                            <option value="HI">Hawaii</option>
+                                            <option value="ID">Idaho</option>
+                                            <option value="IL">Illinois</option>
+                                            <option value="IN">Indiana</option>
+                                            <option value="IA">Iowa</option>
+                                            <option value="KS">Kansas</option>
+                                            <option value="KY">Kentucky</option>
+                                            <option value="LA">Louisiana</option>
+                                            <option value="ME">Maine</option>
+                                            <option value="MD">Maryland</option>
+                                            <option value="MA">Massachusetts</option>
+                                            <option value="MI">Michigan</option>
+                                            <option value="MN">Minnesota</option>
+                                            <option value="MS">Mississippi</option>
+                                            <option value="MO">Missouri</option>
+                                            <option value="MT">Montana</option>
+                                            <option value="NE">Nebraska</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="NH">New Hampshire</option>
+                                            <option value="NJ">New Jersey</option>
+                                            <option value="NM">New Mexico</option>
+                                            <option value="NY">New York</option>
+                                            <option value="NC">North Carolina</option>
+                                            <option value="ND">North Dakota</option>
+                                            <option value="OH">Ohio</option>
+                                            <option value="OK">Oklahoma</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="PA">Pennsylvania</option>
+                                            <option value="RI">Rhode Island</option>
+                                            <option value="SC">South Carolina</option>
+                                            <option value="SD">South Dakota</option>
+                                            <option value="TN">Tennessee</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="UT">Utah</option>
+                                            <option value="VT">Vermont</option>
+                                            <option value="VA">Virginia</option>
+                                            <option value="WA">Washington</option>
+                                            <option value="WV">West Virginia</option>
+                                            <option value="WI">Wisconsin</option>
+                                            <option value="WY">Wyoming</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -330,14 +384,13 @@
                         </form>
                     </fieldset>
                 </div>
+                <!-- End of create appointment form -->
+
+                <div id="myDiv" class="panel panel-default hidden"></div>
+
+                <div id="results" class="panel panel-default hidden"></div>
+
             </div>
-            <!-- End of create appointment form -->
-
-            <div id="myDiv" class="panel panel-default hidden"></div>
-
-            <div id="results" class="panel panel-default hidden"></div>
-
-        </div>
 
         <!-- Bootstrap core JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -386,9 +439,10 @@
                 xmlhttp.send("doctor_id=" + doc_id + "&username=" + username + "&first_name=" + first_name +
                             "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
             }
+
             ////////////////////////////////////////////////////////////////////////
             function submiteAppointmentWithAJAX() {
-					var xmlhttp;
+               var xmlhttp;
                if (window.XMLHttpRequest) {
                     xmlhttp = new XMLHttpRequest();
                 }
@@ -417,7 +471,7 @@
                 // Doctor ID on my machine is underfined
                 // change when moved to host machine
                 //var doc_id = $("#doctor_id").html();
-                var doc_id = "test";
+                var doc_id = $("doctor_id").html();
                 var first_name = $("#appointment_first_name").val();
                 var last_name = $("#appointment_last_name").val();
                 var appointment_title = $("#appointment_title").val();
@@ -437,9 +491,10 @@
                 "&appointment_zipcode=" + appointment_zipcode + "&appointment_state=" + appointment_state + "&appointment_date=" + appointment_date + 
                 "&appointment_start_time=" + appointment_start_time + "&appointment_end_time=" + appointment_end_time);
 					
-				}
-				/////////////////////////////////////////////////////////////////////////////
-				function viewAppointmentsAJAX() {
+			}
+
+            /////////////////////////////////////////////////////////////////////////////
+            function viewAppointmentsAJAX() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {
                     xmlhttp = new XMLHttpRequest();
@@ -497,6 +552,7 @@
                         // clear out the form and present the result
                         $("#welcome-container").fadeOut(400);
                         $("#add-patient-panel").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -522,9 +578,9 @@
                 // animate the jumbo to close and re-open with appropriate contents
                 // when clicking on the add patient link
                 $("#add-patient").click(function(){
-						  $('#add-patient-form').show();
-						  $("#create-appointment-form").hide();
-						  $("#create-appointment-panel").hide();
+                    $('#add-patient-form').show();
+					$("#create-appointment-form").hide();
+					$("#create-appointment-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -588,12 +644,12 @@
                         $('#username-input').removeClass("has-error");
                     }
                 });
-                
+
                 // Appointment Creation Form
                 $("#create-appointment").click(function(){
-						  $("#create-appointment-form").show();
-						  $("#add-patient-form").hide();
-						  $("#add-patient-panel").hide();
+                    $("#create-appointment-form").show();
+                    $("#add-patient-form").hide();
+                    $("#add-patient-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -643,7 +699,7 @@
 							  dateValid = true;
 						  }
 						  
-						  var validInputTime = false;
+                    var validInputTime = false;
                     
                     // Check if the user entered a valid end time
                     if (startTime && endTime) {
@@ -757,7 +813,7 @@
                 $("#view-appointment-list").click(function() {
 						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
 						 viewAppointmentsAJAX();
-					 });
+                });
             });
         </script>
     </body>

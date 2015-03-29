@@ -1,6 +1,6 @@
 <?php
 	 // Grab security functions
-    //require_once("/private/initialize.php");
+    require_once("/private/initialize.php");
     
     // Error placeholder variables
     $doctor_idError = "";
@@ -26,14 +26,14 @@
 	  if ($doctor_id !== "") {
 		  
 		  // Create connection
-        $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
+          $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } 
         
-        $sql = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "'";
+        $sql = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "'";
         
         $results = $conn->query($sql);
         if ($results->num_rows == 0) {
@@ -61,9 +61,9 @@
 				$patient_name = $row["first_name"] . " " . $row["last_name"];
 				$title = $row["title"];
 				$date = $row["date"];
-				$start_time = $row["start_time"];
-				$end_time = $row["end_time"];
-				$location = $row["address"] . ", " . $row["city"] . ", " . $row["state"] . " " . $row["zip_code"];
+				$start_time = $row["start"];
+				$end_time = $row["end"];
+				$location = $row["address"] . ", " . $row["city"] . ", " . $row["state"] . " " . $row["zip"];
 				
 				$result .= "<tr>
                         <td>".$appointment_id."</td>
