@@ -171,7 +171,6 @@
                             <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
                         </form>
                         <a class="text-center" style="display: block;" href="public/forgot_password.php">Forgot your password?</a>
-                        <a class="text-center" style="display: block;" href="welcome.php">Welcome</a>
                     </div>
                 </div>
         </fieldset>

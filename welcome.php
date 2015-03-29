@@ -293,7 +293,7 @@
                                 <div class="col-md-12">
                                     <label>State:</label>
                                     <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
 <!--                                        <input type="text" id="appointment_state" name="appointment_state" class="form-control" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">-->
                                         <select class="ui search dropdown form-control" id="appointment_state" name="appointment_state" data-parsley-required="true" data-parsley-group="block10" data-parsley-ui-enabled="false">
                                             <option value="">State</option>
@@ -573,7 +573,6 @@
 
                 // show the welcome screen
                 $("#welcome-jumbo").fadeIn(800).removeClass('hidden');
-                
 
                 // animate the jumbo to close and re-open with appropriate contents
                 // when clicking on the add patient link
@@ -643,6 +642,9 @@
                     } else {
                         $('#username-input').removeClass("has-error");
                     }
+                });
+
+                $("#appointment-username-input").change(function() {
                 });
 
                 // Appointment Creation Form
