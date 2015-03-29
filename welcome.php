@@ -228,7 +228,9 @@
 														// with the current doctor
 														foreach($result as $row) {
 															$patient_username = $row["username"];
-															echo "<option>{$patient_username}</option>";
+															$first_name = "test";
+															$last_name = "test";
+															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
 														}
 													?>
                                     </select>
