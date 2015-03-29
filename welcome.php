@@ -460,7 +460,8 @@
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-                var doc_id = $("#doctor_id").html();
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
                 xmlhttp.open("POST","view_appointment_list.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");

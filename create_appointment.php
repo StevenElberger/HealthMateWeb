@@ -2,7 +2,7 @@
 	 // Grab security functions
     //require_once("/private/initialize.php");
     
-    // Error placeholders
+   // Error placeholders
     $firstNameError = $lastNameError = $appointmentUsernameError = "";
     $appointmentTitleError = $addressError = $cityError = $zipCodeError = "";
     $stateError = $dateError = $startTimeError = $endTimeError = $doctor_idError = "";
@@ -109,11 +109,13 @@
          VALUES ('".$doctor_id."', '".$appointment_username."', '".$first_name."', '".$last_name."', '".$appointment_title."', '"
          .$address."', '".$city."', '".$zip_code."', '".$state."', '".$date."', '".$start_time."', '".$end_time."')";
 
+			
          if ($conn->query($sql) === TRUE) {
             // successful created appointment
 
-            $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id = '" . $doctor_id . "' AND patient_id = '" . $patient_id . 
+            $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username . 
 												"' AND title = '" . $appointment_title . "'";
+												
             $get_appointments = $conn->query($sql_get_appointments);
 
             if ($get_appointments->num_rows == 0) {
@@ -122,14 +124,6 @@
                 return;
             }
             
-            while ($row = $get_appointments->fetch_assoc()) {
-				$appointment_id = $row["appointment_id"]
-				$patient_name = $row["first_name"] . " " . $row["last_name"];
-				$title = $row["title"];
-				$date = $row["date"];
-				$start_time = $row["start_time"];
-				$end_time = $row["end_time"];
-				$location = $row["address"] . ", " . $row["city"] . ", " . $row["state"] . " " . $row["zip_code"];
             $result = "<h3 class='text-center'>Appointment Created Successfully</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -143,7 +137,16 @@
                         <th>Location</th>
                     </tr>
                     </thead>
-                    <tbody>";
+                    <tbody>";       
+            foreach ($get_appointments as $row) {
+				$appointment_id = $row["appointment_id"];
+				$patient_name = $row["first_name"] . " " . $row["last_name"];
+				$title = $row["title"];
+				$date = $row["date"];
+				$start_time = $row["start_time"];
+				$end_time = $row["end_time"];
+				$location = $row["address"] . ", " . $row["city"] . ", " . $row["state"] . " " . $row["zip_code"];
+				
             $result .= "<tr>
                         <td>".$appointment_id."</td>
                         <td>".$patient_name."</td>
@@ -153,16 +156,16 @@
                         <td>".$end_time."</td>
                         <td>".$location."</td>
                     </tr>";
-            $result .= "</tbody>";
-            $result .= "</table>";
 			}
+			$result .= "</tbody>";
+         $result .= "</table>";
+         
         } else {
             echo "Error: " . $sql . "<br />" . $conn->error;
         }
 
         // Peace out
         $conn->close();
-
         echo $result;
     }
 
