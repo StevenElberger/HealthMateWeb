@@ -409,20 +409,24 @@
                 };
                 
                 var appointment_username = $("#appointment_username").val();
-                var doc_id = $("#doctor_id").html();
-                var first_name = $("#appointment-first_name").val();
+                // Doctor ID on my machine is underfined
+                // change when moved to host machine
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                var first_name = $("#appointment_first_name").val();
                 var last_name = $("#appointment_last_name").val();
                 var appointment_title = $("#appointment_title").val();
                 var appointment_address = $("#appointment_address").val();
-                var appointment_city = $("appointment_city").val();
-                var appointment_zipcode = $("appointment_zipcode").val();
-                var appointment_state = $("appointment_state").val();
-                var appointment_date = $("appointment_date").val();
+                var appointment_city = $("#appointment_city").val();
+                var appointment_zipcode = $("#appointment_zipcode").val();
+                var appointment_state = $("#appointment_state").val();
+                var appointment_date = $("#appointment_date").val();
                 var appointment_start_time = $("#appointment_start_time").val();
                 var appointment_end_time = $("#appointment_end_time").val();
                 xmlhttp.open("POST","create_appointment.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
                 xmlhttp.send("appointment_username=" + appointment_username + "&doctor_id=" + doc_id + "&first_name=" + first_name + "&last_name=" + last_name + 
                 "&appointment_title=" + appointment_title + "&appointment_address=" + appointment_address + "&appointment_city=" + appointment_city + 
                 "&appointment_zipcode=" + appointment_zipcode + "&appointment_state=" + appointment_state + "&appointment_date=" + appointment_date + 
