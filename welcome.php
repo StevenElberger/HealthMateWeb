@@ -468,10 +468,10 @@
                     <h3 class="text-center">Medication Assign Form</h3>
                     <fieldset>
                         <form role="form" id="assign-medication-form" class="form-horizontal login-form" method="post">
-									<div class="form-group" id="medication-name-input">
+									<div class="form-group" id="assign-medication-name-input">
                                 <div class="col-md-12">
                                     <label>Medication Name:</label><br />
-                                    <select name="medication_name" id="medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block19" data-parsley-ui-enabled="false">
+                                    <select name="assign_medication_name" id="assign_medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block19" data-parsley-ui-enabled="false">
 													<option selected disabled>Select a Medication</option>
 													<?php
 														// Create connection
@@ -499,10 +499,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group" id="medication-list-patient-input">
+                            <div class="form-group" id="assign-medication-patient-input">
                                 <div class="col-md-12">
                                     <label>Patient Username:</label><br />
-                                    <select name="medication_list_patient" id="medication_list_patient" class="form-control" data-parsley-required="true" data-parsley-group="block20" data-parsley-ui-enabled="false">
+                                    <select name="assign_medication_patient" id="assign_medication_patient" class="form-control" data-parsley-required="true" data-parsley-group="block20" data-parsley-ui-enabled="false">
 													<option selected disabled>Select a Patient</option>
 													<?php
 														/*// Create connection
@@ -535,30 +535,30 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group" id="medication-list-patient-name-input">
+                            <div class="form-group" id="assign-medication-patient-name-input">
                                 <div class="col-md-12">
                                     <label>Patient Name:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">PN</span></span>
-                                        <input type="text" id="medication_list_patient_name" name="medication_list_patient_name" class="form-control" data-parsley-required="true" data-parsley-group="block21" data-parsley-ui-enabled="false">
+                                        <input type="text" id="assign_medication_patient_name" name="assign_medication_patient_name" class="form-control" data-parsley-required="true" data-parsley-group="block21" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="medication-list-dosage-input">
+                            <div class="form-group" id="assign-medication-dosage-input">
                                 <div class="col-md-12">
                                     <label>Dosage:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">D</span></span>
-                                        <input type="text" id="medication_list_dosage" name="medication_list_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block22" data-parsley-ui-enabled="false">
+                                        <input type="text" id="assign_medication_dosage" name="assign_medication_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block22" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="medication-list-frequency-input">
+                            <div class="form-group" id="assign-medication-frequency-input">
                                 <div class="col-md-12">
                                     <label>Frequency:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon">F</span></span>
-                                        <input type="text" id="medication_list_frequency" name="medication_list_frequency" class="form-control" data-parsley-required="true" data-parsley-group="block23" data-parsley-ui-enabled="false">
+                                        <input type="text" id="assign_medication_frequency" name="assign_medication_frequency" class="form-control" data-parsley-required="true" data-parsley-group="block23" data-parsley-ui-enabled="false">
                                     </div>
                                 </div>
                             </div>
