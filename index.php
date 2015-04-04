@@ -17,7 +17,7 @@
     <body>
 
     <?php
-    // Grab security functions
+    /*// Grab security functions
     require_once("/private/initialize.php");
     // Error placeholders
     $usernameError = $passwordError = "";
@@ -138,7 +138,7 @@
         $sql = "SELECT username FROM physician WHERE username = '".$given_username."'";
         $result = $existing_conn->query($sql);
         return $result->num_rows > 0;
-    }
+    }*/
     ?>
 
     <div class="well login-well">
@@ -146,7 +146,7 @@
             <h1 class="text-center">HealthMate</h1>
             <?php echo $bad_authentication; ?>
             <form role="form" id="login-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                <?php echo csrf_token_tag(); ?>
+                <?php //echo csrf_token_tag(); ?>
                 <div class="form-group" id="username-input">
                     <div class="col-md-12">
                         <label>Username:</label>
@@ -171,6 +171,8 @@
                             <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
                         </form>
                         <a class="text-center" style="display: block;" href="public/forgot_password.php">Forgot your password?</a>
+                        <!-- added for testing -->
+                        <a class="text-center" style="display: block;" href="welcome.php">Welcome</a>
                     </div>
                 </div>
         </fieldset>

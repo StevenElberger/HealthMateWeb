@@ -14,11 +14,11 @@
         <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
 
         <?php
-            // Grab security functions
+            /*// Grab security functions
             require_once("/private/initialize.php");
             session_start();
             // Make sure the session is still active
-            validate_user_before_displaying();
+            /*validate_user_before_displaying();
 			$username = $_SESSION["username"];
 
             // Check if logout button was pressed
@@ -65,7 +65,7 @@
 
 				// Peace out
 				$conn->close();
-			}
+			}*/
 		?>
 	</head>
     <body>
@@ -98,13 +98,27 @@
                         <li id="view-appointment" class="dropdown">
                            <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Appointments <span class="caret"></span></a>
                            <ul class="dropdown-menu" role="menu">
-                              <li><a id="create-appointment" href="#">New Appointment</a></li>
+                              <li><a id="create-appointment" href="#">Create Appointment</a></li>
                               <li class="divider"></li>
                               <li id="view-appointment-list"><a href="#">View Appointments</a></li>
                            </ul>
                         </li>
                         
                         <!-- End of Appointments navigation and dropdown -->
+                        
+                        <!-- Medications navigation and dropdown -->
+                        <li id="view-medication" class="dropdown">
+                           <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Medications <span class="caret"></span></a>
+                           <ul class="dropdown-menu" role="menu">
+                              <li><a id="add-medication" href="#">Create Medication</a></li>
+                              <li class="divider"></li>
+                              <li id="view-medication-list"><a href="#">View Medications</a></li>
+                              <li class="divider"></li>
+                              <li id="assign-medication"><a href="#">Assign Medication</a></li>
+                           </ul>
+                        </li>
+                        
+                        <!-- End of Medications navigation and dropdown -->
                         
                         <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
                         <li><a href="/HealthMateTest/logout.php">Logout</a></li>
@@ -208,7 +222,7 @@
 													<option selected disabled>Select a Patient</option>
 													<option>Other</option>
 													<?php
-														// Create connection
+														/*// Create connection
                                                         $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 														// Check connection
@@ -230,7 +244,7 @@
 															$first_name = $row["first_name"];
 															$last_name = $row["last_name"];
 															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
-														}
+														}*/
 													?>
                                     </select>
                                 </div>
@@ -385,7 +399,67 @@
                     </fieldset>
                 </div>
                 <!-- End of create appointment form -->
-
+                
+                <!-- Start of Medication Form -->
+                <div class="panel panel-default hidden" id="add-medication-panel">
+                <div class="panel-body">
+                    <h3 class="text-center">Medication Form</h3>
+                    <fieldset>
+                        <form role="form" id="add-medication-form" class="form-horizontal login-form" method="post">
+                            <div class="form-group" id="medication-name-input">
+                                <div class="col-md-12">
+                                    <label>Medication Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MD</span></span>
+                                        <input type="text" id="medication_name" name="medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block14" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-type-input">
+                                <div class="col-md-12">
+                                    <label>Medication Type:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">T</span></span>
+                                        <input type="text" id="medication_type" name="medication_type" class="form-control" data-parsley-required="true" data-parsley-group="block15" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="intake-method-input">
+                                <div class="col-md-12">
+                                    <label>Intake Method:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">IM</span></span>
+                                        <input type="text" id="intake_method" name="intake_method" class="form-control" data-parsley-required="true" data-parsley-group="block16" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="max-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Max Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MAX</span></span>
+                                        <input type="text" id="max_dosage" name="max_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block17" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="min-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Min Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MIN</span></span>
+                                        <input type="text" id="min_dosage" name="min_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block18" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 5%;">
+                                    <button type="submit" id="add-medication-button" class="btn btn-lg btn-block btn-primary validate">Add Medication</button>
+                            </div>
+                        </div>
+                    </form>
+                 </fieldset>
+            </div>
+            
+            <!-- End of Medication Form -->          
                 <div id="myDiv" class="panel panel-default hidden"></div>
 
                 <div id="results" class="panel panel-default hidden"></div>
@@ -827,6 +901,26 @@
                 $("#view-appointment-list").click(function() {
 						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
 						 viewAppointmentsAJAX();
+                });
+                
+                
+                // When the user selects add medication
+                $("#add-medication").click(function(){
+						 $('#add-medication-form').show();
+                   $('#add-patient-form').hide();
+                   $('#add-patient-panel').hide();
+					    $("#create-appointment-form").hide();
+					    $("#create-appointment-panel").hide();
+                   $("#welcome-container").fadeOut(400);
+                   $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   // reset the form and errors
+                   $("#add-medication-form").trigger("reset");
+                   $("#username-input").removeClass("has-error");
+                    $("#first-name-input").removeClass("has-error");
+                    $("#last-name-input").removeClass("has-error");
+                    // ugly, but it works
+                    $("#add-patient-panel").fadeIn(800).removeClass('hidden');
                 });
             });
         </script>
