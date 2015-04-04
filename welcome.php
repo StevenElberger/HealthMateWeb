@@ -529,7 +529,7 @@
 															//$last_name = $row["last_name"];
 															$first_name = "test";
 															$last_name = "test";
-															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
+															echo "<option value=\"{$patient_username}\">{$first_name}, {$last_name} ({$patient_username})</option>";
 														}
 													?>
                                     </select>
@@ -789,6 +789,49 @@
                 xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&medication_type=" + medication_type +
                             "&intake_method=" + intake_method + "&max_dosage=" + max_dosage + "&min_dosage=" + min_dosage);
             }
+            
+            
+            // Add Medication Submit Function
+            function assignMedicationAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#assign-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                var medication_name = $("#assign_medication_name").val();
+                var patient_username = $("#assign_medication_patient").val();
+                var patient_name = $("#assign_medication_patient_name").val();
+                var dosage = $("#assign_medication_dosage").val();
+                var frequency = $("#assign_medication_frequency").val();
+                xmlhttp.open("POST","assign_medication.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&patient_username=" + patient_username +
+                            "&patient_name=" + patient_name + "&dosage=" + dosage + "&frequency=" + frequency);
+            }
+            
             
             // Display A list of Available Medications
             function viewMedicationsAJAX() {
@@ -1201,13 +1244,72 @@
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                    // reset the form and errors
                    $("#asign-medication-form").trigger("reset");
-                   $("#medication-name-input").removeClass("has-error");
-                   $("#medication-type-input").removeClass("has-error");
-                   $("#intake-method-input").removeClass("has-error");
-                   $("#max-dosage-input").removeClass("has-error");
-                   $("#min-dosage-input").removeClass("has-error");
+                   $("#assign-medication-name-input").removeClass("has-error");
+                   $("#assign-medication-patient-input").removeClass("has-error");
+                   $("#assign-medication-patient-name-input").removeClass("has-error");
+                   $("#assign-medication-dosage-input").removeClass("has-error");
+                   $("#assign-medication-frequency-input").removeClass("has-error");
                    // ugly, but it works
                    $("#assign-medication-panel").fadeIn(800).removeClass('hidden');
+                });
+                
+                
+                // When the user attempts to submit medication form
+                $('#assign-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var medicationName = formInstance.isValid('block19', true);
+                    var patientUsername = formInstance.isValid('block20', true);
+                    var patientName = formInstance.isValid('block21', true);
+                    var dosage = formInstance.isValid('block22', true);
+                    var frequency = formInstance.isValid('block23', true);
+
+                    if (medicationName && patientUsername && patientName && dosage && frequency) {
+                        // submit form with AJAX
+                        assignMedicationAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     */
+                    if (!medicationName) {
+                        $('#assign-medication-name-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-name-input').removeClass("has-error");
+                    }
+
+                    if (!patientUsername) {
+                        $('#assign-medication-patient-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-patient-input').removeClass("has-error");
+                    }
+                    
+                    if (!patientName) {
+                        $('#assign-medication-patient-name-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-patient-name-input').removeClass("has-error");
+                    }
+
+                    if (!dosage) {
+                        $('#assign-medication-dosage-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-dosage-input').removeClass("has-error");
+                    }
+                    
+                    if (!frequency) {
+                        $('#assign-medication-frequency-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-frequency-input').removeClass("has-error");
+                    }
                 });
                 
             });
