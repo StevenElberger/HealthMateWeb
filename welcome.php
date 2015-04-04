@@ -120,7 +120,7 @@
                         
                         <!-- End of Medications navigation and dropdown -->
                         
-                        <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
+                        <li><a href="/HealthMateWeb/account_settings.php">Settings</a></li>
                         <li><a href="/HealthMateTest/logout.php">Logout</a></li>
                     </ul>
                 </div>
@@ -571,68 +571,6 @@
             </div>
             
             <!-- End of Medication Assign Form --> 
-            
-            <!-- Start of Account Settings Form -->
-
-            
-            <div class="panel panel-default hidden" id="account-settings-panel">
-                <div class="panel-body">
-                    <h3 class="text-center">Account Settings</h3>
-                    <fieldset>
-                        <form role="form" id="account-settings-form" class="form-horizontal login-form" method="post">
-				                <div class="form-group" id="account-first-name-input">
-				                    <div class="col-md-12">
-				                        <label>First Name:</label>
-				                        <div class="input-group">
-				                            <span class="input-group-addon"><span class="glyphicon">FN</span></span>
-				                            <input type="text" name="account_first_name" id="account_first_name" class="form-control" data-toggle="tooltip" data-placement="right" title="Wenis" value="<?php echo $first_name; ?>" data-parsley-required="true" data-parsley-group="block24" data-parsley-ui-enabled="false">
-				                        </div>
-				                    </div>
-				                </div>
-				                <div class="form-group" id="account-last-name-input">
-				                    <div class="col-md-12">
-				                        <label>Last Name:</label>
-				                        <div class="input-group">
-				                            <span class="input-group-addon"><span class="glyphicon">LN</span></span>
-				                            <input type="text" name="account_last_name" id="account_last_name" class="form-control" value="<?php echo $last_name; ?>" data-parsley-required="true" data-parsley-group="block25" data-parsley-ui-enabled="false">
-				                        </div>
-				                    </div>
-				                </div>
-				                <div class="form-group" id="accont-email-input">
-				                    <div class="col-md-12">
-				                        <label>Email:</label><label class="control-label" id="account-email-control"></label>
-				                        <div class="input-group">
-				                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-				                            <input type="text" id="account_email" name="account_email" class="form-control" value="<?php echo $email; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must be valid email address" data-parsley-required="true" data-parsley-type="email" data-parsley-length="[8, 32]" data-parsley-group="block26" data-parsley-ui-enabled="false">
-				                        </div>
-				                    </div>
-				                </div>
-				                <div class="form-group" id="account-company-input">
-				                    <div class="col-md-12">
-				                        <label>Company:</label>
-				                        <div class="input-group">
-				                            <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
-				                            <input type="text" id="account_company" name="account_company" class="form-control" value="<?php echo $company; ?>" data-parsley-required="true" data-parsley-group="block27" data-parsley-ui-enabled="false">
-				                        </div>
-				                    </div>
-				                </div>
-				                <div class="form-group" id="account-phone-input">
-				                    <div class="col-md-12">
-				                        <label>Phone:</label>
-				                        <div class="input-group">
-				                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-				                            <input type="text" id="account_phone" name="account_phone" class="form-control" value="<?php echo $phone; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="7 - 10 digits" data-parsley-required="true" data-parsley-type="digits" data-parsley-length="[7, 10]" data-parsley-group="block28" data-parsley-ui-enabled="false">
-				                        </div>
-				                     </div>
-				                </div>
-				                <div class="col-md-12" style="margin-top: 5%;">
-                                <button type="submit" id="update-account-button" class="btn btn-lg btn-block btn-primary validate">Update Account</button>
-                            </div>
-				            </form>
-                </fieldset>
-            </div>
-            
-            <!-- End of Account Setting Form -->
             
                 <div id="myDiv" class="panel panel-default hidden"></div>
 
@@ -1373,30 +1311,6 @@
                     } else {
                         $('#assign-medication-frequency-input').removeClass("has-error");
                     }
-                });
-                
-                
-                 // When the user selects account settings
-                $("#assign-medication").click(function(){
-						 $("#assign-medication-form").show();
-                   $("#add-patient-form").hide();
-                   $("#add-patient-panel").hide();
-					    $("#create-appointment-form").hide();
-					    $("#create-appointment-panel").hide();
-					    $("#add-medication-form").hide();
-					    $("#add-medication-panel").hide();
-                   $("#welcome-container").fadeOut(400);
-                   $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
-                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
-                   // reset the form and errors
-                   $("#asign-medication-form").trigger("reset");
-                   $("#assign-medication-name-input").removeClass("has-error");
-                   $("#assign-medication-patient-input").removeClass("has-error");
-                   $("#assign-medication-patient-name-input").removeClass("has-error");
-                   $("#assign-medication-dosage-input").removeClass("has-error");
-                   $("#assign-medication-frequency-input").removeClass("has-error");
-                   // ugly, but it works
-                   $("#assign-medication-panel").fadeIn(800).removeClass('hidden');
                 });
                 
             });
