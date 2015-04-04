@@ -459,7 +459,118 @@
                  </fieldset>
             </div>
             
-            <!-- End of Medication Form -->          
+            <!-- End of Medication Form -->         
+            
+            <!-- Medication Assign Form -->
+            
+            <div class="panel panel-default hidden" id="assign-medication-panel">
+                <div class="panel-body">
+                    <h3 class="text-center">Medication Assign Form</h3>
+                    <fieldset>
+                        <form role="form" id="assign-medication-form" class="form-horizontal login-form" method="post">
+									<div class="form-group" id="medication-name-input">
+                                <div class="col-md-12">
+                                    <label>Medication Name:</label><br />
+                                    <select name="medication_name" id="medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block19" data-parsley-ui-enabled="false">
+													<option selected disabled>Select a Medication</option>
+													<?php
+														// Create connection
+                                          $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
+
+														// Check connection
+														if ($conn->connect_error) {
+															die("Connection failed: " . $conn->connect_error);
+														}
+				
+														// Select all patients that are associated with this doctor
+														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
+														$sql = "SELECT * FROM medications";
+														
+														// Execute Query
+														$result = $conn->query($sql);
+														
+														// Create a selectable option for each patient associated
+														// with the current doctor
+														foreach($result as $row) {
+															$medication_name = $row["name"];
+															echo "<option>{$medication_name}</option>";
+														}
+													?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-list-patient-input">
+                                <div class="col-md-12">
+                                    <label>Patient Username:</label><br />
+                                    <select name="medication_list_patient" id="medication_list_patient" class="form-control" data-parsley-required="true" data-parsley-group="block20" data-parsley-ui-enabled="false">
+													<option selected disabled>Select a Patient</option>
+													<?php
+														/*// Create connection
+                                          $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+
+														// Check connection
+														if ($conn->connect_error) {
+															die("Connection failed: " . $conn->connect_error);
+														}*/
+				
+														// Select all patients that are associated with this doctor
+														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
+														$username = "test";
+														$sql = "SELECT * FROM patient WHERE doctor_id = '".$username."'";
+														
+														// Execute Query
+														$result = $conn->query($sql);
+														
+														// Create a selectable option for each patient associated
+														// with the current doctor
+														foreach($result as $row) {
+															$patient_username = $row["username"];
+															//$first_name = $row["first_name"];
+															//$last_name = $row["last_name"];
+															$first_name = "test";
+															$last_name = "test";
+															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
+														}
+													?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-list-patient-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">PN</span></span>
+                                        <input type="text" id="medication_list_patient_name" name="medication_list_patient_name" class="form-control" data-parsley-required="true" data-parsley-group="block21" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-list-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">D</span></span>
+                                        <input type="text" id="medication_list_dosage" name="medication_list_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block22" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-list-frequency-input">
+                                <div class="col-md-12">
+                                    <label>Frequency:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">F</span></span>
+                                        <input type="text" id="medication_list_frequency" name="medication_list_frequency" class="form-control" data-parsley-required="true" data-parsley-group="block23" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 5%;">
+                                <button type="submit" id="assign-medication-button" class="btn btn-lg btn-block btn-primary validate">Assign Medication</button>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+            
+            <!-- End of Medication Assign Form --> 
                 <div id="myDiv" class="panel panel-default hidden"></div>
 
                 <div id="results" class="panel panel-default hidden"></div>
@@ -678,6 +789,43 @@
                 xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&medication_type=" + medication_type +
                             "&intake_method=" + intake_method + "&max_dosage=" + max_dosage + "&min_dosage=" + min_dosage);
             }
+            
+            // Display A list of Available Medications
+            function viewMedicationsAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                xmlhttp.open("POST","view_medication_list.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id);
+            }
 
             $(document).ready(function(){
 
@@ -697,6 +845,8 @@
 				     	  $("#create-appointment-panel").hide();
 				     	  $("#add-medication-form").hide();
 				     	  $("#add-medication-panel").hide();
+				     	  $("#assign-medication-form").hide();
+					     $("#assign-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -783,6 +933,8 @@
                     $("#add-patient-panel").hide();
                     $("#add-medication-form").hide();
                     $("#add-medication-panel").hide();
+                    $("#assign-medication-form").hide();
+					     $("#assign-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -956,6 +1108,8 @@
                    $('#add-patient-panel').hide();
 					    $("#create-appointment-form").hide();
 					    $("#create-appointment-panel").hide();
+					    $("#assign-medication-form").hide();
+					    $("#assign-medication-panel").hide();
                    $("#welcome-container").fadeOut(400);
                    $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -1026,6 +1180,34 @@
                     } else {
                         $('#min-dosage-input').removeClass("has-error");
                     }
+                });
+                
+                $("#view-medication-list").click(function() {
+						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+						 viewMedicationsAJAX();
+                });
+                
+                // When the user selects assign medication
+                $("#assign-medication").click(function(){
+						 $("#assign-medication-form").show();
+                   $("#add-patient-form").hide();
+                   $("#add-patient-panel").hide();
+					    $("#create-appointment-form").hide();
+					    $("#create-appointment-panel").hide();
+					    $("#add-medication-form").hide();
+					    $("#add-medication-panel").hide();
+                   $("#welcome-container").fadeOut(400);
+                   $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   // reset the form and errors
+                   $("#asign-medication-form").trigger("reset");
+                   $("#medication-name-input").removeClass("has-error");
+                   $("#medication-type-input").removeClass("has-error");
+                   $("#intake-method-input").removeClass("has-error");
+                   $("#max-dosage-input").removeClass("has-error");
+                   $("#min-dosage-input").removeClass("has-error");
+                   // ugly, but it works
+                   $("#assign-medication-panel").fadeIn(800).removeClass('hidden');
                 });
                 
             });
