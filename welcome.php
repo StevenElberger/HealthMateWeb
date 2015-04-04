@@ -110,7 +110,7 @@
                         <li id="view-medication" class="dropdown">
                            <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Medications <span class="caret"></span></a>
                            <ul class="dropdown-menu" role="menu">
-                              <li><a id="add-medication" href="#">Create Medication</a></li>
+                              <li><a id="add-medication" href="#">Add Medication</a></li>
                               <li class="divider"></li>
                               <li id="view-medication-list"><a href="#">View Medications</a></li>
                               <li class="divider"></li>
@@ -637,6 +637,47 @@
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.send("doctor_id=" + doc_id);
             }
+            
+            // Add Medication Submit Function
+            function addMedicationAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                var medication_name = $("#medication_name").val();
+                var medication_type = $("#medication_type").val();
+                var intake_method = $("#intake_method").val();
+                var max_dosage = $("#max_dosage").val();
+                var min_dosage = $("#min_dosage").val();
+                xmlhttp.open("POST","add_medication.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&medication_type=" + medication_type +
+                            "&intake_method=" + intake_method + "&max_dosage=" + max_dosage + "&min_dosage=" + min_dosage);
+            }
 
             $(document).ready(function(){
 
@@ -652,8 +693,10 @@
                 // when clicking on the add patient link
                 $("#add-patient").click(function(){
                     $('#add-patient-form').show();
-					$("#create-appointment-form").hide();
-					$("#create-appointment-panel").hide();
+					     $("#create-appointment-form").hide();
+				     	  $("#create-appointment-panel").hide();
+				     	  $("#add-medication-form").hide();
+				     	  $("#add-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -738,6 +781,8 @@
                     $("#create-appointment-form").show();
                     $("#add-patient-form").hide();
                     $("#add-patient-panel").hide();
+                    $("#add-medication-form").hide();
+                    $("#add-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -916,12 +961,73 @@
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                    // reset the form and errors
                    $("#add-medication-form").trigger("reset");
-                   $("#username-input").removeClass("has-error");
-                    $("#first-name-input").removeClass("has-error");
-                    $("#last-name-input").removeClass("has-error");
-                    // ugly, but it works
-                    $("#add-patient-panel").fadeIn(800).removeClass('hidden');
+                   $("#medication-name-input").removeClass("has-error");
+                   $("#medication-type-input").removeClass("has-error");
+                   $("#intake-method-input").removeClass("has-error");
+                   $("#max-dosage-input").removeClass("has-error");
+                   $("#min-dosage-input").removeClass("has-error");
+                   // ugly, but it works
+                   $("#add-medication-panel").fadeIn(800).removeClass('hidden');
                 });
+                
+                // When the user attempts to submit medication form
+                $('#add-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var medicationName = formInstance.isValid('block14', true);
+                    var medicationType = formInstance.isValid('block15', true);
+                    var intakeMethod = formInstance.isValid('block16', true);
+                    var maxDosage = formInstance.isValid('block17', true);
+                    var minDosage = formInstance.isValid('block18', true);
+
+                    if (medicationName && medicationType && intakeMethod && maxDosage && minDosage) {
+                        // submit form with AJAX
+                        addMedicationAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     */
+                    if (!medicationName) {
+                        $('#medication-name-input').addClass("has-error");
+                    } else {
+                        $('#medication-name-input').removeClass("has-error");
+                    }
+
+                    if (!medicationType) {
+                        $('#medication-type-input').addClass("has-error");
+                    } else {
+                        $('#medication-type-input').removeClass("has-error");
+                    }
+                    
+                    if (!intakeMethod) {
+                        $('#intake-method-input').addClass("has-error");
+                    } else {
+                        $('#intake-method-input').removeClass("has-error");
+                    }
+
+                    if (!maxDosage) {
+                        $('#max-dosage-input').addClass("has-error");
+                    } else {
+                        $('#max-dosage-input').removeClass("has-error");
+                    }
+                    
+                    if (!minDosage) {
+                        $('#min-dosage-input').addClass("has-error");
+                    } else {
+                        $('#min-dosage-input').removeClass("has-error");
+                    }
+                });
+                
             });
         </script>
     </body>
