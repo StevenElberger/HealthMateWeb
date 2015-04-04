@@ -25,11 +25,10 @@
         $emailError =  $companyError = $phoneError = $requiredFields = "";
         // Placeholders for variables from form
         $first_name = $last_name = $email = $company = $phone = "";
-        
-        $username = "test";
+        $username = "eggroll";
 
         // Only process POST requests, not GET
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["update"])) {
+        if (empty($_POST["update"])) {
 			  // Create connection
             $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
 
@@ -37,7 +36,8 @@
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-
+            
+            
             // Adds a new user account with form data into the physician table of the database
             // -- To do: form checking (e.g., username already exists, security, etc.)
             $sql = "SELECT * FROM physician WHERE username='".$username."'";
@@ -97,7 +97,7 @@
         }
 
         // As long as all variables were initialized, the data is good to go
-        if (($first_name !== "") && ($last_name !== "") && ($company !== "") && ($phone !== "")) {
+        if (($first_name !== "") && ($last_name !== "") && ($company !== "") && ($phone !== "") && !empty($_POST["update"])) {
 
             // Create connection
             $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
@@ -114,7 +114,7 @@
             
             if ($conn->query($sql) === TRUE) {
                 // Redirect upon successful account creation
-                echo header("Location: /HealthMateTest/index.php");
+                header("Location: /HealthMateWeb/welcome.php");
             } else {
                 echo "Error: " . $sql . "<br />" . $conn->error;
             }
