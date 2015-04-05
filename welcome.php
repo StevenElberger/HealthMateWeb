@@ -14,11 +14,11 @@
         <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
 
         <?php
-            /*// Grab security functions
+            // Grab security functions
             require_once("/private/initialize.php");
             session_start();
             // Make sure the session is still active
-            /*validate_user_before_displaying();
+            validate_user_before_displaying();
 			$username = $_SESSION["username"];
 
             // Check if logout button was pressed
@@ -65,7 +65,7 @@
 
 				// Peace out
 				$conn->close();
-			}*/
+			}
 		?>
 	</head>
     <body>
@@ -222,7 +222,7 @@
 													<option selected disabled>Select a Patient</option>
 													<option>Other</option>
 													<?php
-														/*// Create connection
+														// Create connection
                                                         $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 														// Check connection
@@ -244,7 +244,7 @@
 															$first_name = $row["first_name"];
 															$last_name = $row["last_name"];
 															echo "<option>{$first_name}, {$last_name} ({$patient_username})</option>";
-														}*/
+														}
 													?>
                                     </select>
                                 </div>
@@ -626,7 +626,7 @@
                             "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
             }
 
-            ////////////////////////////////////////////////////////////////////////
+            // Submit Appointment Form Function
             function submiteAppointmentWithAJAX() {
                var xmlhttp;
                if (window.XMLHttpRequest) {
@@ -679,7 +679,8 @@
 					
 			}
 
-            /////////////////////////////////////////////////////////////////////////////
+            // Display all Appointments to the user that are associated
+            // with there account Submit Function
             function viewAppointmentsAJAX() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {
@@ -792,7 +793,7 @@
             }
             
             
-            // Add Medication Submit Function
+            // Assign Medication to Patient Submit Function
             function assignMedicationAJAX() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {
@@ -972,16 +973,22 @@
 
                 // Appointment Creation Form
                 $("#create-appointment").click(function(){
+						 
+						  // Display appointment form to user
                     $("#create-appointment-form").show();
+                    
+                    // Hide all other forms
                     $("#add-patient-form").hide();
                     $("#add-patient-panel").hide();
                     $("#add-medication-form").hide();
                     $("#add-medication-panel").hide();
                     $("#assign-medication-form").hide();
 					     $("#assign-medication-panel").hide();
+					     
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                    
                     // reset the form and errors
                     $("#create-appointment-form").trigger("reset");
                     $("#appointment-username-input").removeClass("has-error");
@@ -995,10 +1002,12 @@
                     $("#appointment-date-input").removeClass("has-error");
                     $("#appointment-starttime-input").removeClass("has-error");
                     $("#appointment-endtime-input").removeClass("has-error");
+                    
                     // ugly, but it works
                     $("#create-appointment-panel").fadeIn(800).removeClass('hidden');
                 });
                 
+                // Valdiate the Form
                 $('#create-appointment-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                     var firstName = formInstance.isValid('block4', true);
@@ -1013,17 +1022,21 @@
                     var endTime = formInstance.isValid('block13', true);
                     var appointmentUsername = formInstance.isValid('block14', true);
                     
-                    // check if the date the user entered is before current date
-                    
+                    // Grab the date that the user entered
                     var dateString = $("#appointment_date").val();
                     var dateArray = dateString.split("-");
                     var day = parseInt(dateArray[2]);
+                    
+                    // month in input goes from 1 - 13, add correction
                     var month = parseInt(dateArray[1]) - 1;
                     var year = parseInt(dateArray[0]);
+                    
+                    // Create a new Date with the given year, month, and day
                     var inputDate = new Date(year, month, day);
                     var currentDate = new Date();
                     var dateValid = false;
                     
+                    // check if the date the user entered is before current date
                     if (date && (inputDate.setHours(0, 0, 0, 0) >= currentDate.setHours(0, 0, 0, 0))) {
 							  dateValid = true;
 						  }
@@ -1032,22 +1045,28 @@
                     
                     // Check if the user entered a valid end time
                     if (startTime && endTime) {
+							  // Grab the start time and end time from input
 								var time = $("#appointment_start_time").val();
 								var startTime = time.split(":");
 								time = $("#appointment_end_time").val();
 								var endTime = time.split(":");
+								
+								// Create new dates in order to compare times
+								// year, month, day is from the date entered in the form
 								var startDate = new Date(year, month, day);
 								var endDate = new Date(year, month, day);
                     
 								startDate.setHours(startTime[0], startTime[1], 0, 0);
 								endDate.setHours(endTime[0], endTime[1], 0, 0);
-							
+							   
+							   // If the start time is before end time, the times are valid
 								if (startDate <= endDate) {
 									validInputTime = true;
 								}
 							}
 
-
+						  // If all required fields are given and are valid,
+						  // submit
                     if (firstName && lastName && appointmentTitle && address && city && zipCode &&
 									state && date && dateValid && startTime && endTime && validInputTime && appointmentUsername) {
                         // submit form with AJAX
@@ -1066,7 +1085,9 @@
                     /*
                      Input validation rules:
                      - All forms required
-                     - Username must be alphanumeric characters, 8 to 16 characters long
+                     - Zip code needs to be a numerical input with length between 5 and 9
+                     - Date enter must be after current system date
+                     - Start time must be before End time
                      */
                      if (!appointmentUsername) {
 								$('#appointment-username-input').addClass("has-error");
@@ -1139,6 +1160,8 @@
                     }
                 });
                 
+                // Handle the event the user selects view appointments under
+                // the Appointments option
                 $("#view-appointment-list").click(function() {
 						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
 						 viewAppointmentsAJAX();
@@ -1147,16 +1170,22 @@
                 
                 // When the user selects add medication
                 $("#add-medication").click(function(){
+						 
+						 // Display Medication form
 						 $('#add-medication-form').show();
+						 
+						 // Hide all other forms
                    $('#add-patient-form').hide();
                    $('#add-patient-panel').hide();
 					    $("#create-appointment-form").hide();
 					    $("#create-appointment-panel").hide();
 					    $("#assign-medication-form").hide();
 					    $("#assign-medication-panel").hide();
+					    
                    $("#welcome-container").fadeOut(400);
                    $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   
                    // reset the form and errors
                    $("#add-medication-form").trigger("reset");
                    $("#medication-name-input").removeClass("has-error");
@@ -1164,11 +1193,12 @@
                    $("#intake-method-input").removeClass("has-error");
                    $("#max-dosage-input").removeClass("has-error");
                    $("#min-dosage-input").removeClass("has-error");
+                   
                    // ugly, but it works
                    $("#add-medication-panel").fadeIn(800).removeClass('hidden');
                 });
                 
-                // When the user attempts to submit medication form
+                // When the user attempts to submit a medication form
                 $('#add-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                     var medicationName = formInstance.isValid('block14', true);
@@ -1177,6 +1207,8 @@
                     var maxDosage = formInstance.isValid('block17', true);
                     var minDosage = formInstance.isValid('block18', true);
 
+						  // If all required fields are given and are valid,
+						  // submit
                     if (medicationName && medicationType && intakeMethod && maxDosage && minDosage) {
                         // submit form with AJAX
                         addMedicationAJAX();
@@ -1226,6 +1258,8 @@
                     }
                 });
                 
+                // Handle the event the user selects the medication list option
+                // under medications
                 $("#view-medication-list").click(function() {
 						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
 						 viewMedicationsAJAX();
@@ -1233,16 +1267,22 @@
                 
                 // When the user selects assign medication
                 $("#assign-medication").click(function(){
+						 
+						 // Show assign medication form
 						 $("#assign-medication-form").show();
+						 
+						 // Hide all other forms
                    $("#add-patient-form").hide();
                    $("#add-patient-panel").hide();
 					    $("#create-appointment-form").hide();
 					    $("#create-appointment-panel").hide();
 					    $("#add-medication-form").hide();
 					    $("#add-medication-panel").hide();
+					    
                    $("#welcome-container").fadeOut(400);
                    $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                    $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   
                    // reset the form and errors
                    $("#asign-medication-form").trigger("reset");
                    $("#assign-medication-name-input").removeClass("has-error");
@@ -1250,12 +1290,13 @@
                    $("#assign-medication-patient-name-input").removeClass("has-error");
                    $("#assign-medication-dosage-input").removeClass("has-error");
                    $("#assign-medication-frequency-input").removeClass("has-error");
+                   
                    // ugly, but it works
                    $("#assign-medication-panel").fadeIn(800).removeClass('hidden');
                 });
                 
                 
-                // When the user attempts to submit medication form
+                // When the user attempts to submit assign medication form
                 $('#assign-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                     var medicationName = formInstance.isValid('block19', true);
@@ -1264,6 +1305,8 @@
                     var dosage = formInstance.isValid('block22', true);
                     var frequency = formInstance.isValid('block23', true);
 
+						  // If all the required information is given and they are all valid,
+						  // submit
                     if (medicationName && patientUsername && patientName && dosage && frequency) {
                         // submit form with AJAX
                         assignMedicationAJAX();

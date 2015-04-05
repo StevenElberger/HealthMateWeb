@@ -17,18 +17,27 @@
     <body>
         <?php
         // Grab security functions
-        //require_once("/private/initialize.php");
+        require_once("/private/initialize.php");
+        
+        // validate that the user is logged in and the
+        // session is valid
+        validate_user_before_displaying();
+        
         // Flag for first load
         $firstLoad = true;
+        
         // Error placeholders
         $firstNameError = $lastNameError =  "";
         $emailError =  $companyError = $phoneError = $requiredFields = "";
+        
         // Placeholders for variables from form
         $first_name = $last_name = $email = $company = $phone = "";
         $username = "eggroll";
 
-        // Only process POST requests, not GET
+        // Check if this is the first time the user enters this form
+        // Update is set when the user clicks update in the account settings form
         if (empty($_POST["update"])) {
+			  
 			  // Create connection
             $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
 
@@ -38,12 +47,14 @@
             }
             
             
-            // Adds a new user account with form data into the physician table of the database
-            // -- To do: form checking (e.g., username already exists, security, etc.)
+            // Grab all the information that is stored with this account at
+            // registration
             $sql = "SELECT * FROM physician WHERE username='".$username."'";
             
             $results = $conn->query($sql);
             
+            // If the query was executed properly, fill the form
+            // with the existing values in the appropriate locations 
             if ($results->num_rows > 0) {
 					
 					$row = $results->fetch_assoc();
@@ -54,17 +65,19 @@
 					$company = $row["company"];
 					$phone = $row["phone"];
 					
-										
 					} else {
 						echo "Error: " . $sql . "<br />" . $conn->error;
                }
 
-            // Peace out
+            // Close the database connection
             $conn->close();
 		  }
+		  
+		  // Only accept POST Requests
         else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  
             $firstLoad = false;
-            // Check the required fields
+            // Check that the required fields have been set
             if (empty($_POST["first_name"])) {
                 $firstNameError = "*";
             } else {
@@ -107,19 +120,23 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            // Adds a new user account with form data into the physician table of the database
-            // -- To do: form checking (e.g., username already exists, security, etc.)
+            // Update the user account with form data into the physician table of the database
             $sql = "UPDATE physician SET first_name='".$first_name."', last_name='".$last_name."', company='".$company."', phone='".
             $phone."', email='".$email."' WHERE username='".$username."'";
             
             if ($conn->query($sql) === TRUE) {
-                // Redirect upon successful account creation
+					
+                // Redirect upon successful account update
                 header("Location: /HealthMateWeb/welcome.php");
+                
             } else {
+					
+					// Error in Update
                 echo "Error: " . $sql . "<br />" . $conn->error;
+                
             }
 
-            // Peace out
+            // Close the database connection
             $conn->close();
         } else {
             if (!$firstLoad) {
@@ -138,6 +155,7 @@
 
 ?>
 
+<!-- Account Settings Form -->
     <div class="well login-well">
         <fieldset>
             <h2 class="text-center">Account Settings</h2>
@@ -217,7 +235,9 @@
                 var email = formInstance.isValid('block6', true);
                 var company = formInstance.isValid('block7', true);
                 var phone = formInstance.isValid('block8', true);
-
+                
+                // If all the required fields are given and valid,
+                // submit
                 if (firstName && lastName && email && company && phone) {
                     return;
                 }
@@ -235,6 +255,7 @@
                     - E-mail must be a valid e-mail address
                     - Phone number must be digits only, length 7 to 10
                  */
+                 
                 if (!firstName) {
                     $('#first-name-input').addClass("has-error");
                 } else {

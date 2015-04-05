@@ -1,5 +1,11 @@
 <?php
 
+// Note: This implementation is based on a Tutorial
+// that one of the developers used to learn about web security.
+// Tutorial Name: Creating Secure PHP Websites
+// Author: Kevin Skoglund
+// Website of Tutorial: Lynda.com
+
 // Function to see if the request is from the same domain.
 // Use with request_is_post() to block posting from off-site forms
 function request_is_same_domain() {

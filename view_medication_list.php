@@ -1,6 +1,6 @@
 <?php
 	 // Grab security functions
-    //require_once("/private/initialize.php");
+    require_once("/private/initialize.php");
     
     // Error placeholder variables
     $doctor_idError = "";
@@ -14,7 +14,8 @@
     
     // Only process POST requests, not GET
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check the required fields
+        
+        // Check that the required fields have been set
         if (empty($_POST["doctor_id"])) {
             $doctor_idError = "*";
         } else {
@@ -32,8 +33,10 @@
             die("Connection failed: " . $conn->connect_error);
         } 
         
+        // Select all existing medications from the medications table
         $sql = "SELECT * FROM medications";
         
+        // If there are no medications, display No Medications
         $results = $conn->query($sql);
         if ($results->num_rows == 0) {
 			  $result = "No Medications";
@@ -41,6 +44,7 @@
            return;
          }
         
+        // Start the construction of the Medications table
         $result = "<h3 class='text-center'>Medications List</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -54,6 +58,8 @@
                     </tr>
                     </thead>
                     <tbody>";  
+                    
+        // for each medication in result, add a new row to the table
         foreach ($results as $row) {
 			   $medication_id = $row["m_id"];
 				$medication_name = $row["name"];
@@ -79,8 +85,10 @@
 		  return;
 	  }
 	  
+	  // Close the connection to the database
 	  $conn->close();
 	  
+	  // Display the results to the user
 	  echo $result;
 	  
 	  // Removes unwanted and potentially malicious characters

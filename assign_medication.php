@@ -1,9 +1,11 @@
 <?php
     // Grab security functions
-    //require_once("/private/initialize.php");
+    require_once("/private/initialize.php");
+    
     // Error placeholders
     $medicationNameError = $patientUsernameError = $patientNameError = "";
     $dosageError = $frequencyError = $doctor_idError = "";
+    
     // Placeholders for variables from form
     $doctor_id = $medication_name = $patient_username = $patient_name = $dosage = $frequency = "";
 
@@ -12,7 +14,8 @@
 
     // Only process POST requests, not GET
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check the required fields
+		 
+        // Check that the required fields have been set
         if (empty($_POST["doctor_id"])) {
             $doctor_idError = "*";
         } else {
@@ -49,8 +52,6 @@
             $frequency = test_input($_POST["frequency"]);
         }
     }
-    
-    //$doctor_id = $medication_name = $patient_username = $patient_name = $dosage = $frequency = "";
 
     // As long as all variables were initialized, the data is good to go
     if (($medication_name !== "") && ($patient_username !== "") && ($patient_name !== "") && ($dosage !== "")
@@ -64,20 +65,23 @@
             die("Connection failed: " . $conn->connect_error);
         }
         
-        // Adds a new user account with form data into the physician table of the database
-        // -- To do: form checking (e.g., username already exists, security, etc.)
+        // Adds a new medication associated with a patient with form data into the medication list table of the database
         $sql = "INSERT INTO medications_list (p_id, u_id, m_id, patient_name, dosage, frequency) 
         VALUES ('".$patient_username."', '".$doctor_id."','".$medication_name."', '".$patient_name."', '".$dosage."', '".$frequency."')";
 
+        // Only assign the medication to the patient if the patient does not have the medication already assigned to them
         if (assign_medication_exists($medication_name, $conn)) {
             $result = "Medication already Assigned.";
         } else if ($conn->query($sql) === TRUE) {
 
+				// select the assigned medication from the database that has just been inserted
             $sql_get_medication_list_id = "SELECT ml_id FROM medications_list WHERE p_id ='".$patient_username."' AND m_id ='".$medication_name."'";
-													
+				
+				// Execute query
             $get_medication_list_id = $conn->query($sql_get_medication_list_id);
             $medication_list_id = "";
 
+				// Verify that the medication has been assigned and stored in the database
             if ($get_medication_list_id->num_rows > 0) {
                 while ($row = $get_medication_list_id->fetch_assoc()) {
                     $medication_list_id .= $row["ml_id"];
@@ -87,7 +91,9 @@
                 echo $result;
                 return;
             }
-
+            
+            // Create table with information of the assigned medication that was just entered
+            // into the database
             $result = "<h3 class='text-center'>Medication Added Successfully</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -115,9 +121,10 @@
             echo "Error: " . $sql . "<br />" . $conn->error;
         }
 
-        // Peace out
+        // Close the connection
         $conn->close();
 
+		  // Display the table or error depending on success
         echo $result;
     }
 

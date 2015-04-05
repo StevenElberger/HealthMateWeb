@@ -1,6 +1,6 @@
 <?php
     // Grab security functions
-    //require_once("/private/initialize.php");
+    require_once("/private/initialize.php");
     // Error placeholders
     $medicationNameError = $medicationTypeError = $intakeMethodError = "";
     $maxDosageError = $minDosageError = $doctor_idError = "";
@@ -12,7 +12,8 @@
 
     // Only process POST requests, not GET
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check the required fields
+		 
+        // Check that required fields have been set
         if (empty($_POST["doctor_id"])) {
             $doctor_idError = "*";
         } else {
@@ -49,8 +50,6 @@
             $min_dosage = test_input($_POST["min_dosage"]);
         }
     }
-    
-    //$doctor_id = $medication_name = $medication_type = $intake_method = $max_dosage = $min_dosage = "";
 
     // As long as all variables were initialized, the data is good to go
     if (($medication_name !== "") && ($medication_type !== "") && ($intake_method !== "") && ($max_dosage !== "")
@@ -64,19 +63,21 @@
             die("Connection failed: " . $conn->connect_error);
         }
         
-        // Adds a new user account with form data into the physician table of the database
-        // -- To do: form checking (e.g., username already exists, security, etc.)
+        // Adds a new mediation with form data into the medications table of the database
         $sql = "INSERT INTO medications (name, type, intake_method, max_dosage, min_dosage) 
         VALUES ('".$medication_name."', '".$medication_type."', '".$intake_method."', '".$max_dosage."', '".$min_dosage."')";
 
+		  // Add the medication to the database only if it does not already exist
         if (medication_exists($medication_name, $conn)) {
             $result = "Medication already exists.";
         } else if ($conn->query($sql) === TRUE) {
 
+				// Verify that the medication was added successfully to the database
             $sql_get_medication_id = "SELECT m_id FROM medications WHERE name = '" . $medication_name . "'";
             $get_medication_id = $conn->query($sql_get_medication_id);
             $medication_id = "";
 
+				// If medication not added, display ERROR
             if ($get_medication_id->num_rows > 0) {
                 while ($row = $get_medication_id->fetch_assoc()) {
                     $medication_id .= $row["m_id"];
@@ -86,7 +87,9 @@
                 echo $result;
                 return;
             }
-
+            
+            // Create a table with information about the medication that was just added
+            // to the database.
             $result = "<h3 class='text-center'>Medication Added Successfully</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -114,7 +117,7 @@
             echo "Error: " . $sql . "<br />" . $conn->error;
         }
 
-        // Peace out
+        // Close Connection to Database
         $conn->close();
 
         echo $result;
@@ -129,7 +132,7 @@
         return $data;
     }
 
-    // Checks to see if given username already exists
+    // Checks to see if given medication already exists
     function medication_exists($given_medication_name, $existing_conn) {
         $sql = "SELECT name FROM medications WHERE name = '".$given_medication_name."'";
 

@@ -1,4 +1,10 @@
 <?php
+// Note: This implementation is based on a Tutorial
+// that one of the developers used to learn about web security.
+// Tutorial Name: Creating Secure PHP Websites
+// Author: Kevin Skoglund
+// Website of Tutorial: Lynda.com
+
 // Functions that prevent cross-site request forgery.
 // A session must have been started before any of these
 // can be used.

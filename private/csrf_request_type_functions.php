@@ -11,14 +11,4 @@ function request_is_post() {
 	return $_SERVER['REQUEST_METHOD'] === 'POST';
 }
 
-// Usage:
-// If you want to make chages to the database or process
-// a form have that be inside:
-// if(request_is_post()) {
-//   
-// }
-// Otherwise do something safe 
-// else {
-//  
-// }
 ?>

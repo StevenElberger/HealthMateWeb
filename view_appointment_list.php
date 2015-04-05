@@ -15,7 +15,8 @@
     
     // Only process POST requests, not GET
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check the required fields
+        
+        // Check that the required fields have been set
         if (empty($_POST["doctor_id"])) {
             $doctor_idError = "*";
         } else {
@@ -33,8 +34,11 @@
             die("Connection failed: " . $conn->connect_error);
         } 
         
+        // Select all the appointments that are associated with the
+        // requesting user account
         $sql = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "'";
         
+        // If there are no appointments, display that there are no appointments
         $results = $conn->query($sql);
         if ($results->num_rows == 0) {
 			  $result = "No Appointments";
@@ -42,6 +46,7 @@
            return;
          }
         
+        // Start the construction of the table of appointments
         $result = "<h3 class='text-center'>Appointment List</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -56,6 +61,8 @@
                     </tr>
                     </thead>
                     <tbody>";  
+                    
+        // For each appointment returned, add a new row to the table
         foreach ($results as $row) {
 			   $appointment_id = $row["appointment_id"];
 				$patient_name = $row["first_name"] . " " . $row["last_name"];
@@ -83,8 +90,10 @@
 		  return;
 	  }
 	  
+	  // Closed the connection to the database
 	  $conn->close();
 	  
+	  // display the results to the user
 	  echo $result;
 	  
 	  // Removes unwanted and potentially malicious characters
