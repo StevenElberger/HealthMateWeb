@@ -55,7 +55,7 @@
 
     // As long as all variables were initialized, the data is good to go
     if (($medication_name !== "") && ($patient_username !== "") && ($patient_name !== "") && ($dosage !== "")
-    && ($frequency !== "")) {
+    && ($frequency !== "") && ($doctor_id !== "")) {
 
         // Create connection
         $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
@@ -65,7 +65,7 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        // new stuff
+        // new stuff - get the actual patient_id
         $get_patient_id_sql = "SELECT patient_id FROM patient WHERE username = '" . $patient_username . "'";
 
         $patient_id_result = $conn->query($get_patient_id_sql);
@@ -77,10 +77,23 @@
                 $patient_id = $row["patient_id"];
             }
         }
+
+        // more new stuff - get the actual medication_id
+        $get_medication_id_sql = "SELECT medication_id FROM medications WHERE name = '" . $medication_name . "'";
+
+        $medication_id_result = $conn->query($get_medication_id_sql);
+
+        $medication_id = "";
+
+        if ($medication_id_result->num_rows > 0) {
+            while ($row = $medication_id_result->fetch_assoc()) {
+                $medication_id = $row["medication_id"];
+            }
+        }
         
         // Adds a new medication associated with a patient with form data into the medication list table of the database
-        $sql = "INSERT INTO medicationlist (patient_id, user_id, medication_id, patient_name, dosage, frequency)
-        VALUES ('".$patient_id."', '".$doctor_id."','".$medication_name."', '".$patient_name."', '".$dosage."', '".$frequency."')";
+        $sql = "INSERT INTO medicationlist (patient_id, doctor_id, medication_id, patient_name, dosage, frequency)
+        VALUES ('".$patient_id."', '".$doctor_id."','".$medication_id."', '".$patient_name."', '".$dosage."', '".$frequency."')";
 
         // Only assign the medication to the patient if the patient does not have the medication already assigned to them
         if (assign_medication_exists($medication_name, $patient_name, $conn)) {
@@ -88,7 +101,7 @@
         } else if ($conn->query($sql) === TRUE) {
 
 				// select the assigned medication from the database that has just been inserted
-            $sql_get_medication_list_id = "SELECT medication_list_id FROM medicationlist WHERE patient_id ='".$patient_username."' AND medication_id ='".$medication_name."'";
+            $sql_get_medication_list_id = "SELECT medication_list_id FROM medicationlist WHERE patient_id ='".$patient_id."' AND medication_id ='".$medication_id."'";
 				
 				// Execute query
             $get_medication_list_id = $conn->query($sql_get_medication_list_id);
