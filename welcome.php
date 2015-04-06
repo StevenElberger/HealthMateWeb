@@ -98,7 +98,7 @@
                         <li id="view-appointment" class="dropdown">
                            <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Appointments <span class="caret"></span></a>
                            <ul class="dropdown-menu" role="menu">
-                              <li><a id="create-appointment" href="#">New Appointment</a></li>
+                              <li><a id="create-appointment" href="#">Create Appointment</a></li>
                               <li class="divider"></li>
                               <li id="view-appointment-list"><a href="#">View Appointments</a></li>
                            </ul>
@@ -106,7 +106,21 @@
                         
                         <!-- End of Appointments navigation and dropdown -->
                         
-                        <li><a href="/HealthMateTest/welcome.php">Settings</a></li>
+                        <!-- Medications navigation and dropdown -->
+                        <li id="view-medication" class="dropdown">
+                           <a href="#" class="dropdown-toggle view-patient" data-toggle="dropdown" role="button" aria-expanded="false">Medications <span class="caret"></span></a>
+                           <ul class="dropdown-menu" role="menu">
+                              <li><a id="add-medication" href="#">Add Medication</a></li>
+                              <li class="divider"></li>
+                              <li id="view-medication-list"><a href="#">View Medications</a></li>
+                              <li class="divider"></li>
+                              <li id="assign-medication"><a href="#">Assign Medication</a></li>
+                           </ul>
+                        </li>
+                        
+                        <!-- End of Medications navigation and dropdown -->
+                        
+                        <li><a href="/HealthMateTest/account_settings.php">Settings</a></li>
                         <li><a href="/HealthMateTest/logout.php">Logout</a></li>
                     </ul>
                 </div>
@@ -385,7 +399,177 @@
                     </fieldset>
                 </div>
                 <!-- End of create appointment form -->
+                
+                <!-- Start of Medication Form -->
+                <div class="panel panel-default hidden" id="add-medication-panel">
+                <div class="panel-body">
+                    <h3 class="text-center">Medication Form</h3>
+                    <fieldset>
+                        <form role="form" id="add-medication-form" class="form-horizontal login-form" method="post">
+                            <div class="form-group" id="medication-name-input">
+                                <div class="col-md-12">
+                                    <label>Medication Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MD</span></span>
+                                        <input type="text" id="medication_name" name="medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block14" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="medication-type-input">
+                                <div class="col-md-12">
+                                    <label>Medication Type:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">T</span></span>
+                                        <input type="text" id="medication_type" name="medication_type" class="form-control" data-parsley-required="true" data-parsley-group="block15" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="intake-method-input">
+                                <div class="col-md-12">
+                                    <label>Intake Method:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">IM</span></span>
+                                        <input type="text" id="intake_method" name="intake_method" class="form-control" data-parsley-required="true" data-parsley-group="block16" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="max-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Max Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MAX</span></span>
+                                        <input type="text" id="max_dosage" name="max_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block17" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="min-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Min Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">MIN</span></span>
+                                        <input type="text" id="min_dosage" name="min_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block18" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 5%;">
+                                    <button type="submit" id="add-medication-button" class="btn btn-lg btn-block btn-primary validate">Add Medication</button>
+                            </div>
+                        </div>
+                    </form>
+                 </fieldset>
+            </div>
+            
+            <!-- End of Medication Form -->         
+            
+            <!-- Medication Assign Form -->
+            
+            <div class="panel panel-default hidden" id="assign-medication-panel">
+                <div class="panel-body">
+                    <h3 class="text-center">Medication Assign Form</h3>
+								<fieldset>
+                        <form role="form" id="assign-medication-form" class="form-horizontal login-form" method="post">
+									<div class="form-group" id="assign-medication-name-input">
+                                <div class="col-md-12">
+                                    <label>Medication Name:</label><br />
+                                    <select name="assign_medication_name" id="assign_medication_name" class="form-control" data-parsley-required="true" data-parsley-group="block19" data-parsley-ui-enabled="false">
+													<option selected disabled>Select a Medication</option>
+													<?php
+														// Create connection
+                                                        $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
+														// Check connection
+														if ($conn->connect_error) {
+															die("Connection failed: " . $conn->connect_error);
+														}
+				
+														// Select all patients that are associated with this doctor
+														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
+														$sql = "SELECT * FROM medications";
+														
+														// Execute Query
+														$result = $conn->query($sql);
+														
+														// Create a selectable option for each patient associated
+														// with the current doctor
+														foreach($result as $row) {
+															$medication_name = $row["name"];
+															echo "<option>{$medication_name}</option>";
+														}
+													?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="assign-medication-patient-input">
+                                <div class="col-md-12">
+                                    <label>Patient Username:</label><br />
+                                    <select name="assign_medication_patient" id="assign_medication_patient" class="form-control" data-parsley-required="true" data-parsley-group="block20" data-parsley-ui-enabled="false">
+													<option selected disabled>Select a Patient</option>
+													<?php
+														// Create connection
+                                                        $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+
+														// Check connection
+														if ($conn->connect_error) {
+															die("Connection failed: " . $conn->connect_error);
+														}
+				
+														// Select all patients that are associated with this doctor
+														$sql = "SELECT * FROM patient WHERE doctor_id =" . $username;
+														
+														// Execute Query
+														$result = $conn->query($sql);
+														
+														// Create a selectable option for each patient associated
+														// with the current doctor
+														foreach($result as $row) {
+															$patient_username = $row["username"];
+															//$first_name = $row["first_name"];
+															//$last_name = $row["last_name"];
+															$first_name = "test";
+															$last_name = "test";
+															echo "<option value=\"{$patient_username}\">{$first_name}, {$last_name} ({$patient_username})</option>";
+														}
+													?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" id="assign-medication-patient-name-input">
+                                <div class="col-md-12">
+                                    <label>Patient Name:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">PN</span></span>
+                                        <input type="text" id="assign_medication_patient_name" name="assign_medication_patient_name" class="form-control" data-parsley-required="true" data-parsley-group="block21" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="assign-medication-dosage-input">
+                                <div class="col-md-12">
+                                    <label>Dosage:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">D</span></span>
+                                        <input type="text" id="assign_medication_dosage" name="assign_medication_dosage" class="form-control" data-parsley-required="true" data-parsley-group="block22" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="assign-medication-frequency-input">
+                                <div class="col-md-12">
+                                    <label>Frequency:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon">F</span></span>
+                                        <input type="text" id="assign_medication_frequency" name="assign_medication_frequency" class="form-control" data-parsley-required="true" data-parsley-group="block23" data-parsley-ui-enabled="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 5%;">
+                                <button type="submit" id="assign-medication-button" class="btn btn-lg btn-block btn-primary validate">Assign Medication</button>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+            
+            <!-- End of Medication Assign Form --> 
+            
                 <div id="myDiv" class="panel panel-default hidden"></div>
 
                 <div id="results" class="panel panel-default hidden"></div>
@@ -440,7 +624,7 @@
                             "&last_name=" + last_name + "&gender=" + gender + "&birthday=" + birthday + "&password=" + password);
             }
 
-            ////////////////////////////////////////////////////////////////////////
+            // Submit Appointment Form Function
             function submiteAppointmentWithAJAX() {
                var xmlhttp;
                if (window.XMLHttpRequest) {
@@ -493,7 +677,8 @@
 					
 			}
 
-            /////////////////////////////////////////////////////////////////////////////
+            // Display all Appointments to the user that are associated
+            // with there account Submit Function
             function viewAppointmentsAJAX() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {
@@ -552,12 +737,135 @@
                         $("#welcome-container").fadeOut(400);
                         $("#add-patient-panel").fadeOut(400);
                         $("#create-appointment-panel").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#assign-medication-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
                 var doc_id = $("#doctor_id").html();
                 xmlhttp.open("POST","viewpatientlist.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id);
+            }
+            
+            // Add Medication Submit Function
+            function addMedicationAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                var medication_name = $("#medication_name").val();
+                var medication_type = $("#medication_type").val();
+                var intake_method = $("#intake_method").val();
+                var max_dosage = $("#max_dosage").val();
+                var min_dosage = $("#min_dosage").val();
+                xmlhttp.open("POST","add_medication.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&medication_type=" + medication_type +
+                            "&intake_method=" + intake_method + "&max_dosage=" + max_dosage + "&min_dosage=" + min_dosage);
+            }
+            
+            
+            // Assign Medication to Patient Submit Function
+            function assignMedicationAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#assign-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                var medication_name = $("#assign_medication_name").val();
+                var patient_username = $("#assign_medication_patient").val();
+                var patient_name = $("#assign_medication_patient_name").val();
+                var dosage = $("#assign_medication_dosage").val();
+                var frequency = $("#assign_medication_frequency").val();
+                xmlhttp.open("POST","assign_medication.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("doctor_id=" + doc_id + "&medication_name=" + medication_name + "&patient_username=" + patient_username +
+                            "&patient_name=" + patient_name + "&dosage=" + dosage + "&frequency=" + frequency);
+            }
+            
+            
+            // Display A list of Available Medications
+            function viewMedicationsAJAX() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                    }
+                };
+                //var doc_id = $("#doctor_id").html();
+                var doc_id = "test";
+                xmlhttp.open("POST","view_medication_list.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.send("doctor_id=" + doc_id);
@@ -577,8 +885,12 @@
                 // when clicking on the add patient link
                 $("#add-patient").click(function(){
                     $('#add-patient-form').show();
-					$("#create-appointment-form").hide();
-					$("#create-appointment-panel").hide();
+					     $("#create-appointment-form").hide();
+				     	  $("#create-appointment-panel").hide();
+				     	  $("#add-medication-form").hide();
+				     	  $("#add-medication-panel").hide();
+				     	  $("#assign-medication-form").hide();
+					     $("#assign-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
@@ -660,12 +972,22 @@
 
                 // Appointment Creation Form
                 $("#create-appointment").click(function(){
+						 
+						  // Display appointment form to user
                     $("#create-appointment-form").show();
+                    
+                    // Hide all other forms
                     $("#add-patient-form").hide();
                     $("#add-patient-panel").hide();
+                    $("#add-medication-form").hide();
+                    $("#add-medication-panel").hide();
+                    $("#assign-medication-form").hide();
+					     $("#assign-medication-panel").hide();
+					     
                     $("#welcome-container").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                    
                     // reset the form and errors
                     $("#create-appointment-form").trigger("reset");
                     $("#appointment-username-input").removeClass("has-error");
@@ -679,10 +1001,12 @@
                     $("#appointment-date-input").removeClass("has-error");
                     $("#appointment-starttime-input").removeClass("has-error");
                     $("#appointment-endtime-input").removeClass("has-error");
+                    
                     // ugly, but it works
                     $("#create-appointment-panel").fadeIn(800).removeClass('hidden');
                 });
                 
+                // Valdiate the Form
                 $('#create-appointment-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
                     var firstName = formInstance.isValid('block4', true);
@@ -697,17 +1021,21 @@
                     var endTime = formInstance.isValid('block13', true);
                     var appointmentUsername = formInstance.isValid('block14', true);
                     
-                    // check if the date the user entered is before current date
-                    
+                    // Grab the date that the user entered
                     var dateString = $("#appointment_date").val();
                     var dateArray = dateString.split("-");
                     var day = parseInt(dateArray[2]);
+                    
+                    // month in input goes from 1 - 13, add correction
                     var month = parseInt(dateArray[1]) - 1;
                     var year = parseInt(dateArray[0]);
+                    
+                    // Create a new Date with the given year, month, and day
                     var inputDate = new Date(year, month, day);
                     var currentDate = new Date();
                     var dateValid = false;
                     
+                    // check if the date the user entered is before current date
                     if (date && (inputDate.setHours(0, 0, 0, 0) >= currentDate.setHours(0, 0, 0, 0))) {
 							  dateValid = true;
 						  }
@@ -716,22 +1044,28 @@
                     
                     // Check if the user entered a valid end time
                     if (startTime && endTime) {
+							  // Grab the start time and end time from input
 								var time = $("#appointment_start_time").val();
 								var startTime = time.split(":");
 								time = $("#appointment_end_time").val();
 								var endTime = time.split(":");
+								
+								// Create new dates in order to compare times
+								// year, month, day is from the date entered in the form
 								var startDate = new Date(year, month, day);
 								var endDate = new Date(year, month, day);
                     
 								startDate.setHours(startTime[0], startTime[1], 0, 0);
 								endDate.setHours(endTime[0], endTime[1], 0, 0);
-							
+							   
+							   // If the start time is before end time, the times are valid
 								if (startDate <= endDate) {
 									validInputTime = true;
 								}
 							}
 
-
+						  // If all required fields are given and are valid,
+						  // submit
                     if (firstName && lastName && appointmentTitle && address && city && zipCode &&
 									state && date && dateValid && startTime && endTime && validInputTime && appointmentUsername) {
                         // submit form with AJAX
@@ -750,7 +1084,9 @@
                     /*
                      Input validation rules:
                      - All forms required
-                     - Username must be alphanumeric characters, 8 to 16 characters long
+                     - Zip code needs to be a numerical input with length between 5 and 9
+                     - Date enter must be after current system date
+                     - Start time must be before End time
                      */
                      if (!appointmentUsername) {
 								$('#appointment-username-input').addClass("has-error");
@@ -823,10 +1159,202 @@
                     }
                 });
                 
+                // Handle the event the user selects view appointments under
+                // the Appointments option
                 $("#view-appointment-list").click(function() {
 						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
 						 viewAppointmentsAJAX();
                 });
+                
+                
+                // When the user selects add medication
+                $("#add-medication").click(function(){
+						 
+                     // Display Medication form
+                     $('#add-medication-form').show();
+
+                     // Hide all other forms
+                   $('#add-patient-form').hide();
+                   $('#add-patient-panel').hide();
+                    $("#create-appointment-form").hide();
+                    $("#create-appointment-panel").hide();
+                    $("#assign-medication-form").hide();
+                    $("#assign-medication-panel").hide();
+					    
+                   $("#welcome-container").fadeOut(400);
+                   $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   
+                   // reset the form and errors
+                   $("#add-medication-form").trigger("reset");
+                   $("#medication-name-input").removeClass("has-error");
+                   $("#medication-type-input").removeClass("has-error");
+                   $("#intake-method-input").removeClass("has-error");
+                   $("#max-dosage-input").removeClass("has-error");
+                   $("#min-dosage-input").removeClass("has-error");
+                   
+                   // ugly, but it works
+                   $("#add-medication-panel").fadeIn(800).removeClass('hidden');
+                });
+                
+                // When the user attempts to submit a medication form
+                $('#add-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var medicationName = formInstance.isValid('block14', true);
+                    var medicationType = formInstance.isValid('block15', true);
+                    var intakeMethod = formInstance.isValid('block16', true);
+                    var maxDosage = formInstance.isValid('block17', true);
+                    var minDosage = formInstance.isValid('block18', true);
+
+						  // If all required fields are given and are valid,
+						  // submit
+                    if (medicationName && medicationType && intakeMethod && maxDosage && minDosage) {
+                        // submit form with AJAX
+                        addMedicationAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     */
+                    if (!medicationName) {
+                        $('#medication-name-input').addClass("has-error");
+                    } else {
+                        $('#medication-name-input').removeClass("has-error");
+                    }
+
+                    if (!medicationType) {
+                        $('#medication-type-input').addClass("has-error");
+                    } else {
+                        $('#medication-type-input').removeClass("has-error");
+                    }
+                    
+                    if (!intakeMethod) {
+                        $('#intake-method-input').addClass("has-error");
+                    } else {
+                        $('#intake-method-input').removeClass("has-error");
+                    }
+
+                    if (!maxDosage) {
+                        $('#max-dosage-input').addClass("has-error");
+                    } else {
+                        $('#max-dosage-input').removeClass("has-error");
+                    }
+                    
+                    if (!minDosage) {
+                        $('#min-dosage-input').addClass("has-error");
+                    } else {
+                        $('#min-dosage-input').removeClass("has-error");
+                    }
+                });
+                
+                // Handle the event the user selects the medication list option
+                // under medications
+                $("#view-medication-list").click(function() {
+						 $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+						 viewMedicationsAJAX();
+                });
+                
+                // When the user selects assign medication
+                $("#assign-medication").click(function(){
+						 
+						 // Show assign medication form
+						 $("#assign-medication-form").show();
+						 
+						 // Hide all other forms
+                   $("#add-patient-form").hide();
+                   $("#add-patient-panel").hide();
+					    $("#create-appointment-form").hide();
+					    $("#create-appointment-panel").hide();
+					    $("#add-medication-form").hide();
+					    $("#add-medication-panel").hide();
+					    
+                   $("#welcome-container").fadeOut(400);
+                   $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
+                   $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
+                   
+                   // reset the form and errors
+                   $("#asign-medication-form").trigger("reset");
+                   $("#assign-medication-name-input").removeClass("has-error");
+                   $("#assign-medication-patient-input").removeClass("has-error");
+                   $("#assign-medication-patient-name-input").removeClass("has-error");
+                   $("#assign-medication-dosage-input").removeClass("has-error");
+                   $("#assign-medication-frequency-input").removeClass("has-error");
+                   
+                   // ugly, but it works
+                   $("#assign-medication-panel").fadeIn(800).removeClass('hidden');
+                });
+                
+                
+                // When the user attempts to submit assign medication form
+                $('#assign-medication-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var medicationName = formInstance.isValid('block19', true);
+                    var patientUsername = formInstance.isValid('block20', true);
+                    var patientName = formInstance.isValid('block21', true);
+                    var dosage = formInstance.isValid('block22', true);
+                    var frequency = formInstance.isValid('block23', true);
+
+						  // If all the required information is given and they are all valid,
+						  // submit
+                    if (medicationName && patientUsername && patientName && dosage && frequency) {
+                        // submit form with AJAX
+                        assignMedicationAJAX();
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                     Input validation rules:
+                     - All forms required
+                     */
+                    if (!medicationName) {
+                        $('#assign-medication-name-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-name-input').removeClass("has-error");
+                    }
+
+                    if (!patientUsername) {
+                        $('#assign-medication-patient-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-patient-input').removeClass("has-error");
+                    }
+                    
+                    if (!patientName) {
+                        $('#assign-medication-patient-name-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-patient-name-input').removeClass("has-error");
+                    }
+
+                    if (!dosage) {
+                        $('#assign-medication-dosage-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-dosage-input').removeClass("has-error");
+                    }
+
+                    if (!frequency) {
+                        $('#assign-medication-frequency-input').addClass("has-error");
+                    } else {
+                        $('#assign-medication-frequency-input').removeClass("has-error");
+                    }
+                });
+                
             });
         </script>
     </body>

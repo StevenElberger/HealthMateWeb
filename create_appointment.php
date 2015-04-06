@@ -16,7 +16,8 @@
 
     // Only process POST requests, not GET
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check the required fields
+        
+        // Check that the required fields have been set
         if (empty($_POST["doctor_id"])) {
             $doctor_idError = "*";
         } else {
@@ -102,28 +103,37 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        
+
+        //=======
+//        // Adds a new appointment with form data into the appointments table of the database
+//        $sql = "INSERT INTO appointments (user_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
+//>>>>>>> 6c935f20de54a4895233f6376cea47150d341db1
         // Adds a new user account with form data into the physician table of the database
         // -- To do: form checking (e.g., username already exists, security, etc.)
         $sql = "INSERT INTO appointments (doctor_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
          VALUES ('".$doctor_id."', '".$appointment_username."', '".$first_name."', '".$last_name."', '".$appointment_title."', '"
          .$address."', '".$city."', '".$zip_code."', '".$state."', '".$date."', '".$start_time."', '".$end_time."')";
 
-			
+//        =======
+//        // Verify that the appointment has been added successfully to the database
+//        $sql_get_appointments = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
+//>>>>>>> 6c935f20de54a4895233f6376cea47150d341db1
          if ($conn->query($sql) === TRUE) {
-            // successful created appointment
 
             $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
 												"' AND title = '" . $appointment_title . "'";
 												
             $get_appointments = $conn->query($sql_get_appointments);
 
+				// If the appointment was not added successfully, display an error
             if ($get_appointments->num_rows == 0) {
                 $result = "ERROR";
                 echo $result;
                 return;
             }
             
+            // If the appointment was added successfully, display the information about the
+            // appointment in a table
             $result = "<h3 class='text-center'>Appointment Created Successfully</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
@@ -164,7 +174,7 @@
             echo "Error: " . $sql . "<br />" . $conn->error;
         }
 
-        // Peace out
+        // Closed the connection to the database
         $conn->close();
         echo $result;
     }

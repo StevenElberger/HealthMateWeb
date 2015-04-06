@@ -5,6 +5,12 @@
 	require_once("/definitions.php");
 // Reset token functions
 
+// Note: This implementation is based on a Tutorial
+// that one of the developers used to learn about web security.
+// Tutorial Name: Creating Secure PHP Websites
+// Author: Kevin Skoglund
+// Website of Tutorial: Lynda.com
+
 // Function that generates a string that can be used as a reset token. 
 // The function generates this unique token by generating a random number,
 // generating a unique id from that number and then hashing it.
