@@ -38,7 +38,7 @@
         $queryResult = $conn->query($sql);
         if ($queryResult->num_rows > 0) {
 
-            $result = "<h3 class='text-center'>Patient List</h3>";
+            $result = "<h3 class='text-center'>Patient Information</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
                     <tr>
@@ -65,7 +65,7 @@
             }
 
             $result .= "</tbody>";
-            $result .= "</table>";
+            $result .= "</table><br/>";
         } else {
             $result = "ERROR";
             echo $result;
@@ -142,7 +142,11 @@
             $result .= "</tbody>";
             $result .= "</table>";
         } else {
-            $result = "ERROR";
+            $result .= "<div class='alert alert-dismissible alert-info'>
+                    <button type='button' class='close' data-dismiss='alert'>×</button>
+                    <span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span><strong></strong>
+                    No medications are currently assigned to this user.
+                </div>";
             echo $result;
             return;
         }

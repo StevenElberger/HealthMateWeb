@@ -13,6 +13,9 @@
         <!-- Custom CSS for welcome page -->
         <link href="newcss/welcome.css" type="text/css" rel="stylesheet">
 
+        <!-- Charts.js for graphs -->
+        <script src="Chart.min.js"></script>
+
         <?php
             // Grab security functions
             require_once("/private/initialize.php");
@@ -119,7 +122,7 @@
                         </li>
                         
                         <!-- End of Medications navigation and dropdown -->
-                        
+                        <li id="data"><a href="#">Data</a></li>
                         <li><a href="/HealthMateTest/account_settings.php">Settings</a></li>
                         <li><a href="/HealthMateTest/logout.php">Logout</a></li>
                     </ul>
@@ -148,6 +151,7 @@
                         This is the HealthMate welcome page. From here you can view your patient list, modify patient information, change your settings, and more!
                     </div>
                 </div>
+
             </div>
             <!-- End of welcome -->
 
@@ -573,6 +577,8 @@
 
                 <div id="patient-profile" class="panel panel-default hidden"></div>
 
+                <div id="patient-graph"><canvas id="myChart" class="col-md-12"></canvas></div>
+
             </div>
 
         <!-- Bootstrap core JavaScript -->
@@ -607,7 +613,9 @@
                         $("#add-medication-panel").fadeOut(400);
                         $("#assign-medication-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
-                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+                        setTimeout(function() {
+                            $("#results").html(xmlhttp.responseText).fadeIn(400).removeClass('hidden');
+                        }, 800);
 
                         // add onclick listeners to links
                         $('patient-id').click(function(e) {
@@ -915,7 +923,42 @@
                 xmlhttp.send("doctor_id=" + doc_id);
             }
 
+            function displayData() {
+                var data = {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [
+                        {
+                            label: "My First dataset",
+                            fillColor: "rgba(220,220,220,0.2)",
+                            strokeColor: "rgba(220,220,220,1)",
+                            pointColor: "rgba(220,220,220,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(220,220,220,1)",
+                            data: [65, 59, 80, 81, 56, 55, 40]
+                        },
+                        {
+                            label: "My Second dataset",
+                            fillColor: "rgba(151,187,205,0.2)",
+                            strokeColor: "rgba(151,187,205,1)",
+                            pointColor: "rgba(151,187,205,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(151,187,205,1)",
+                            data: [28, 48, 40, 19, 86, 27, 90]
+                        }
+                    ]
+                };
+
+                // Get context with jQuery - using jQuery's .get() method.
+                var ctx = $("#myChart").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                new Chart(ctx).Line(data);
+            }
+
             $(document).ready(function(){
+
+                $("#data").click(function() {displayData();});
 
                 // activate all popovers
                 $(function () {
