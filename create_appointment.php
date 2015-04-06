@@ -104,23 +104,30 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        //=======
-//        // Adds a new appointment with form data into the appointments table of the database
-//        $sql = "INSERT INTO appointments (user_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
-//>>>>>>> 6c935f20de54a4895233f6376cea47150d341db1
-        // Adds a new user account with form data into the physician table of the database
-        // -- To do: form checking (e.g., username already exists, security, etc.)
+        // new stuff -- get actual patient_id
+        $get_patient_id_sql = "SELECT patient_id FROM patient WHERE first_name = '".$first_name."' AND last_name = '".$last_name."'";
+
+        $patient_id_result = $conn->query($get_patient_id_sql);
+
+        $patient_id = "";
+
+        if ($patient_id_result->num_rows > 0) {
+            while ($row = $patient_id_result->fetch_assoc()) {
+                $patient_id = $row["patient_id"];
+            }
+        }
+
+
+
+        // Adds a new appointment with form data into the appointments table of the database
         $sql = "INSERT INTO appointments (doctor_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
-         VALUES ('".$doctor_id."', '".$appointment_username."', '".$first_name."', '".$last_name."', '".$appointment_title."', '"
+         VALUES ('".$doctor_id."', '".$patient_id."', '".$first_name."', '".$last_name."', '".$appointment_title."', '"
          .$address."', '".$city."', '".$zip_code."', '".$state."', '".$date."', '".$start_time."', '".$end_time."')";
 
-//        =======
-//        // Verify that the appointment has been added successfully to the database
-//        $sql_get_appointments = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
-//>>>>>>> 6c935f20de54a4895233f6376cea47150d341db1
+
          if ($conn->query($sql) === TRUE) {
 
-            $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
+            $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "' AND patient_id ='" . $patient_id .
 												"' AND title = '" . $appointment_title . "'";
 												
             $get_appointments = $conn->query($sql_get_appointments);

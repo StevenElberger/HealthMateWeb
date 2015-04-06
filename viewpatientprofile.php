@@ -145,17 +145,73 @@
             $result .= "<div class='alert alert-dismissible alert-info'>
                     <button type='button' class='close' data-dismiss='alert'>×</button>
                     <span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span><strong></strong>
-                    No medications are currently assigned to this user.
+                    No medications are currently assigned to this patient.
+                </div>";
+        }
+
+        // Third Query -- Appointments
+        $third_sql = "SELECT * FROM appointments WHERE patient_id='" . $patient_id . "'";
+
+        // If there are no appointments, display that there are no appointments
+        $results = $conn->query($third_sql);
+        if ($results->num_rows == 0) {
+            $result .= "<div class='alert alert-dismissible alert-info'>
+                    <button type='button' class='close' data-dismiss='alert'>×</button>
+                    <span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span><strong></strong>
+                    No appointments are currently scheduled with this patient.
                 </div>";
             echo $result;
             return;
         }
 
+        // Start the construction of the table of appointments
+        $result .= "<h3 class='text-center'>Appointment List</h3>";
+        $result .= "<table class='table table-striped table-hover'>";
+        $result .= "<thead>
+                    <tr>
+                        <th>AID #</th>
+                        <th>Patient Name</th>
+                        <th>Appointment Title</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Location</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+
+        // For each appointment returned, add a new row to the table
+        foreach ($results as $row) {
+            $appointment_id = $row["appointment_id"];
+            $patient_name = $row["first_name"] . " " . $row["last_name"];
+            $title = $row["title"];
+            $date = $row["date"];
+            $start_time = $row["start"];
+            $end_time = $row["end"];
+            $location = $row["address"] . ", " . $row["city"] . ", " . $row["state"] . " " . $row["zip"];
+
+            $result .= "<tr>
+                        <td>".$appointment_id."</td>
+                        <td>".$patient_name."</td>
+                        <td>".$title."</td>
+                        <td>".$date."</td>
+                        <td>".$start_time."</td>
+                        <td>".$end_time."</td>
+                        <td>".$location."</td>
+                    </tr>";
+        }
+        $result .= "</tbody>";
+        $result .= "</table>";
+    } else {
+        $result = "Error";
+        echo $result;
+        return;
+    }
+
         // Peace out
         $conn->close();
 
         echo $result;
-    }
 
     // Removes unwanted and potentially malicious characters
     // from the form data to prevent XSS hacks / exploits
