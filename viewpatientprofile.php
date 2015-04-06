@@ -120,8 +120,8 @@
                 $medication_name = "";
 
                 if ($patient_medication_name_result->num_rows > 0) {
-                    while ($row = $patient_medication_name_result->fetch_assoc()) {
-                        $medication_name = $row["name"];
+                    while ($second_row = $patient_medication_name_result->fetch_assoc()) {
+                        $medication_name = $second_row["name"];
                     }
                 }
 

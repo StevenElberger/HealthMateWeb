@@ -80,7 +80,7 @@
 				// If medication not added, display ERROR
             if ($get_medication_id->num_rows > 0) {
                 while ($row = $get_medication_id->fetch_assoc()) {
-                    $medication_id .= $row["m_id"];
+                    $medication_id .= $row["medication_id"];
                 }
             } else {
                 $result = "ERROR";

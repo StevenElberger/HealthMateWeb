@@ -483,7 +483,6 @@
 														}
 				
 														// Select all patients that are associated with this doctor
-														//$sql = "SELECT * FROM patient WHERE doctor_id =" . $username ."";
 														$sql = "SELECT * FROM medications";
 														
 														// Execute Query
