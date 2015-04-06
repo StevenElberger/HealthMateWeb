@@ -74,20 +74,30 @@
 
         // --- Second Query ---
         // Retrieves all relevant patient information for patients under this doctor's care
-        $second_sql = "SELECT patient_id, user_id, medication_id, patient_name, dosage, frequency FROM medicationlist WHERE patient_id = '".$patient_id."'";
-
-        // Create connection
-        $second_conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+        $second_sql = "SELECT medication_list_id, patient_id, doctor_id, medication_id, patient_name, dosage, frequency FROM medicationlist WHERE patient_id = '".$patient_id."'";
 
         // Check connection
-        if ($second_conn->connect_error) {
+        if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $second_queryResult = $second_conn->query($second_sql);
+        // new stuff - get the actual patient_username
+        $get_patient_username_sql = "SELECT username FROM patient WHERE patient_id = '" . $patient_id . "'";
+
+        $patient_username_result = $conn->query($get_patient_username_sql);
+
+        $patient_username = "";
+
+        if ($patient_username_result->num_rows > 0) {
+            while ($row = $patient_username_result->fetch_assoc()) {
+                $patient_username = $row["username"];
+            }
+        }
+
+        $second_queryResult = $conn->query($second_sql);
         if ($second_queryResult->num_rows > 0) {
 
-            $result = "<h3 class='text-center'>Medication List</h3>";
+            $result .= "<h3 class='text-center'>Medication List</h3>";
             $result .= "<table class='table table-striped table-hover'>";
             $result .= "<thead>
                     <tr>
@@ -102,17 +112,28 @@
                     <tbody>";
 
             while ($row = $second_queryResult->fetch_assoc()) {
-                $patient_id = $row["patient_id"];
-                $user_id = $row["user_id"];
-                $medication_id = $row["medication_id"];
+                // get the medication_name
+                $get_medication_name_sql = "SELECT name FROM medications WHERE medication_id = '" . $row["medication_id"] . "'";
+
+                $patient_medication_name_result = $conn->query($get_medication_name_sql);
+
+                $medication_name = "";
+
+                if ($patient_medication_name_result->num_rows > 0) {
+                    while ($row = $patient_medication_name_result->fetch_assoc()) {
+                        $medication_name = $row["name"];
+                    }
+                }
+
+                $medication_list_id = $row["medication_list_id"];
                 $patient_name = $row["patient_name"];
                 $dosage = $row["dosage"];
                 $frequency = $row["frequency"];
                 $result .= "<tr>
-                        <td>".$patient_id."</td>
+                        <td>".$medication_list_id."</td>
+                        <td>".$medication_name."</td>
+                        <td>".$patient_username."</td>
                         <td>".$patient_name."</td>
-                        <td>".$user_id."</td>
-                        <td>".$medication_id."</td>
                         <td>".$dosage."</td>
                         <td>".$frequency."</td>
                     </tr>";
