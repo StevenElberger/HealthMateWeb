@@ -577,8 +577,7 @@
 
                 <div id="patient-profile" class="panel panel-default hidden"></div>
 
-                <div id="patient-graph"><canvas id="myChart" class="col-md-12"></canvas></div>
-
+                <div id="patient-graph" class="panel panel-default hidden"><h3 class="text-center">Monthly Steps Data</h3><canvas id="myChart" class="center-block"></canvas></div>
             </div>
 
         <!-- Bootstrap core JavaScript -->
@@ -612,6 +611,7 @@
                         $("#create-appointment-panel").fadeOut(400);
                         $("#add-medication-panel").fadeOut(400);
                         $("#assign-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         setTimeout(function() {
                             $("#results").html(xmlhttp.responseText).fadeIn(400).removeClass('hidden');
@@ -654,6 +654,7 @@
                         // clear out the form and present the result
                         $("#welcome-container").fadeOut(400);
                         $("#add-patient-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -694,6 +695,7 @@
                         }, 1000);
                         // clear out the form and present the result
                         $("#create-appointment-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -751,6 +753,7 @@
                         $("#create-appointment-panel").fadeOut(400);
                         $("#add-medication-panel").fadeOut(400);
                         $("#assign-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -789,6 +792,7 @@
                         $("#create-appointment-panel").fadeOut(400);
                         $("#add-medication-panel").fadeOut(400);
                         $("#assign-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
 
@@ -828,6 +832,7 @@
                         // clear out the form and present the result
                         $("#welcome-container").fadeOut(400);
                         $("#add-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -869,6 +874,7 @@
                         // clear out the form and present the result
                         $("#welcome-container").fadeOut(400);
                         $("#assign-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -912,6 +918,7 @@
                         $("#add-patient-panel").fadeOut(400);
                         $("#create-appointment-panel").fadeOut(400);
                         $("#add-medication-panel").fadeOut(400);
+                        $("#patient-graph").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -924,6 +931,14 @@
             }
 
             function displayData() {
+                $("#welcome-container").fadeOut(400);
+                $("#add-patient-panel").fadeOut(400);
+                $("#create-appointment-panel").fadeOut(400);
+                $("#add-medication-panel").fadeOut(400);
+                $("#assign-medication-panel").fadeOut(400);
+                $("#results").fadeOut(400);
+                $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                $("#patient-graph").fadeIn(400).removeClass('hidden');
                 var data = {
                     labels: ["January", "February", "March", "April", "May", "June", "July"],
                     datasets: [
@@ -935,7 +950,7 @@
                             pointStrokeColor: "#fff",
                             pointHighlightFill: "#fff",
                             pointHighlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
+                            data: [6500, 5900, 8000, 8100, 5600, 5500, 4000]
                         },
                         {
                             label: "My Second dataset",
@@ -945,7 +960,7 @@
                             pointStrokeColor: "#fff",
                             pointHighlightFill: "#fff",
                             pointHighlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
+                            data: [2800, 4800, 4000, 1900, 8600, 2700, 9000]
                         }
                     ]
                 };
@@ -979,6 +994,7 @@
 				     	  $("#assign-medication-form").hide();
 					     $("#assign-medication-panel").hide();
                     $("#welcome-container").fadeOut(400);
+                    $("#patient-graph").fadeOut(400);
                     $("#welcome-jumbo").slideUp(200).delay(400).fadeIn(400);
                     $("#results").fadeOut(400).delay(1000).addClass('hidden').empty();
                     // reset the form and errors
@@ -1065,6 +1081,7 @@
                     
                     // Hide all other forms
                     $("#add-patient-form").hide();
+                    $("#patient-graph").hide();
                     $("#add-patient-panel").hide();
                     $("#add-medication-form").hide();
                     $("#add-medication-panel").hide();
@@ -1263,6 +1280,7 @@
                      // Hide all other forms
                    $('#add-patient-form').hide();
                    $('#add-patient-panel').hide();
+                    $("#patient-graph").hide();
                     $("#create-appointment-form").hide();
                     $("#create-appointment-panel").hide();
                     $("#assign-medication-form").hide();
@@ -1360,6 +1378,7 @@
 						 // Hide all other forms
                    $("#add-patient-form").hide();
                    $("#add-patient-panel").hide();
+                    $("#patient-graph").hide();
 					    $("#create-appointment-form").hide();
 					    $("#create-appointment-panel").hide();
 					    $("#add-medication-form").hide();
