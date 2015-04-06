@@ -58,24 +58,37 @@
     && ($frequency !== "")) {
 
         // Create connection
-        $conn = new mysqli("localhost", "root", "#mws1992", "testDB");
+        $conn = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
+
+        // new stuff
+        $get_patient_id_sql = "SELECT patient_id FROM patient WHERE username = '" . $patient_username . "'";
+
+        $patient_id_result = $conn->query($get_patient_id_sql);
+
+        $patient_id = "";
+
+        if ($patient_id_result->num_rows > 0) {
+            while ($row = $patient_id_result->fetch_assoc()) {
+                $patient_id = $row["patient_id"];
+            }
+        }
         
         // Adds a new medication associated with a patient with form data into the medication list table of the database
-        $sql = "INSERT INTO medications_list (p_id, u_id, m_id, patient_name, dosage, frequency) 
-        VALUES ('".$patient_username."', '".$doctor_id."','".$medication_name."', '".$patient_name."', '".$dosage."', '".$frequency."')";
+        $sql = "INSERT INTO medicationlist (patient_id, user_id, medication_id, patient_name, dosage, frequency)
+        VALUES ('".$patient_id."', '".$doctor_id."','".$medication_name."', '".$patient_name."', '".$dosage."', '".$frequency."')";
 
         // Only assign the medication to the patient if the patient does not have the medication already assigned to them
-        if (assign_medication_exists($medication_name, $conn)) {
+        if (assign_medication_exists($medication_name, $patient_name, $conn)) {
             $result = "Medication already Assigned.";
         } else if ($conn->query($sql) === TRUE) {
 
 				// select the assigned medication from the database that has just been inserted
-            $sql_get_medication_list_id = "SELECT ml_id FROM medications_list WHERE p_id ='".$patient_username."' AND m_id ='".$medication_name."'";
+            $sql_get_medication_list_id = "SELECT medication_list_id FROM medicationlist WHERE patient_id ='".$patient_username."' AND medication_id ='".$medication_name."'";
 				
 				// Execute query
             $get_medication_list_id = $conn->query($sql_get_medication_list_id);
@@ -84,7 +97,7 @@
 				// Verify that the medication has been assigned and stored in the database
             if ($get_medication_list_id->num_rows > 0) {
                 while ($row = $get_medication_list_id->fetch_assoc()) {
-                    $medication_list_id .= $row["ml_id"];
+                    $medication_list_id .= $row["medication_list_id"];
                 }
             } else {
                 $result = "ERROR";
@@ -138,8 +151,8 @@
     }
 
     // Checks to see if given username already exists
-    function assign_medication_exists($given_medication_name, $existing_conn) {
-        $sql = "SELECT ml_id FROM medications_list WHERE patient_name = '".$patient_username."' AND m_id = '".$given_medication_name."'";
+    function assign_medication_exists($given_medication_name, $patient_name, $existing_conn) {
+        $sql = "SELECT medication_list_id FROM medicationlist WHERE patient_name = '".$patient_name."' AND medication_id = '".$given_medication_name."'";
 
         $result = $existing_conn->query($sql);
 

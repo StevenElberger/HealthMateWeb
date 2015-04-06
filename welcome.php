@@ -514,7 +514,7 @@
 														}
 				
 														// Select all patients that are associated with this doctor
-														$sql = "SELECT * FROM patient WHERE doctor_id =" . $username;
+                                                        $sql = "SELECT * FROM patient WHERE doctor_id = '".$username."'";
 														
 														// Execute Query
 														$result = $conn->query($sql);
@@ -523,10 +523,8 @@
 														// with the current doctor
 														foreach($result as $row) {
 															$patient_username = $row["username"];
-															//$first_name = $row["first_name"];
-															//$last_name = $row["last_name"];
-															$first_name = "test";
-															$last_name = "test";
+															$first_name = $row["first_name"];
+															$last_name = $row["last_name"];
 															echo "<option value=\"{$patient_username}\">{$first_name}, {$last_name} ({$patient_username})</option>";
 														}
 													?>
@@ -574,6 +572,8 @@
 
                 <div id="results" class="panel panel-default hidden"></div>
 
+                <div id="patient-profile" class="panel panel-default hidden"></div>
+
             </div>
 
         <!-- Bootstrap core JavaScript -->
@@ -582,6 +582,47 @@
         <!-- Form validation from Parsley -->
         <script src="js/parsley.min.js"></script>
         <script type="text/javascript">
+            function viewPatientProfile(patient_id) {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                xmlhttp.onreadystatechange = function () {
+                    $("#progdiv").fadeIn(400).removeClass('hidden');
+                    if (xmlhttp.readyState == 1) {
+                        $("#progbar").css("width", "25%");
+                    } else if (xmlhttp.readyState == 2) {
+                        $("#progbar").css("width", "50%");
+                    } else if (xmlhttp.readyState == 3) {
+                        $("#progbar").css("width", "75%");
+                    }
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        $("#progbar").css("width", "100%");
+                        setTimeout(function() {
+                            $("#progdiv").fadeOut(800).delay(400).addClass('hidden');
+                        }, 1000);
+                        // clear out the form and present the result
+                        $("#welcome-container").fadeOut(400);
+                        $("#add-patient-panel").fadeOut(400);
+                        $("#create-appointment-panel").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#assign-medication-panel").fadeOut(400);
+                        $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
+                        $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+
+                        // add onclick listeners to links
+                        $('patient-id').click(function(e) {
+                            viewPatientProfile(e);
+                        });
+                    }
+                };
+                var doc_id = $("#doctor_id").html();
+                xmlhttp.open("POST","viewpatientprofile.php",true);
+                // HTTP header required for POST
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send("patient_id=" + patient_id + "&doctor_id=" + doc_id);
+            }
+
             // handles the form submission and displays the results of
             // adding a patient to the DB
             function testAJAX() {
@@ -701,6 +742,8 @@
                         // clear out the form and present the result
                         $("#welcome-container").fadeOut(400);
                         $("#create-appointment-panel").fadeOut(400);
+                        $("#add-medication-panel").fadeOut(400);
+                        $("#assign-medication-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
@@ -741,6 +784,11 @@
                         $("#assign-medication-panel").fadeOut(400);
                         $("#welcome-jumbo").slideUp(400).delay(400).fadeIn(400);
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
+
+                        // add onclick listeners to links
+                        $('patient-id').click(function(e) {
+                           viewPatientProfile(e);
+                        });
                     }
                 };
                 var doc_id = $("#doctor_id").html();
@@ -777,8 +825,7 @@
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-                //var doc_id = $("#doctor_id").html();
-                var doc_id = "test";
+                var doc_id = $("#doctor_id").html();
                 var medication_name = $("#medication_name").val();
                 var medication_type = $("#medication_type").val();
                 var intake_method = $("#intake_method").val();
@@ -819,8 +866,7 @@
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-                //var doc_id = $("#doctor_id").html();
-                var doc_id = "test";
+                var doc_id = $("#doctor_id").html();
                 var medication_name = $("#assign_medication_name").val();
                 var patient_username = $("#assign_medication_patient").val();
                 var patient_name = $("#assign_medication_patient_name").val();
@@ -863,8 +909,7 @@
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-                //var doc_id = $("#doctor_id").html();
-                var doc_id = "test";
+                var doc_id = $("#doctor_id").html();
                 xmlhttp.open("POST","view_medication_list.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");

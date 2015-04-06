@@ -55,7 +55,7 @@
                 $patient_last_name = $row["last_name"];
                 $patient_gender = $row["gender"];
                 $patient_birthday = $row["birthday"];
-                $result .= "<tr>
+                $result .= "<tr id='patient-$patient_id' onclick='viewPatientProfile($patient_id)'>
                     <td>".$patient_id."</td>
                     <td>".$patient_first_name. " " . $patient_last_name."</td>
                     <td>".$patient_gender."</td>
