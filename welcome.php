@@ -471,7 +471,7 @@
                 // Doctor ID on my machine is underfined
                 // change when moved to host machine
                 //var doc_id = $("#doctor_id").html();
-                var doc_id = $("doctor_id").html();
+                var doc_id = $("#doctor_id").html();
                 var first_name = $("#appointment_first_name").val();
                 var last_name = $("#appointment_last_name").val();
                 var appointment_title = $("#appointment_title").val();
@@ -520,8 +520,7 @@
                         $("#results").html(xmlhttp.responseText).fadeIn(800).removeClass('hidden');
                     }
                 };
-                //var doc_id = $("#doctor_id").html();
-                var doc_id = "test";
+                var doc_id = $("#doctor_id").html();
                 xmlhttp.open("POST","view_appointment_list.php",true);
                 // HTTP header required for POST
                 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");

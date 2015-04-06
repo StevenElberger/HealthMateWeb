@@ -33,7 +33,7 @@
             die("Connection failed: " . $conn->connect_error);
         } 
         
-        $sql = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "'";
+        $sql = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "'";
         
         $results = $conn->query($sql);
         if ($results->num_rows == 0) {

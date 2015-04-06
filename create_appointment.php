@@ -105,7 +105,7 @@
         
         // Adds a new user account with form data into the physician table of the database
         // -- To do: form checking (e.g., username already exists, security, etc.)
-        $sql = "INSERT INTO appointments (user_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
+        $sql = "INSERT INTO appointments (doctor_id, patient_id, first_name, last_name, title, address, city, zip, state, date, start, end)
          VALUES ('".$doctor_id."', '".$appointment_username."', '".$first_name."', '".$last_name."', '".$appointment_title."', '"
          .$address."', '".$city."', '".$zip_code."', '".$state."', '".$date."', '".$start_time."', '".$end_time."')";
 
@@ -113,7 +113,7 @@
          if ($conn->query($sql) === TRUE) {
             // successful created appointment
 
-            $sql_get_appointments = "SELECT * FROM appointments WHERE user_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
+            $sql_get_appointments = "SELECT * FROM appointments WHERE doctor_id='" . $doctor_id . "' AND patient_id ='" . $appointment_username .
 												"' AND title = '" . $appointment_title . "'";
 												
             $get_appointments = $conn->query($sql_get_appointments);
