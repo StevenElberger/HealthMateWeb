@@ -1,12 +1,10 @@
 <?php require_once("../private/initialize.php"); ?>
 
-
 <?php
-
 session_start();
 
 // initialize variables to default values
-$username = "";
+$email = "";
 $message = "";
 
 if(request_is_post() && request_is_same_domain()) {
@@ -16,10 +14,10 @@ if(request_is_post() && request_is_same_domain()) {
   } else {
     // CSRF tests passed--form was created by us recently.
 
-		// retrieve the values submitted via the form
-    $username = $_POST['username'];
+	// retrieve the values submitted via the form
+    $email = $_POST['email'];
     
-		if(!empty($username)) {
+		if(!empty($email)) {
 			
 			// Search our fake database to retrieve the user data
 			// Attempt to connect to the database
@@ -29,8 +27,8 @@ if(request_is_post() && request_is_same_domain()) {
               " (" . mysqli_connect_errno() . ")");
          }
    
-         // SQL statement to retrieve rows that have the username column equal to the given username      
-         $sql_statement = "SELECT * FROM physician WHERE username='".$username."'";
+         // SQL statement to retrieve rows that have the email column equal to the given email      
+         $sql_statement = "SELECT * FROM users WHERE email='".$email."'";
          
          // execute query
          $users = $db->query($sql_statement);
@@ -43,8 +41,8 @@ if(request_is_post() && request_is_same_domain()) {
 
 	         if($user) {
 				   // Username was found; okay to reset
-				   create_reset_token($username);
-				   email_reset_token($username);
+				   create_reset_token($user);
+				   email_username_token($email);
 	          } else {
 	            // Username was not found; don't do anything
 	          }
@@ -53,10 +51,10 @@ if(request_is_post() && request_is_same_domain()) {
 			// Message returned is the same whether the user 
 			// was found or not, so that we don't reveal which 
 			// usernames exist and which do not.
-			$message = "A link to reset your password has been sent to the email address on file.";
+			$message = "The username associated with this email account has been emailed.";
 		
 		} else {
-			$message = "Please enter a username.";
+			$message = "Please enter a email.";
 		}
   }
 }
@@ -69,7 +67,7 @@ if(request_is_post() && request_is_same_domain()) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Forgot Password</title>
+    <title>Forgot Username</title>
     <!-- Bootstrap core CSS-->
     <link href="../newcss/bootstrap.css" type="text/css" rel="stylesheet">
     
@@ -85,19 +83,18 @@ if(request_is_post() && request_is_same_domain()) {
     ?>
     <div class="well login-well" style="padding-top: 15px;">
 		 <fieldset>
-		 <p>Enter your username to reset your password.</p>
-		 <form action="forgot_password.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
+		 <p>Enter your email to retrieve your username.</p>
+		 <form action="forgot_username.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
 			<?php echo csrf_token_tag(); ?>
 			<div class="col-md-12">
-				<label>Username:</label>
+				<label>Email:</label>
 				<div class="input-group"> 
-					<input type="text" name="username" class="form-control" value="<?php echo sanitize_html($username); ?>" /><br />
+					<input type="text" name="email" class="form-control" value="<?php echo sanitize_html($email); ?>" /><br />
 				</div><br />
 			</div>
 			<div class="col-md-12">
 				<input type="submit" name="submit" value="Submit" class="btn btn-lg btn-block btn-primary"/>
 			</div>
-			<a class="text-center" style="display: block;" href="forgot_username.php">Forgot your username?</a>
 		 </form>
 		 </fieldset>
     </div>

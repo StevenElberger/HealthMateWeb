@@ -160,6 +160,7 @@ function username_exists($given_username, $existing_conn) {
         <form action="createaccount.php">
             <button type="submit" class="btn btn-lg btn-block btn-default">Create Account</button>
         </form>
+        <a class="text-center" style="display: block;" href="public/forgot_username.php">Forgot your username?</a>
         <a class="text-center" style="display: block;" href="public/forgot_password.php">Forgot your password?</a>
 </div>
 </div>
