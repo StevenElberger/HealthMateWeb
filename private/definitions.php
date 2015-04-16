@@ -15,7 +15,7 @@
    define("DB_NAME", "testDB");*/
    define("EMAIL_USERNAME", "healthmateemail@yahoo.com");
    define("EMAIL_PASSWORD", "#490testEmail");
-
+	
 	define("DB_SERVER", "localhost");
 	define("DB_USER", "HMTest");
 	define("DB_PASS", "comp490");

@@ -28,7 +28,7 @@ if(request_is_post() && request_is_same_domain()) {
          }
    
          // SQL statement to retrieve rows that have the email column equal to the given email      
-         $sql_statement = "SELECT * FROM users WHERE email='".$email."'";
+         $sql_statement = "SELECT * FROM physician WHERE email='".$email."'";
          
          // execute query
          $users = $db->query($sql_statement);
@@ -84,19 +84,64 @@ if(request_is_post() && request_is_same_domain()) {
     <div class="well login-well" style="padding-top: 15px;">
 		 <fieldset>
 		 <p>Enter your email to retrieve your username.</p>
-		 <form action="forgot_username.php" method="POST" accept-charset="utf-8" class="form-horizontal login-form">
+		 <form role="form" id="reset-password-form" class="form-horizontal login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 			<?php echo csrf_token_tag(); ?>
-			<div class="col-md-12">
-				<label>Email:</label>
-				<div class="input-group"> 
-					<input type="text" name="email" class="form-control" value="<?php echo sanitize_html($email); ?>" /><br />
-				</div><br />
-			</div>
+			<div class="form-group" id="email-input">
+				<div class="col-md-12">
+					 <label>Email:</label><label class="control-label" id="email-control"></label>
+					 <div class="input-group">
+						  <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+						  <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" data-container="body" data-toggle="popover" data-trigger="focus" data-content="must be valid email address" data-parsley-required="true" data-parsley-type="email" data-parsley-length="[8, 32]" data-parsley-group="block1" data-parsley-ui-enabled="false">
+					 </div>
+				</div>
+		  </div>
 			<div class="col-md-12">
 				<input type="submit" name="submit" value="Submit" class="btn btn-lg btn-block btn-primary"/>
+				<a class="text-center" style="display: block;" href="../index.php">Back to Login</a>
 			</div>
 		 </form>
 		 </fieldset>
     </div>
+    
+       <!-- Bootstrap core JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- Form validation from Parsley -->
+        <script src="../js/parsley.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // activate all popovers
+                $(function () {
+                    $('[data-toggle="popover"]').popover();
+                });
+
+                $('#reset-password-form').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+                    var email = formInstance.isValid('block1', true);
+
+                    if (email) {
+                        return;
+                    }
+
+                    // otherwise, stop form submission and mark
+                    // required fields with bootstrap
+                    formInstance.submitEvent.preventDefault();
+
+                    // show error alert
+                    $('#error-alert').removeClass("hidden");
+
+                    /*
+                        Input validation rules:
+                        - Valid Email Required
+                     */
+                    if (!email) {
+                        $('#email-input').addClass("has-error");
+                        $('#email').popover('show');
+                    } else {
+                        $('#email-input').removeClass("has-error");
+                    }
+                });
+            });
+        </script>
   </body>
 </html>
