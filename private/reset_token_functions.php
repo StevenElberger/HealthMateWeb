@@ -106,135 +106,138 @@ function find_user_with_token($token) {
 
 // A function to email the reset token to the email
 // address on file for this user.
-function email_reset_token($username) {
-	
-	// Attempt to connect to the database
-   $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-   if (mysqli_connect_errno()) {
-      die("Database connection failed: " . mysqli_connect_error() .
-         " (" . mysqli_connect_errno() . ")");
-   }
-   
-   // SQL statement to retrieve rows that have the username column equal to the given username      
-    $sql_statement = "SELECT * FROM physician WHERE username='".$username."'";
+function email_reset_token($username)
+{
 
-   // execute query
-   $users = $db->query($sql_statement);
+    // Attempt to connect to the database
+    $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+    if (mysqli_connect_errno()) {
+        die("Database connection failed: " . mysqli_connect_error() .
+            " (" . mysqli_connect_errno() . ")");
+    }
 
-   // check if anything was returned by database
-   if ($users->num_rows > 0) {
+    // SQL statement to retrieve rows that have the username column equal to the given username
+    $sql_statement = "SELECT * FROM physician WHERE username='" . $username . "'";
 
-      // fetch the first row of the results of the query
-      $row = $users->fetch_assoc();
-      
-      $ip_address = $_SERVER['SERVER_ADDR'];
-      
-      $to_name = $row["username"];
-      $to = $row["email"];
-      $subject = "HealthMate Reset Password";
-      $body = file_get_contents('forgot_password_email_template.php');
-      $body = str_replace("[[token]]", $row["reset_token"], $body);
-      $body = str_replace("[[ip_address]]", "108.77.79.66", $body);
-      
-      $from_name = "HealthMate Dev";
-      $from = EMAIL_USERNAME;
-      
-      $mail = new PHPMailer();
-      $mail->Port = 465;
-      $mail->IsSMTP();
-      $mail->Host = "ssl://smtp.mail.yahoo.com";
-      $mail->SMTPSecure = "tls";
-      $mail->SMTPAuth = true;
-      $mail->Username = $from;
-      $mail->Password = EMAIL_PASSWORD;
-      $mail->From = $from;
-      $mail->FromName = $from_name;
-      $mail->AddAddress($to, $to_name);
-      $mail->Subject = $subject;
-      $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
-      $mail->IsHTML(true);
-      $mail->MsgHTML($body);
-      $mail->WordWrap = 70;
-      
-      // Email the user
-      //$result = $mail->Send();
-      
-      // Uncomment For Testing
-      if ($mail->Send()) {
-			//echo "Success";
-		} else {
-			//echo $mail->ErrorInfo;
-		}
+    // execute query
+    $users = $db->query($sql_statement);
 
-		// close database connection
-      $db->close();
-	} 
-	
-// A function to email the reset token to the email
-// address on file for this user.
-function email_reset_token($email) {
-	
-	// Attempt to connect to the database
-   $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-   if (mysqli_connect_errno()) {
-      die("Database connection failed: " . mysqli_connect_error() .
-         " (" . mysqli_connect_errno() . ")");
-   }
-   
-   // SQL statement to retrieve rows that have the email column equal to the given email      
-    $sql_statement = "SELECT * FROM physician WHERE email='".$email."'";
+    // check if anything was returned by database
+    if ($users->num_rows > 0) {
 
-   // execute query
-   $users = $db->query($sql_statement);
+        // fetch the first row of the results of the query
+        $row = $users->fetch_assoc();
 
-   // check if anything was returned by database
-   if ($users->num_rows > 0) {
+        $ip_address = $_SERVER['SERVER_ADDR'];
 
-      // fetch the first row of the results of the query
-      $row = $users->fetch_assoc();
-      
-      $ip_address = $_SERVER['SERVER_ADDR'];
-      
-      $to_name = $row["username"];
-      $to = $row["email"];
-      $subject = "HealthMate Reset Password";
-      $body = file_get_contents('forgot_username_email_template.php');
-      $body = str_replace("[[token]]", $row["reset_token"], $body);
-      $body = str_replace("[[ip_address]]", "108.77.79.66", $body);
-      
-      $from_name = "HealthMate Dev";
-      $from = EMAIL_USERNAME;
-      
-      $mail = new PHPMailer();
-      $mail->Port = 465;
-      $mail->IsSMTP();
-      $mail->Host = "ssl://smtp.mail.yahoo.com";
-      $mail->SMTPSecure = "tls";
-      $mail->SMTPAuth = true;
-      $mail->Username = $from;
-      $mail->Password = EMAIL_PASSWORD;
-      $mail->From = $from;
-      $mail->FromName = $from_name;
-      $mail->AddAddress($to, $to_name);
-      $mail->Subject = $subject;
-      $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
-      $mail->IsHTML(true);
-      $mail->MsgHTML($body);
-      $mail->WordWrap = 70;
-      
-      // Email the user
-      //$result = $mail->Send();
-      
-      // Uncomment For Testing
-      if ($mail->Send()) {
-			//echo "Success";
-		} else {
-			//echo $mail->ErrorInfo;
-		}
+        $to_name = $row["username"];
+        $to = $row["email"];
+        $subject = "HealthMate Reset Password";
+        $body = file_get_contents('forgot_password_email_template.php');
+        $body = str_replace("[[token]]", $row["reset_token"], $body);
+        $body = str_replace("[[ip_address]]", "108.77.76.162", $body);
 
-		// close database connection
-      $db->close();
-	} 
+        $from_name = "HealthMate Dev";
+        $from = EMAIL_USERNAME;
+
+        $mail = new PHPMailer();
+        $mail->Port = 465;
+        $mail->IsSMTP();
+        $mail->Host = "ssl://smtp.mail.yahoo.com";
+        $mail->SMTPSecure = "tls";
+        $mail->SMTPAuth = true;
+        $mail->Username = $from;
+        $mail->Password = EMAIL_PASSWORD;
+        $mail->From = $from;
+        $mail->FromName = $from_name;
+        $mail->AddAddress($to, $to_name);
+        $mail->Subject = $subject;
+        $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
+        $mail->IsHTML(true);
+        $mail->MsgHTML($body);
+        $mail->WordWrap = 70;
+
+        // Email the user
+        //$result = $mail->Send();
+
+        // Uncomment For Testing
+        if ($mail->Send()) {
+            //echo "Success";
+        } else {
+            //echo $mail->ErrorInfo;
+        }
+
+        // close database connection
+        $db->close();
+    }
 }
 
+// A function to email the reset token to the email
+// address on file for this user.
+function email_username_token($email)
+    {
+
+        // Attempt to connect to the database
+        $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+        if (mysqli_connect_errno()) {
+            die("Database connection failed: " . mysqli_connect_error() .
+                " (" . mysqli_connect_errno() . ")");
+        }
+
+        // SQL statement to retrieve rows that have the email column equal to the given email
+        $sql_statement = "SELECT * FROM physician WHERE email='" . $email . "'";
+
+        // execute query
+        $users = $db->query($sql_statement);
+
+        // check if anything was returned by database
+        if ($users->num_rows > 0) {
+
+            // fetch the first row of the results of the query
+            $row = $users->fetch_assoc();
+
+            $ip_address = $_SERVER['SERVER_ADDR'];
+
+            $to_name = $row["username"];
+            $to = $row["email"];
+            $subject = "HealthMate Reset Password";
+            $body = file_get_contents('forgot_username_email_template.php');
+            $body = str_replace("[[token]]", $row["reset_token"], $body);
+            $body = str_replace("[[ip_address]]", "108.77.79.66", $body);
+            $body = str_replace("[[username]]", $row["username"], $body);
+
+            $from_name = "HealthMate Dev";
+            $from = EMAIL_USERNAME;
+
+            $mail = new PHPMailer();
+            $mail->Port = 465;
+            $mail->IsSMTP();
+            $mail->Host = "ssl://smtp.mail.yahoo.com";
+            $mail->SMTPSecure = "tls";
+            $mail->SMTPAuth = true;
+            $mail->Username = $from;
+            $mail->Password = EMAIL_PASSWORD;
+            $mail->From = $from;
+            $mail->FromName = $from_name;
+            $mail->AddAddress($to, $to_name);
+            $mail->Subject = $subject;
+            $mail->AltBody = "To view this message, please use an HTML compatible email viewer";
+            $mail->IsHTML(true);
+            $mail->MsgHTML($body);
+            $mail->WordWrap = 70;
+
+            // Email the user
+            //$result = $mail->Send();
+
+            // Uncomment For Testing
+            if ($mail->Send()) {
+                //echo "Success";
+            } else {
+                //echo $mail->ErrorInfo;
+            }
+
+            // close database connection
+            $db->close();
+        }
+}
 ?>
