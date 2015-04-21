@@ -27,8 +27,8 @@
 		
 		<p>
 			
-			<a href="[[ip_address]]/Comp424Project/index.php">
-				[[ip_address]]/Comp424Project/index.php</a>
+			<a href="[[ip_address]]/HealthMateTest/index.php">
+				[[ip_address]]/HealthMateTest/index.php</a>
 		</p>
 		
 		
