@@ -200,7 +200,7 @@ function email_username_token($email)
 
             $to_name = $row["username"];
             $to = $row["email"];
-            $subject = "HealthMate Reset Password";
+            $subject = "HealthMate Retrieve Username";
             $body = file_get_contents('forgot_username_email_template.php');
             $body = str_replace("[[token]]", $row["reset_token"], $body);
             $body = str_replace("[[ip_address]]", "108.77.79.66", $body);
